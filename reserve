@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>הזמנת מגרשי טניס אשדוד</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; padding: 50px; }
+        button { padding: 10px 20px; font-size: 16px; background: #4CAF50; color: white; border: none; cursor: pointer; }
+        button:hover { background: #45a049; }
+    </style>
+</head>
+<body>
+    <h1>ברוכים הבאים להזמנת מגרשים!</h1>
+    <p>בחר תאריך:</p>
+    <input type="date" id="date">
+    <br><br>
+    <button onclick="bookCourt()">הזמן מגרש</button>
+    <script>
+        function bookCourt() {
+            alert('ההזמנה נשמרה! (זה דוגמה)');
+        }
+    </script>
+</body>
+</html>
