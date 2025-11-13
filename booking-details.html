@@ -67,12 +67,11 @@
 </head>
 <body>
 <div class="container">
-  <!-- הכותרת משתנה דינמית -->
   <h1 id="pageTitle">השלם את ההזמנה</h1>
   <div class="summary-box" id="summary"></div>
 
   <!-- טופס – שליחה עם AJAX -->
-  <form id="personalDetailsForm">
+  <form id="personalDetailsForm" enctype="multipart/form-data">
     <div class="form-group">
       <label for="fullName">שם מלא *</label>
       <input type="text" id="fullName" name="שם מלא" required placeholder="הכנס שם מלא" />
@@ -86,7 +85,7 @@
       <input type="email" id="email" name="אימייל" placeholder="example@email.com" />
     </div>
 
-    <!-- שדות נסתרים -->
+    <!-- שדות נסתרים – עם name! -->
     <input type="hidden" name="מגרש" id="hiddenCourt">
     <input type="hidden" name="יום" id="hiddenDay">
     <input type="hidden" name="שעה" id="hiddenTime">
@@ -114,7 +113,7 @@
   const duration = params.get('duration');
   const total = params.get('total');
 
-  // הצגת פרטי ההזמנה
+  // הצגת פרטים
   document.getElementById('summary').innerHTML = `
     <p><strong>מגרש:</strong> ${court}</p>
     <p><strong>יום:</strong> ${day}</p>
@@ -123,7 +122,7 @@
     <p><strong>סה"כ לתשלום:</strong> ${total}</p>
   `;
 
-  // שמירת ערכים בשדות נסתרים
+  // שמירת ערכים
   document.getElementById('hiddenCourt').value = court;
   document.getElementById('hiddenDay').value = day;
   document.getElementById('hiddenTime').value = time;
@@ -154,11 +153,10 @@
     submitBtn.disabled = true;
     submitBtn.textContent = 'שולח...';
 
-    // אוסף את כל השדות
     const formData = new FormData(form);
 
     try {
-      const response = await fetch('https://formspree.io/f/ה-ID-שלך-כאן', {
+      const response = await fetch('https://formspree.io/f/mzzyzyzo', {
         method: 'POST',
         body: formData,
         headers: {
@@ -166,27 +164,32 @@
         }
       });
 
+      const result = await response.json();
+
       if (response.ok) {
-        // הצלחה – מסתירים טופס, מציגים הודעה, **משנים כותרת**
+        // הצלחה
         form.style.display = 'none';
         finalMessage.style.display = 'block';
         pageTitle.textContent = 'סיכום הזמנה';
 
-        // חוסם חזרה בדפדפן
         history.pushState(null, null, location.href);
         window.onpopstate = () => history.go(1);
       } else {
-        throw new Error('שגיאה');
+        // שגיאה מפורטת
+        alert(`שגיאה: ${result.error || 'שגיאה בשליחה'}`);
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'אישור סופי והזמנה';
+        isSubmitted = false;
       }
     } catch (error) {
-      alert('שגיאה בשליחה. נסה שוב מאוחר יותר.');
+      alert('שגיאה בחיבור. בדוק חיבור לאינטרנט.');
       submitBtn.disabled = false;
       submitBtn.textContent = 'אישור סופי והזמנה';
       isSubmitted = false;
     }
   });
 
-  // חוסם חזרה מההתחלה
+  // חוסם חזרה
   history.pushState(null, null, location.href);
   window.onpopstate = () => history.go(1);
 </script>
