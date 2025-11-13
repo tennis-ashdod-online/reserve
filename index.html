@@ -102,12 +102,12 @@
       box-shadow:0 8px 15px rgba(0,0,0,0.4),inset 0 2px 4px rgba(255,255,255,0.2);
       border-radius:4px;z-index:10;
     }
-    .court-btn:nth-child(1){grid-area:1/1;} /* מגרש 5 */
-    .court-btn:nth-child(2){grid-area:1/2;} /* מגרש 6 */
-    .court-btn:nth-child(3){grid-area:2/1;} /* מגרש 4 */
-    .court-btn:nth-child(4){grid-area:2/2;} /* מגרש 3 */
-    .court-btn:nth-child(5){grid-area:4/1;} /* מגרש 2 */
-    .court-btn:nth-child(6){grid-area:4/2;} /* מגרש 1 */
+    .court-btn:nth-child(1){grid-area:1/1;}
+    .court-btn:nth-child(2){grid-area:1/2;}
+    .court-btn:nth-child(3){grid-area:2/1;}
+    .court-btn:nth-child(4){grid-area:2/2;}
+    .court-btn:nth-child(5){grid-area:4/1;}
+    .court-btn:nth-child(6){grid-area:4/2;}
     .court-btn{
       padding:20px;background:var(--light);border:2px solid #ddd;border-radius:12px;
       cursor:pointer;text-align:center;font-weight:bold;transition:all .3s;
@@ -226,17 +226,14 @@
 </div>
 
 <script>
-  // === שעות ===
   const hours = [];
   for(let h = 8; h <= 21; h++) hours.push(h.toString().padStart(2, '0') + ':00');
 
-  // === ימים לפי שפה ===
   const days = {
     he: ["ראשון", "שני", "שלישי", "רביעי", "חמישי", "שישי", "שבת"],
     en: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
   };
 
-  // === תרגומים ===
   const translations = {
     he: {
       title: "רובע יא' - מרכז קהילתי עם שלום",
@@ -272,7 +269,6 @@
     }
   };
 
-  // === אלמנטים ===
   const courtsWrapper = document.getElementById('courtsWrapper');
   const bookingForm = document.getElementById('bookingForm');
   const backBtn = document.getElementById('backBtn');
@@ -281,7 +277,6 @@
   let selectedBtn = null;
   let duration = 1;
 
-  // === פונקציות ===
   function goBack() {
     if (selectedBtn) selectedBtn.classList.remove('selected');
     selectedBtn = null;
@@ -347,7 +342,6 @@
     document.querySelector('.price-note span').textContent = t.priceNote;
   }
 
-  // === אירועים ===
   document.querySelectorAll('.court-btn').forEach(btn => btn.addEventListener('click', () => openBooking(btn)));
   backBtn.addEventListener('click', goBack);
 
@@ -360,16 +354,16 @@
     });
   });
 
-  // === אישור הזמנה – פותח את booking-details.html ===
+  // === אישור הזמנה – מעביר שפה לדף הבא ===
   document.getElementById('confirmBookingBtn').addEventListener('click', () => {
     const day = daySelect.value;
     const time = timeSelect.value;
     const court = document.getElementById('selectedCourt').value;
     const total = 40 * duration;
+    const currentLang = document.documentElement.lang;
 
     if (!day || !time || !court) {
-      const lang = document.documentElement.lang;
-      alert(translations[lang].missing);
+      alert(translations[currentLang].missing);
       return;
     }
 
@@ -378,11 +372,11 @@
       day: day,
       time: time,
       duration: duration,
-      total: total + '₪'
+      total: total + '₪',
+      lang: currentLang
     });
 
-    const url = `booking-details.html?${params.toString()}`;
-    window.location.href = url;  // פותח באותו טאב
+    window.location.href = `booking-details.html?${params.toString()}`;
   });
 
   // === החלפת שפה ===
@@ -402,12 +396,10 @@
         el.textContent = lang === 'en' ? el.dataset.en : el.dataset.he;
       });
 
-      // עדכון מגרשים
       document.querySelectorAll('.court-btn span').forEach((span, i) => {
         span.textContent = t.courts[i];
       });
 
-      // עדכון ימים ושעות
       updateDayOptions(lang);
       updateTimeOptions();
 
@@ -420,13 +412,11 @@
     });
   });
 
-  // === חזרה אחורה בדפדפן ===
   window.addEventListener('popstate', e => {
     if (e.state && e.state.page === 'home') goBack();
     else if (bookingForm.classList.contains('visible')) goBack();
   });
 
-  // === אתחול ===
   updateDayOptions('he');
   updateTimeOptions();
   history.replaceState({ page: 'home' }, '', '#home');
