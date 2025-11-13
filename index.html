@@ -111,12 +111,13 @@
       border-radius:4px;z-index:10;
     }
 
-    .court-btn:nth-child(1){grid-area:1/1;}
-    .court-btn:nth-child(2){grid-area:1/2;}
-    .court-btn:nth-child(3){grid-area:2/1;}
-    .court-btn:nth-child(4){grid-area:2/2;}
-    .court-btn:nth-child(5){grid-area:4/1;}
-    .court-btn:nth-child(6){grid-area:4/2;}
+    /* מיקומים חדשים – החלפות */
+    .court-btn:nth-child(1){grid-area:1/1;} /* מגרש 5 */
+    .court-btn:nth-child(2){grid-area:1/2;} /* מגרש 6 */
+    .court-btn:nth-child(3){grid-area:2/1;} /* מגרש 4 */
+    .court-btn:nth-child(4){grid-area:2/2;} /* מגרש 3 */
+    .court-btn:nth-child(5){grid-area:4/1;} /* מגרש 2 */
+    .court-btn:nth-child(6){grid-area:4/2;} /* מגרש 1 */
 
     .court-btn{
       padding:20px;background:var(--light);border:2px solid #ddd;border-radius:12px;
@@ -191,13 +192,13 @@
   <!-- עטיפת המפה -->
   <div class="courts-wrapper" id="courtsWrapper">
     <div class="courts-map" role="region" aria-label="מפת מגרשים">
-      <!-- הסרת "פנוי" -->
+      <!-- סדר חדש: 5, 6, 4, 3, 2, 1 -->
       <div class="court-btn" data-court="5" aria-label="מגרש 5"><span>מגרש 5</span></div>
       <div class="court-btn" data-court="6" aria-label="מגרש 6"><span>מגרש 6</span></div>
-      <div class="court-btn" data-court="3" aria-label="מגרש 3"><span>מגרש 3</span></div>
       <div class="court-btn" data-court="4" aria-label="מגרש 4"><span>מגרש 4</span></div>
-      <div class="court-btn" data-court="1" aria-label="מגרש 1"><span>מגרש 1</span></div>
+      <div class="court-btn" data-court="3" aria-label="מגרש 3"><span>מגרש 3</span></div>
       <div class="court-btn" data-court="2" aria-label="מגרש 2"><span>מגרש 2</span></div>
+      <div class="court-btn" data-court="1" aria-label="מגרש 1"><span>מגרש 1</span></div>
       <div class="wall-separator" aria-hidden="true"></div>
     </div>
   </div>
@@ -230,7 +231,7 @@
     <div class="form-group">
       <label data-he="משך זמן:" data-en="Duration:">משך זמן:</label>
       <div class="duration-options">
-        <!-- החלפת סדר: שעתיים שמאל, שעה אחת ימין -->
+        <!-- שעתיים שמאל, שעה אחת ימין -->
         <div class="duration-btn" data-duration="2" aria-label="שעתיים">שעתיים</div>
         <div class="duration-btn selected" data-duration="1" aria-label="שעה אחת">שעה אחת</div>
       </div>
@@ -258,12 +259,12 @@
   const hours = [];
   for(let h = 8; h <= 21; h++) hours.push(h.toString().padStart(2, '0') + ':00');
 
-  // תרגומים
+  // תרגומים – סדר חדש לפי המיקום במפה
   const translations = {
     he: {
       title: "רובע יא' - מרכז קהילתי עם שלום",
       subtitle: "בחרו את המגרש שבו תרצו לשחק",
-      courts: ["מגרש 5","מגרש 6","מגרש 3","מגרש 4","מגרש 1","מגרש 2"],
+      courts: ["מגרש 5","מגרש 6","מגרש 4","מגרש 3","מגרש 2","מגרש 1"], // סדר חדש!
       bookingTitle: "פרטי הזמנה",
       selectedCourt: "מגרש נבחר:",
       selectDay: "בחר יום:",
@@ -280,7 +281,7 @@
     en: {
       title: "Am-Shalom Community Center",
       subtitle: "Choose a court from the aerial map below",
-      courts: ["Court 5","Court 6","Court 3","Court 4","Court 1","Court 2"],
+      courts: ["Court 5","Court 6","Court 4","Court 3","Court 2","Court 1"], // סדר חדש!
       bookingTitle: "Booking Details",
       selectedCourt: "Selected Court:",
       selectDay: "Select Day:",
@@ -385,7 +386,7 @@
         el.textContent = lang === 'en' ? el.dataset.en : el.dataset.he;
       });
       document.querySelectorAll('.court-btn span').forEach((span, i) => {
-        span.textContent = t.courts[i];
+        span.textContent = t.courts[i]; // סדר חדש!
       });
       backBtn.textContent = t.back;
 
@@ -401,7 +402,6 @@
     document.querySelector('label[for="daySelect"]').textContent = t.selectDay;
     document.querySelector('label[for="timeSelect"]').textContent = t.selectTime;
 
-    // עדכון סדר הכפתורים לפי HTML (שמאל = שעתיים, ימין = שעה אחת)
     const durationBtns = document.querySelectorAll('.duration-options .duration-btn');
     durationBtns[0].textContent = t.twoHours;  // שמאל
     durationBtns[1].textContent = t.oneHour;   // ימין
