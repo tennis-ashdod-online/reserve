@@ -9,9 +9,6 @@
       --primary: #1a73e8;
       --light: #f8f9fa;
       --dark: #333;
-      --fence: #555;
-      --fence-dark: #333;
-      --post: #c0c0c0;
     }
     * {box-sizing:border-box;margin:0;padding:0;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;}
 
@@ -19,87 +16,91 @@
       background:linear-gradient(rgba(0,0,0,.55),rgba(0,0,0,.55)),
                  url('https://images.unsplash.com/photo-1622278494980-874d6f8bf7ed?ixlib=rb-4.0.3&auto=format&fit=crop&w=1950&q=80')
                  center/cover no-repeat fixed;
-      color:#fff;line-height:1.6;min-height:100vh;padding:20px 20px 40px;
+      color:#fff;line-height:1.6;min-height:100vh;padding:20px;
     }
-
-    .entrance-gate{
-      max-width:1000px;margin:0 auto 30px;padding:20px 0;text-align:center;position:relative;z-index:1;
-    }
-    .gate-arch{
-      width:100%;height:80px;background:linear-gradient(180deg, #f4a460 0%, #cd853f 100%);
-      border-radius:50% 50% 0 0 / 100% 100% 0 0;position:relative;box-shadow:0 10px 20px rgba(0,0,0,.3);overflow:hidden;
-    }
-    .gate-arch::before{
-      content:'';position:absolute;top:15px;left:50%;transform:translateX(-50%);
-      width:60%;height:50px;background:rgba(255,255,255,.2);border-radius:50%;filter:blur(8px);
-    }
-    .gate-pillars{
-      display:flex;justify-content:space-between;position:absolute;bottom:0;left:0;right:0;height:40px;
-    }
-    .pillar{
-      width:18%;background:#A0522D;position:relative;box-shadow:inset 0 0 10px rgba(0,0,0,.3);
-    }
-    .pillar::before{
-      content:'';position:absolute;top:-15px;left:50%;transform:translateX(-50%);
-      width:120%;height:20px;background:#8B4513;border-radius:50%;
-    }
-    .gate-sign{
-      position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
-      background:#fff;color:#8B4513;padding:12px 30px;border-radius:12px;font-weight:bold;font-size:1.4rem;
-      box-shadow:0 6px 15px rgba(0,0,0,.3);white-space:nowrap;z-index:2;
-    }
-    .gate-sign::before{
-      content:'';position:absolute;bottom:-8px;left:50%;transform:translateX(-50%);
-      width:0;height:0;border-left:12px solid transparent;border-right:12px solid transparent;border-top:12px solid #fff;
-    }
-
     .container{
       max-width:900px;margin:0 auto;background:rgba(255,255,255,.95);color:var(--dark);
       border-radius:15px;padding:30px;box-shadow:0 10px 40px rgba(0,0,0,.3);backdrop-filter:blur(8px);
       position:relative;
     }
 
+    /* ---------- מחליף שפה – קבוע + אימוג'י דגלים ---------- */
     .lang-switch{
-      position:absolute;top:15px;left:15px;font-size:.85rem;display:flex;align-items:center;gap:8px;z-index:100;
+      position:absolute;
+      top:15px;
+      left:15px;
+      font-size:.85rem;
+      display:flex;
+      align-items:center;
+      gap:8px;
+      z-index:100;
     }
     .lang-btn{
-      display:flex;align-items:center;gap:6px;color:#666;text-decoration:none;
-      padding:6px 10px;border-radius:6px;transition:background .2s, color .2s;font-weight:500;
+      display:flex;
+      align-items:center;
+      gap:6px;
+      color:#666;
+      text-decoration:none;
+      padding:6px 10px;
+      border-radius:6px;
+      transition:background .2s, color .2s;
+      font-weight:500;
     }
-    .lang-btn:hover, .lang-btn.active{background:#e3f2fd;color:var(--primary);}
-    .lang-separator{color:#aaa;font-weight:bold;}
+    .lang-btn:hover, .lang-btn.active{
+      background:#e3f2fd;
+      color:var(--primary);
+    }
+    .lang-separator{
+      color:#aaa;
+      font-weight:bold;
+    }
 
+    /* ---------- כותרת – מרווח מלמעלה ---------- */
     header{
-      text-align:center;margin-top:60px;margin-bottom:25px;
+      text-align:center;
+      margin-top:60px;
+      margin-bottom:25px;
     }
-    h1{color:var(--primary);margin-bottom:8px;font-size:1.8rem;}
+    h1{
+      color:var(--primary);
+      margin-bottom:8px;
+      font-size:1.8rem;
+    }
 
-    /* ---------- מפה + שער כניסה בצד ימין ---------- */
-    .map-wrapper{
-      position:relative;max-width:700px;margin:30px auto;overflow:hidden;border-radius:12px;
-      box-shadow:0 8px 25px rgba(0,0,0,.2);
-    }
+    /* ---------- מפת מגרשים ---------- */
     .courts-map{
-      display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr auto 1fr;
-      gap:15px;padding:20px;background:rgba(0,0,0,.1);direction:rtl;position:relative;z-index:2;
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      grid-template-rows:1fr 1fr auto 1fr;
+      gap:15px;
+      max-width:700px;margin:30px auto;padding:20px;
+      background:rgba(0,0,0,.1);border-radius:12px;
+      direction:rtl;position:relative;
     }
+
     .wall-separator {
-      grid-row: 3 / 4;grid-column: 1 / -1;height: 30px;
+      grid-row: 3 / 4;
+      grid-column: 1 / -1;
+      height: 30px;
       background: linear-gradient(135deg, #A0522D 0%, #8B4513 50%, #A0522D 100%);
-      border-top: 3px solid #D2691E;border-bottom: 3px solid #5D2E0D;
+      border-top: 3px solid #D2691E;
+      border-bottom: 3px solid #5D2E0D;
       box-shadow: 0 8px 15px rgba(0,0,0,0.4), inset 0 2px 4px rgba(255,255,255,0.2);
       z-index: 10;border-radius: 4px;
     }
-    .court-btn:nth-child(1){grid-area:1 / 1;}
-    .court-btn:nth-child(2){grid-area:1 / 2;}
-    .court-btn:nth-child(3){grid-area:2 / 1;}
-    .court-btn:nth-child(4){grid-area:2 / 2;}
-    .court-btn:nth-child(5){grid-area:4 / 1;}
-    .court-btn:nth-child(6){grid-area:4 / 2;}
+
+    .court-btn:nth-child(1){grid-area:1 / 1;} /* מגרש 5 */
+    .court-btn:nth-child(2){grid-area:1 / 2;} /* מגרש 6 */
+    .court-btn:nth-child(3){grid-area:2 / 1;} /* מגרש 3 */
+    .court-btn:nth-child(4){grid-area:2 / 2;} /* מגרש 4 */
+    .court-btn:nth-child(5){grid-area:4 / 1;} /* מגרש 1 */
+    .court-btn:nth-child(6){grid-area:4 / 2;} /* מגרש 2 */
+
     .court-btn{
       padding:20px;background:var(--light);border:2px solid #ddd;border-radius:12px;
       cursor:pointer;text-align:center;font-weight:bold;transition:all .3s;
-      min-height:80px;display:flex;align-items:center;justify-content:center;position:relative;z-index:2;
+      min-height:80px;display:flex;align-items:center;justify-content:center;
+      position:relative;z-index:2;
     }
     .court-btn:hover{
       border-color:var(--primary);background:#e3f2fd;transform:translateY(-3px);
@@ -108,42 +109,6 @@
     .court-btn.selected{
       background:var(--primary);color:#fff;border-color:var(--primary);
       transform:translateY(-5px);box-shadow:0 8px 20px rgba(26,115,232,.3);
-    }
-
-    /* ---------- שער כניסה – כמו בתמונה ---------- */
-    .entrance-fence{
-      position:absolute;top:0;right:0;bottom:0;width:120px;z-index:1;
-      background:linear-gradient(135deg, #eee 0%, #ddd 100%);
-      border-left:8px solid #aaa;box-shadow:inset 0 0 15px rgba(0,0,0,.2);
-      clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
-    }
-    .fence-post{
-      position:absolute;top:0;bottom:0;width:12px;background:var(--post);
-      box-shadow:0 0 8px rgba(0,0,0,.3);
-    }
-    .fence-post:nth-child(1){left:15px;}
-    .fence-post:nth-child(2){left:55px;}
-    .fence-post:nth-child(3){right:15px;}
-    .fence-mesh{
-      position:absolute;top:20px;bottom:20px;left:20px;right:20px;
-      background:
-        repeating-linear-gradient(0deg, transparent, transparent 8px, #888 8px, #888 10px),
-        repeating-linear-gradient(90deg, transparent, transparent 8px, #888 8px, #888 10px);
-      background-size: 10px 10px;
-      opacity:0.7;
-      border:2px solid #666;border-radius:4px;
-    }
-    .gate-opening{
-      position:absolute;top:50%;right:0;width:50px;height:120px;
-      background:#4CAF50;transform:translateY(-50%);
-      border-left:6px solid #388E3C;border-radius:0 8px 8px 0;
-      box-shadow:0 0 20px rgba(0,0,0,.3);
-      z-index:3;
-    }
-    .gate-opening::before{
-      content:'';position:absolute;top:50%;left:-15px;width:30px;height:30px;
-      background:#388E3C;transform:translateY(-50%) rotate(45deg);
-      border-radius:4px;
     }
 
     .booking-form{margin-top:25px;padding:20px;background:#f9f9f9;border-radius:10px;display:none;}
@@ -166,65 +131,43 @@
     }
 
     @media (max-width:600px){
-      .entrance-fence{width:80px;}
-      .gate-opening{width:35px;height:90px;}
-      .fence-post{width:8px;}
-      .fence-post:nth-child(1){left:10px;}
-      .fence-post:nth-child(2){left:35px;}
-      .fence-post:nth-child(3){right:10px;}
-      .courts-map{gap:10px;padding:15px;}
+      .courts-map{grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr auto 1fr;gap:12px;}
+      .wall-separator { height: 25px; }
       .lang-switch{left:50%;transform:translateX(-50%);top:10px;}
       header{margin-top:50px;}
       .price-note{position:static;margin-top:15px;text-align:center;}
-      .gate-arch{height:60px;}
-      .gate-sign{font-size:1.1rem;padding:8px 20px;}
     }
   </style>
 </head>
 <body>
 
-<div class="entrance-gate">
-  <div class="gate-arch">
-    <div class="gate-pillars">
-      <div class="pillar"></div>
-      <div class="pillar"></div>
-    </div>
-    <div class="gate-sign" data-he="ברוכים הבאים!" data-en="Welcome!">ברוכים הבאים!</div>
-  </div>
-</div>
-
 <div class="container">
+  <!-- מחליף שפה – עם אימוג'י דגלים -->
   <div class="lang-switch">
-    <a href="#" class="lang-btn active" data-lang="he">IL עברית</a>
+    <a href="#" class="lang-btn active" data-lang="he">
+      IL עברית
+    </a>
     <span class="lang-separator">|</span>
-    <a href="#" class="lang-btn" data-lang="en">US English</a>
+    <a href="#" class="lang-btn" data-lang="en">
+      US English
+    </a>
   </div>
 
+  <!-- כותרת -->
   <header>
     <h1 data-he="רובע יא' - מרכז קהילתי עם שלום" data-en="Am-Shalom Community Center">רובע יא' - מרכז קהילתי עם שלום</h1>
+    <!-- שונה לפי בקשתך -->
     <p data-he="בחרו את המגרש שבו תרצו לשחק" data-en="Choose a court from the aerial map below">בחרו את המגרש שבו תרצו לשחק</p>
   </header>
 
-  <!-- מפה + שער כניסה בצד ימין -->
-  <div class="map-wrapper">
-    <div class="courts-map">
-      <div class="court-btn" data-court="5">מגרש 5</div>
-      <div class="court-btn" data-court="6">מגרש 6</div>
-      <div class="court-btn" data-court="3">מגרש 3</div>
-      <div class="court-btn" data-court="4">מגרש 4</div>
-      <div class="court-btn" data-court="1">מגרש 1</div>
-      <div class="court-btn" data-court="2">מגרש 2</div>
-      <div class="wall-separator"></div>
-    </div>
-
-    <!-- שער כניסה – כמו בתמונה -->
-    <div class="entrance-fence">
-      <div class="fence-post"></div>
-      <div class="fence-post"></div>
-      <div class="fence-post"></div>
-      <div class="fence-mesh"></div>
-      <div class="gate-opening"></div>
-    </div>
+  <div class="courts-map">
+    <div class="court-btn" data-court="5">מגרש 5</div>
+    <div class="court-btn" data-court="6">מגרש 6</div>
+    <div class="court-btn" data-court="3">מגרש 3</div>
+    <div class="court-btn" data-court="4">מגרש 4</div>
+    <div class="court-btn" data-court="1">מגרש 1</div>
+    <div class="court-btn" data-court="2">מגרש 2</div>
+    <div class="wall-separator"></div>
   </div>
 
   <div id="bookingForm" class="booking-form">
@@ -282,8 +225,7 @@
   const translations = {
     he:{
       title:"רובע יא' - מרכז קהילתי עם שלום",
-      subtitle:"בחרו את המגרש שבו תרצו לשחק",
-      welcome:"ברוכים הבאים!",
+      subtitle:"בחרו את המגרש שבו תרצו לשחק",  // שונה לפי בקשתך
       courts:["מגרש 5","מגרש 6","מגרש 3","מגרש 4","מגרש 1","מגרש 2"],
       bookingTitle:"פרטי הזמנה",selectedCourt:"מגרש נבחר:",selectDay:"בחר יום:",selectTime:"בחר שעה:",
       duration:"משך זמן:",oneHour:"שעה אחת",twoHours:"שעתיים",total:"סה״כ לתשלום:",confirm:"אישור הזמנה",
@@ -293,7 +235,6 @@
     en:{
       title:"Am-Shalom Community Center",
       subtitle:"Choose a court from the aerial map below",
-      welcome:"Welcome!",
       courts:["Court 5","Court 6","Court 3","Court 4","Court 1","Court 2"],
       bookingTitle:"Booking Details",selectedCourt:"Selected Court:",selectDay:"Select Day:",selectTime:"Select Time:",
       duration:"Duration:",oneHour:"1 Hour",twoHours:"2 Hours",total:"Total Amount:",confirm:"Confirm Booking",
@@ -312,7 +253,6 @@
     document.documentElement.lang = lang;
     document.querySelector('h1').textContent = translations[lang].title;
     document.querySelector('header p').textContent = translations[lang].subtitle;
-    document.querySelector('.gate-sign').textContent = translations[lang].welcome;
     document.querySelectorAll('[data-he]').forEach(el=>el.textContent = lang==='en'?el.dataset.en:el.dataset.he);
     document.querySelectorAll('.court-btn').forEach((btn,i)=>btn.textContent = translations[lang].courts[i]);
 
