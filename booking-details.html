@@ -389,7 +389,7 @@
       headers: { 'Accept': 'application/json' }
     }).then(r => r.ok).catch(() => false);
 
-    const timeoutPromise = new Promise(resolve => setTimeout(() => resolve(true), 2000));
+    const timeoutPromise = new Promise(resolve => setTimeout(() => resolve(true), 1000));
 
     const result = await Promise.race([sendPromise, timeoutPromise]);
 
