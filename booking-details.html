@@ -12,6 +12,7 @@
       --dark: #333;
       --success: #e8f5e9;
       --error: #ffebee;
+      --red: #e53935;
     }
     * {box-sizing:border-box;margin:0;padding:0;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;}
     body{
@@ -44,15 +45,20 @@
     label{
       display:block;margin-bottom:8px;font-weight:600;
     }
+    .required{
+      color:var(--red);
+      font-weight:bold;
+      margin-left:4px;
+    }
     input[type=text], input[type=email], input[type=tel]{
       width:100%;padding:12px;border:1px solid #ccc;border-radius:6px;font-size:1rem;
       text-align:right;transition:border .2s;
     }
     input.error{
-      border-color:#e53935 !important;background:#ffebee;
+      border-color:var(--red) !important;background:var(--error);
     }
     .error-msg{
-      color:#e53935;font-size:0.9rem;margin-top:5px;display:none;text-align:right;
+      color:var(--red);font-size:0.9rem;margin-top:5px;display:none;text-align:right;
     }
     .error-msg.show{
       display:block;
@@ -60,6 +66,7 @@
     .submit-btn{
       background:var(--primary);color:#fff;border:none;padding:14px 24px;font-size:1.1rem;
       border-radius:8px;cursor:pointer;width:100%;margin-top:20px;transition:.2s;
+      position:relative;
     }
     .submit-btn:hover{background:#0d47a1;}
     .submit-btn:disabled{
@@ -83,29 +90,67 @@
     .back-link:hover {
       text-decoration: underline;
     }
+
+    /* === אפקט טעינה === */
+    .loader-overlay {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(255,255,255,0.95);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      flex-direction: column;
+      gap: 20px;
+      transition: opacity 0.5s ease;
+    }
+    .loader {
+      width: 60px;
+      height: 60px;
+      border: 6px solid #f3f3f3;
+      border-top: 6px solid var(--primary);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    .loader-text {
+      font-size: 1.2rem;
+      color: var(--primary);
+      font-weight: 600;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
   </style>
 </head>
 <body>
+
+<!-- אפקט טעינה -->
+<div class="loader-overlay" id="loader">
+  <div class="loader"></div>
+  <div class="loader-text" id="loaderText">מעבד את ההזמנה...</div>
+</div>
+
 <div class="container">
   <h1 id="pageTitle">השלם את ההזמנה</h1>
   <div class="summary-box" id="summary"></div>
 
   <form id="personalDetailsForm">
     <div class="form-group">
-      <label for="fullName" id="nameLabel">שם מלא *</label>
+      <label for="fullName" id="nameLabel">שם מלא <span class="required">*</span></label>
       <input type="text" id="fullName" name="שם מלא" required />
       <div class="error-msg" id="nameError">שם מלא הוא שדה חובה</div>
     </div>
 
     <div class="form-group">
-      <label for="phone" id="phoneLabel">טלפון *</label>
+      <label for="phone" id="phoneLabel">טלפון <span class="required">*</span></label>
       <input type="tel" id="phone" name="טלפון" required />
       <div class="error-msg" id="phoneError">הזן מספר טלפון ישראלי תקין (לדוגמה: 0501234567)</div>
     </div>
 
     <div class="form-group">
-      <label for="email" id="emailLabel">אימייל</label>
-      <input type="email" id="email" name="אימייל" />
+      <label for="email" id="emailLabel">אימייל <span class="required">*</span></label>
+      <input type="email" id="email" name="אימייל" required />
       <div class="error-msg" id="emailError">הזן כתובת אימייל תקינה</div>
     </div>
 
@@ -115,7 +160,7 @@
     <input type="hidden" name="משך" id="hiddenDuration">
     <input type="hidden" name="סהכ" id="hiddenTotal">
 
-    <button type="submit" class="submit-btn" id="submitBtn">תשלום והזמנה</button>
+    <button type="submit" class="submit-btn" id="submitBtn">אישור סופי והזמנה</button>
   </form>
 
   <div class="final-message" id="finalMessage" style="display:none;">
@@ -132,10 +177,10 @@
   const translations = {
     he: {
       pageTitle: "השלם את ההזמנה",
-      nameLabel: "שם מלא *",
-      phoneLabel: "טלפון *",
+      nameLabel: "שם מלא",
+      phoneLabel: "טלפון",
       emailLabel: "אימייל",
-      submitBtn: "תשלום והזמנה",
+      submitBtn: "אישור סופי והזמנה",
       successTitle: "ההזמנה נשלחה בהצלחה!",
       successText: "תודה רבה! נשלח לך אישור ב-SMS ו/או במייל.",
       successNote: "אין צורך לשלוח שוב – ההזמנה כבר נקלטה במערכת.",
@@ -153,14 +198,15 @@
       nameError: "שם מלא הוא שדה חובה",
       phoneError: "הזן מספר טלפון ישראלי תקין (לדוגמה: 0501234567)",
       emailError: "הזן כתובת אימייל תקינה",
-      sending: "שולח..."
+      sending: "שולח...",
+      loading: "מעבד את ההזמנה..."
     },
     en: {
       pageTitle: "Complete Your Booking",
-      nameLabel: "Full Name *",
-      phoneLabel: "Phone *",
+      nameLabel: "Full Name",
+      phoneLabel: "Phone",
       emailLabel: "Email",
-      submitBtn: "Pay & Book",
+      submitBtn: "Confirm & Book",
       successTitle: "Booking Sent Successfully!",
       successText: "Thank you! A confirmation will be sent via SMS and/or email.",
       successNote: "No need to submit again – your booking is already in the system.",
@@ -178,7 +224,8 @@
       nameError: "Full name is required",
       phoneError: "Enter a valid Israeli phone number (e.g. 0501234567)",
       emailError: "Enter a valid email address",
-      sending: "Sending..."
+      sending: "Sending...",
+      loading: "Processing your booking..."
     }
   };
 
@@ -198,14 +245,15 @@
 
   // === עדכון טקסטים + Placeholders + שגיאות ===
   document.getElementById('pageTitle').textContent = t.pageTitle;
-  document.getElementById('nameLabel').textContent = t.nameLabel;
-  document.getElementById('phoneLabel').textContent = t.phoneLabel;
-  document.getElementById('emailLabel').textContent = t.emailLabel;
+  document.getElementById('nameLabel').innerHTML = `${t.nameLabel} <span class="required">*</span>`;
+  document.getElementById('phoneLabel').innerHTML = `${t.phoneLabel} <span class="required">*</span>`;
+  document.getElementById('emailLabel').innerHTML = `${t.emailLabel} <span class="required">*</span>`;
   document.getElementById('submitBtn').textContent = t.submitBtn;
   document.getElementById('successTitle').textContent = t.successTitle;
   document.getElementById('successText').textContent = t.successText;
   document.getElementById('successNote').textContent = t.successNote;
   document.getElementById('backLink').textContent = t.backLink;
+  document.getElementById('loaderText').textContent = t.loading;
 
   document.getElementById('fullName').placeholder = t.namePlaceholder;
   document.getElementById('phone').placeholder = t.phonePlaceholder;
@@ -237,21 +285,20 @@
     return /^05[0-9]{8}$/.test(cleaned) && cleaned.length === 10;
   }
 
-  // === אימות אימייל ===
   function validateEmail(email) {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   }
 
-  // === איפוס שגיאות ===
   function clearErrors() {
     document.querySelectorAll('.error-msg').forEach(el => el.classList.remove('show'));
     document.querySelectorAll('input').forEach(el => el.classList.remove('error'));
   }
 
-  // === שליחה ===
+  // === שליחה + אפקט טעינה ===
   const form = document.getElementById('personalDetailsForm');
   const submitBtn = document.getElementById('submitBtn');
   const finalMessage = document.getElementById('finalMessage');
+  const loader = document.getElementById('loader');
   let isSubmitted = false;
 
   form.addEventListener('submit', async function(e) {
@@ -278,7 +325,7 @@
       hasError = true;
     }
 
-    if (email && !validateEmail(email)) {
+    if (!email || !validateEmail(email)) {
       document.getElementById('email').classList.add('error');
       document.getElementById('emailError').classList.add('show');
       hasError = true;
@@ -286,9 +333,13 @@
 
     if (hasError) return;
 
-    isSubmitted = true;
+    // === אפקט טעינה של 2 שניות ===
+    loader.style.display = 'flex';
     submitBtn.disabled = true;
-    submitBtn.textContent = t.sending;
+    isSubmitted = true;
+
+    // סימולציה של 2 שניות (אם Formspree מהיר – נמתין)
+    await new Promise(resolve => setTimeout(resolve, 2000));
 
     const formData = new FormData(form);
 
@@ -300,18 +351,22 @@
       });
 
       if (response.ok) {
-        form.style.display = 'none';
-        finalMessage.style.display = 'block';
-        document.getElementById('pageTitle').textContent = lang === 'he' ? 'סיכום הזמנה' : 'Booking Summary';
-        history.pushState(null, null, location.href);
-        window.onpopstate = () => history.go(1);
+        loader.style.opacity = '0';
+        setTimeout(() => {
+          loader.style.display = 'none';
+          form.style.display = 'none';
+          finalMessage.style.display = 'block';
+          document.getElementById('pageTitle').textContent = lang === 'he' ? 'סיכום הזמנה' : 'Booking Summary';
+          history.pushState(null, null, location.href);
+          window.onpopstate = () => history.go(1);
+        }, 500);
       } else {
         throw new Error();
       }
     } catch (error) {
+      loader.style.display = 'none';
       alert(lang === 'he' ? 'שגיאה בשליחה. נסה שוב.' : 'Error sending. Try again.');
       submitBtn.disabled = false;
-      submitBtn.textContent = t.submitBtn;
       isSubmitted = false;
     }
   });
