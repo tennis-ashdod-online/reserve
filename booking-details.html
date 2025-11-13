@@ -67,7 +67,8 @@
 </head>
 <body>
 <div class="container">
-  <h1>השלם את ההזמנה</h1>
+  <!-- הכותרת משתנה דינמית -->
+  <h1 id="pageTitle">השלם את ההזמנה</h1>
   <div class="summary-box" id="summary"></div>
 
   <!-- טופס – שליחה עם AJAX -->
@@ -132,9 +133,10 @@
   const form = document.getElementById('personalDetailsForm');
   const submitBtn = document.getElementById('submitBtn');
   const finalMessage = document.getElementById('finalMessage');
+  const pageTitle = document.getElementById('pageTitle');
   let isSubmitted = false;
 
-  // שליחה ב-AJAX – בלי קפיצה, בלי תודה, בלי חזרה
+  // שליחה ב-AJAX
   form.addEventListener('submit', async function(e) {
     e.preventDefault();
 
@@ -156,7 +158,7 @@
     const formData = new FormData(form);
 
     try {
-      const response = await fetch('https://formspree.io/f/mzzyzyzo', {
+      const response = await fetch('https://formspree.io/f/ה-ID-שלך-כאן', {
         method: 'POST',
         body: formData,
         headers: {
@@ -165,9 +167,10 @@
       });
 
       if (response.ok) {
-        // הצלחה – מציגים הודעה
+        // הצלחה – מסתירים טופס, מציגים הודעה, **משנים כותרת**
         form.style.display = 'none';
         finalMessage.style.display = 'block';
+        pageTitle.textContent = 'סיכום הזמנה';
 
         // חוסם חזרה בדפדפן
         history.pushState(null, null, location.href);
