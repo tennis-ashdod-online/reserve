@@ -398,6 +398,43 @@
     );
   });
 </script>
+<!-- כפתור בחירת תמונת רקע -->
+<div class="bg-selector" style="position: fixed; bottom: 20px; left: 20px; z-index: 1000;">
+  <input type="file" id="bgUpload" accept="image/*" style="display: none;">
+  <button onclick="document.getElementById('bgUpload').click()" 
+          style="background: rgba(0,0,0,0.6); color: white; border: none; padding: 10px 15px; border-radius: 8px; font-size: 0.9rem; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.2);">
+    Change Background
+  </button>
+</div>
 
+<script>
+// בחירת תמונת רקע
+document.getElementById('bgUpload').addEventListener('change', function(e) {
+  const file = e.target.files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = function(event) {
+      document.body.style.backgroundImage = `url(${event.target.result})`;
+      document.body.style.backgroundSize = 'cover';
+      document.body.style.backgroundPosition = 'center';
+      document.body.style.backgroundAttachment = 'fixed';
+      // שמירה ב-localStorage כדי שתישאר אחרי רענון (באותו דפדפן)
+      localStorage.setItem('customBg', event.target.result);
+    };
+    reader.readAsDataURL(file);
+  }
+});
+
+// טעינה של תמונת רקע שמורה (אם קיימת)
+window.addEventListener('load', () => {
+  const savedBg = localStorage.getItem('customBg');
+  if (savedBg) {
+    document.body.style.backgroundImage = `url(${savedBg})`;
+    document.body.style.backgroundSize = 'cover';
+    document.body.style.backgroundPosition = 'center';
+    document.body.style.backgroundAttachment = 'fixed';
+  }
+});
+</script>
 </body>
 </html>
