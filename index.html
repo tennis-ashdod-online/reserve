@@ -8,9 +8,9 @@
   <style>
     :root {
       --primary: #1a73e8;
-      --success: #28a745;
       --light: #f8f9fa;
       --dark: #333;
+      --success: #28a745;
     }
     * {box-sizing:border-box;margin:0;padding:0;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;}
     body{
@@ -42,7 +42,7 @@
       background:var(--primary);color:#fff;
     }
 
-    /* === גריד המגרשים – סדר מדויק === */
+    /* === גריד המגרשים – סדר מדויק לפי בקשתך === */
     .court-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -50,6 +50,7 @@
       max-width: 800px;
       margin: 30px auto;
       padding: 0 15px;
+      /* סדר לפי בקשה: 1↔2, 3↔4, 5 ו-6 במקום */
       grid-template-areas: 
         "court2 court1"
         "court4 court3"
@@ -159,7 +160,7 @@
     <p class="subtitle" id="subtitle">בחר מגרש, יום ושעה – והזמן בקלות!</p>
   </header>
 
-  <!-- גריד המגרשים -->
+  <!-- גריד המגרשים – סדר מדויק -->
   <div class="court-grid">
 
     <!-- מגרש 1 (מופיע במקום 2) -->
