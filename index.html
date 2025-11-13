@@ -1,273 +1,142 @@
 <!DOCTYPE html>
 <html lang="he" dir="rtl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>מרכז קהילתי עם שלום - הזמנת מגרש</title>
-  <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/2991/2991119.png" type="image/png">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>הזמנת מגרש</title>
   <style>
-    :root {
-      --primary: #1a73e8;
-      --light: #f8f9fa;
-      --dark: #333;
-      --success: #28a745;
-    }
-    * {box-sizing:border-box;margin:0;padding:0;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;}
-    body{
-      background:linear-gradient(rgba(0,0,0,.6),rgba(0,0,0,.6)),
-                 url('https://images.unsplash.com/photo-1622278494980-874d6f8bf7ed?ixlib=rb-4.0.3&auto=format&fit=crop&w=1950&q=80')
-                 center/cover no-repeat fixed;
-      color:#fff;line-height:1.6;min-height:100vh;padding:20px;
-    }
-    .container{
-      max-width:900px;margin:0 auto;padding:20px;
-    }
-    header{
-      text-align:center;margin-bottom:40px;
-    }
-    h1{
-      font-size:2.2rem;color:var(--primary);margin-bottom:12px;
-    }
-    p.subtitle{
-      font-size:1.1rem;color:#ddd;max-width:600px;margin:0 auto;
-    }
-    .lang-switch{
-      position:absolute;top:20px;left:20px;
-    }
-    .lang-switch button{
-      background:none;border:none;color:#fff;font-size:1rem;cursor:pointer;padding:8px 12px;
-      border-radius:6px;transition:.2s;
-    }
-    .lang-switch button.active{
-      background:var(--primary);color:#fff;
-    }
-
-    /* === גריד המגרשים – סדר מדויק לפי בקשתך === */
-    .court-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 20px;
-      max-width: 800px;
-      margin: 30px auto;
-      padding: 0 15px;
-      /* סדר לפי בקשה: 1↔2, 3↔4, 5 ו-6 במקום */
-      grid-template-areas: 
-        "court2 court1"
-        "court4 court3"
-        "court5 court6";
-    }
-
-    .court-card {
-      background: rgba(255, 255, 255, 0.95);
-      border-radius: 16px;
-      overflow: hidden;
-      box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-      transition: all 0.3s ease;
-      cursor: pointer;
-      position: relative;
-    }
-
-    .court-card:hover {
-      transform: translateY(-8px);
-      box-shadow: 0 15px 35px rgba(0,0,0,0.2);
-    }
-
-    .court-image {
-      height: 160px;
-      background: #e0e0e0;
-      background-size: cover;
-      background-position: center;
-      position: relative;
-    }
-
-    .court-image::after {
-      content: attr(data-court);
-      position: absolute;
-      bottom: 12px;
-      left: 12px;
-      background: rgba(26, 115, 232, 0.9);
-      color: white;
-      padding: 6px 14px;
-      border-radius: 20px;
-      font-weight: 700;
-      font-size: 1rem;
-    }
-
-    .court-details {
-      padding: 18px;
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      margin: 0;
+      padding: 20px;
       text-align: center;
     }
-
-    .court-details h3 {
+    .container {
+      max-width: 1000px;
+      margin: auto;
+    }
+    h1 {
       color: #1a73e8;
-      margin-bottom: 8px;
-      font-size: 1.3rem;
+      margin-bottom: 30px;
     }
-
-    .court-details p {
+    .courts {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+    }
+    .court {
+      width: 300px;
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .court:hover {
+      transform: scale(1.05);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    }
+    .court img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+    }
+    .court-info {
+      padding: 15px;
+    }
+    .court-info h3 {
+      margin: 0 0 8px;
+      color: #1a73e8;
+    }
+    .court-info p {
+      margin: 5px 0;
       color: #555;
-      font-size: 0.95rem;
+      font-size: 14px;
     }
-
-    .price-tag {
-      display: inline-block;
-      margin-top: 10px;
-      background: var(--success);
-      color: white;
-      padding: 6px 16px;
-      border-radius: 20px;
-      font-weight: 600;
-      font-size: 1rem;
-    }
-
-    /* === מיקום מדויק לפי בקשה === */
-    .court-card:nth-child(1) { grid-area: court2; } /* מגרש 1 → מיקום 2 */
-    .court-card:nth-child(2) { grid-area: court1; } /* מגרש 2 → מיקום 1 */
-    .court-card:nth-child(3) { grid-area: court4; } /* מגרש 3 → מיקום 4 */
-    .court-card:nth-child(4) { grid-area: court3; } /* מגרש 4 → מיקום 3 */
-    .court-card:nth-child(5) { grid-area: court5; } /* מגרש 5 → במקום */
-    .court-card:nth-child(6) { grid-area: court6; } /* מגרש 6 → במקום */
-
-    @media (max-width: 600px) {
-      .court-grid {
-        grid-template-columns: 1fr;
-        grid-template-areas: 
-          "court2"
-          "court1"
-          "court4"
-          "court3"
-          "court5"
-          "court6";
-      }
-    }
-
-    footer{
-      text-align:center;margin-top:50px;color:#ccc;font-size:0.9rem;
+    .price {
+      font-weight: bold;
+      color: #28a745;
+      font-size: 16px;
     }
   </style>
 </head>
 <body>
 
 <div class="container">
-  <!-- שינוי שפה -->
-  <div class="lang-switch">
-    <button id="lang-he" class="active">עברית</button>
-    <button id="lang-en">English</button>
-  </div>
-
-  <header>
-    <h1 id="mainTitle">הזמנת מגרש ספורט</h1>
-    <p class="subtitle" id="subtitle">בחר מגרש, יום ושעה – והזמן בקלות!</p>
-  </header>
-
-  <!-- גריד המגרשים – סדר מדויק -->
-  <div class="court-grid">
+  <h1>בחר מגרש</h1>
+  <div class="courts">
 
     <!-- מגרש 1 (מופיע במקום 2) -->
-    <div class="court-card" onclick="selectCourt('מגרש 1')">
-      <div class="court-image" data-court="מגרש 1" style="background-image: url('https://images.unsplash.com/photo-1552667466-07770cc512ad?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80')"></div>
-      <div class="court-details">
+    <div class="court" onclick="goToBooking('מגרש 1')">
+      <img src="https://images.unsplash.com/photo-1552667466-07770cc512ad?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="מגרש 1">
+      <div class="court-info">
         <h3>מגרש 1</h3>
-        <p>מגרש פתוח עם תאורה מלאה</p>
-        <div class="price-tag">40₪ לשעה</div>
+        <p>מגרש פתוח עם תאורה</p>
+        <p class="price">40₪ לשעה</p>
       </div>
     </div>
 
     <!-- מגרש 2 (מופיע במקום 1) -->
-    <div class="court-card" onclick="selectCourt('מגרש 2')">
-      <div class="court-image" data-court="מגרש 2" style="background-image: url('https://images.unsplash.com/photo-1574629810360-7efbbe195018?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80')"></div>
-      <div class="court-details">
+    <div class="court" onclick="goToBooking('מגרש 2')">
+      <img src="https://images.unsplash.com/photo-1574629810360-7efbbe195018?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="מגרש 2">
+      <div class="court-info">
         <h3>מגרש 2</h3>
-        <p>מגרש מקורה, מתאים לכל מזג אוויר</p>
-        <div class="price-tag">45₪ לשעה</div>
+        <p>מגרש מקורה</p>
+        <p class="price">45₪ לשעה</p>
       </div>
     </div>
 
     <!-- מגרש 3 (מופיע במקום 4) -->
-    <div class="court-card" onclick="selectCourt('מגרש 3')">
-      <div class="court-image" data-court="מגרש 3" style="background-image: url('https://images.unsplash.com/photo-1509909756405-be0199881695?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80')"></div>
-      <div class="court-details">
+    <div class="court" onclick="goToBooking('מגרש 3')">
+      <img src="https://images.unsplash.com/photo-1509909756405-be0199881695?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="מגרש 3">
+      <div class="court-info">
         <h3>מגרש 3</h3>
-        <p>מגרש מקצועי עם רצפה איכותית</p>
-        <div class="price-tag">50₪ לשעה</div>
+        <p>מגרש מקצועי</p>
+        <p class="price">50₪ לשעה</p>
       </div>
     </div>
 
     <!-- מגרש 4 (מופיע במקום 3) -->
-    <div class="court-card" onclick="selectCourt('מגרש 4')">
-      <div class="court-image" data-court="מגרש 4" style="background-image: url('https://images.unsplash.com/photo-1517649763962-0c6230660133?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80')"></div>
-      <div class="court-details">
+    <div class="court" onclick="goToBooking('מגרש 4')">
+      <img src="https://images.unsplash.com/photo-1517649763962-0c6230660133?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="מגרש 4">
+      <div class="court-info">
         <h3>מגרש 4</h3>
-        <p>מגרש עם טריבונות ותאורה חזקה</p>
-        <div class="price-tag">48₪ לשעה</div>
+        <p>עם טריבונות</p>
+        <p class="price">48₪ לשעה</p>
       </div>
     </div>
 
     <!-- מגרש 5 (נשאר במקום) -->
-    <div class="court-card" onclick="selectCourt('מגרש 5')">
-      <div class="court-image" data-court="מגרש 5" style="background-image: url('https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80')"></div>
-      <div class="court-details">
+    <div class="court" onclick="goToBooking('מגרש 5')">
+      <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="מגרש 5">
+      <div class="court-info">
         <h3>מגרש 5</h3>
-        <p>מגרש חדש עם רשתות חדשות</p>
-        <div class="price-tag">42₪ לשעה</div>
+        <p>חדש ומשופץ</p>
+        <p class="price">42₪ לשעה</p>
       </div>
     </div>
 
     <!-- מגרש 6 (נשאר במקום) -->
-    <div class="court-card" onclick="selectCourt('מגרש 6')">
-      <div class="court-image" data-court="מגרש 6" style="background-image: url('https://images.unsplash.com/photo-1540746917600-3d2f5af2d6a5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80')"></div>
-      <div class="court-details">
+    <div class="court" onclick="goToBooking('מגרש 6')">
+      <img src="https://images.unsplash.com/photo-1540746917600-3d2f5af2d6a5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="מגרש 6">
+      <div class="court-info">
         <h3>מגרש 6</h3>
-        <p>מגרש שקט באזור הירוק</p>
-        <div class="price-tag">38₪ לשעה</div>
+        <p>באזור ירוק</p>
+        <p class="price">38₪ לשעה</p>
       </div>
     </div>
 
   </div>
-
-  <footer>
-    <p>© 2025 מרכז קהילתי עם שלום | כל הזכויות שמורות</p>
-  </footer>
 </div>
 
 <script>
-  // === בחירת מגרש – מעביר לדף הפרטים ===
-  function selectCourt(court) {
-    const lang = document.documentElement.lang;
-    const url = `booking-details.html?lang=${lang}&court=${encodeURIComponent(court)}`;
-    window.location.href = url;
-  }
-
-  // === שינוי שפה ===
-  const translations = {
-    he: {
-      mainTitle: "הזמנת מגרש ספורט",
-      subtitle: "בחר מגרש, יום ושעה – והזמן בקלות!"
-    },
-    en: {
-      mainTitle: "Book a Sports Court",
-      subtitle: "Choose a court, day and time – book easily!"
-    }
-  };
-
-  document.getElementById('lang-he').onclick = () => switchLang('he');
-  document.getElementById('lang-en').onclick = () => switchLang('en');
-
-  function switchLang(lang) {
-    document.documentElement.lang = lang;
-    document.documentElement.dir = lang === 'en' ? 'ltr' : 'rtl';
-    document.getElementById('mainTitle').textContent = translations[lang].mainTitle;
-    document.getElementById('subtitle').textContent = translations[lang].subtitle;
-    document.getElementById('lang-he').classList.toggle('active', lang === 'he');
-    document.getElementById('lang-en').classList.toggle('active', lang === 'en');
-  }
-
-  // הפעלה אוטומטית לפי URL
-  const urlParams = new URLSearchParams(window.location.search);
-  const urlLang = urlParams.get('lang');
-  if (urlLang && ['he', 'en'].includes(urlLang)) {
-    switchLang(urlLang);
+  function goToBooking(court) {
+    window.location.href = `booking-details.html?court=${encodeURIComponent(court)}`;
   }
 </script>
+
 </body>
 </html>
