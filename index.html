@@ -4,8 +4,6 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>רובע יא' - מרכז קהילתי עם שלום</title>
-  <!-- Font Awesome לדגל ארה"ב -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
     :root {
       --primary: #1a73e8;
@@ -26,7 +24,7 @@
       position:relative;
     }
 
-    /* ---------- מחליף שפה – קבוע + דגל ישראל SVG ---------- */
+    /* ---------- מחליף שפה – קבוע + אימוג'י דגלים ---------- */
     .lang-switch{
       position:absolute;
       top:15px;
@@ -51,12 +49,6 @@
     .lang-btn:hover, .lang-btn.active{
       background:#e3f2fd;
       color:var(--primary);
-    }
-    .lang-btn svg{
-      width:18px;height:13px;vertical-align:middle;
-    }
-    .lang-btn i{
-      font-size:0.9rem;
     }
     .lang-separator{
       color:#aaa;
@@ -150,28 +142,22 @@
 <body>
 
 <div class="container">
-  <!-- מחליף שפה – דגל ישראל + דגל ארה"ב -->
+  <!-- מחליף שפה – עם אימוג'י דגלים -->
   <div class="lang-switch">
     <a href="#" class="lang-btn active" data-lang="he">
-      <!-- דגל ישראל עם מגן דוד -->
-      <svg viewBox="0 0 36 27" width="18" height="13">
-        <rect width="36" height="27" fill="#fff"/>
-        <rect y="0" width="36" height="4.5" fill="#0038b8"/>
-        <rect y="22.5" width="36" height="4.5" fill="#0038b8"/>
-        <path d="M18 13.5l-3.5 2.6 1.3-4.3-3.5-2.6h4.3l1.4-4.3 1.4 4.3h4.3l-3.5 2.6 1.3 4.3z" fill="#0038b8"/>
-      </svg>
-      עברית
+      IL עברית
     </a>
     <span class="lang-separator">|</span>
     <a href="#" class="lang-btn" data-lang="en">
-      <i class="fas fa-flag-usa"></i> English
+      US English
     </a>
   </div>
 
   <!-- כותרת -->
   <header>
     <h1 data-he="רובע יא' - מרכז קהילתי עם שלום" data-en="Am-Shalom Community Center">רובע יא' - מרכז קהילתי עם שלום</h1>
-    <p data-he="בחרו מגרש מהמפה האווירית למטה" data-en="Choose a court from the aerial map below">בחרו מגרש מהמפה האווירית למטה</p>
+    <!-- שונה לפי בקשתך -->
+    <p data-he="בחרו את המגרש שבו תרצו לשחק" data-en="Choose a court from the aerial map below">בחרו את המגרש שבו תרצו לשחק</p>
   </header>
 
   <div class="courts-map">
@@ -239,7 +225,7 @@
   const translations = {
     he:{
       title:"רובע יא' - מרכז קהילתי עם שלום",
-      subtitle:"בחרו מגרש מהמפה האווירית למטה",
+      subtitle:"בחרו את המגרש שבו תרצו לשחק",  // שונה לפי בקשתך
       courts:["מגרש 5","מגרש 6","מגרש 3","מגרש 4","מגרש 1","מגרש 2"],
       bookingTitle:"פרטי הזמנה",selectedCourt:"מגרש נבחר:",selectDay:"בחר יום:",selectTime:"בחר שעה:",
       duration:"משך זמן:",oneHour:"שעה אחת",twoHours:"שעתיים",total:"סה״כ לתשלום:",confirm:"אישור הזמנה",
@@ -247,7 +233,7 @@
       hours:"שעות פעילות: ראשון-שבת 08:00–21:00",priceNote:"תעריף: 40₪ לשעה"
     },
     en:{
-      title:"Am-Shalom Community Center",  <!-- שונה לפי בקשתך -->
+      title:"Am-Shalom Community Center",
       subtitle:"Choose a court from the aerial map below",
       courts:["Court 5","Court 6","Court 3","Court 4","Court 1","Court 2"],
       bookingTitle:"Booking Details",selectedCourt:"Selected Court:",selectDay:"Select Day:",selectTime:"Select Time:",
