@@ -47,13 +47,35 @@
       color:var(--primary);margin-bottom:8px;font-size:1.8rem;
     }
 
+    /* אזור הטופס – מופיע בין הכותרת למפה */
+    #bookingForm {
+      display: none;
+      max-width: 700px;
+      margin: 20px auto;
+      padding: 20px;
+      background: #f9f9f9;
+      border-radius: 12px;
+      box-shadow: 0 6px 20px rgba(0,0,0,.15);
+      animation: slideDown 0.4s ease-out;
+      z-index: 50;
+    }
+    #bookingForm.visible {
+      display: block;
+    }
+
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
     /* מפת מגרשים */
     .courts-map{
       display:grid;
       grid-template-columns:1fr 1fr;
       grid-template-rows:1fr 1fr auto 1fr;
-      gap:15px;max-width:700px;margin:30px auto;padding:20px;
+      gap:15px;max-width:700px;margin:0 auto;padding:20px;
       background:rgba(0,0,0,.1);border-radius:12px;position:relative;
+      z-index: 10;
     }
 
     .wall-separator {
@@ -64,12 +86,12 @@
       border-radius:4px;z-index:10;
     }
 
-    .court-btn:nth-child(1){grid-area:1/1;} /* מגרש 5 */
-    .court-btn:nth-child(2){grid-area:1/2;} /* מגרש 6 */
-    .court-btn:nth-child(3){grid-area:2/1;} /* מגרש 3 */
-    .court-btn:nth-child(4){grid-area:2/2;} /* מגרש 4 */
-    .court-btn:nth-child(5){grid-area:4/1;} /* מגרש 1 */
-    .court-btn:nth-child(6){grid-area:4/2;} /* מגרש 2 */
+    .court-btn:nth-child(1){grid-area:1/1;}
+    .court-btn:nth-child(2){grid-area:1/2;}
+    .court-btn:nth-child(3){grid-area:2/1;}
+    .court-btn:nth-child(4){grid-area:2/2;}
+    .court-btn:nth-child(5){grid-area:4/1;}
+    .court-btn:nth-child(6){grid-area:4/2;}
 
     .court-btn{
       padding:20px;background:var(--light);border:2px solid #ddd;border-radius:12px;
@@ -87,20 +109,6 @@
     }
     .court-btn small{
       font-weight:normal;opacity:.8;font-size:.8rem;margin-top:4px;
-    }
-
-    /* טופס הזמנה – מתחת למפה, באותו רוחב */
-    .booking-form{
-      display:none;
-      max-width:700px;
-      margin:25px auto 0;
-      padding:20px;
-      background:#f9f9f9;
-      border-radius:10px;
-      box-shadow:0 4px 15px rgba(0,0,0,.1);
-    }
-    .booking-form.visible{
-      display:block;
     }
 
     .form-group{margin-bottom:18px;}
@@ -137,7 +145,7 @@
       .lang-switch{left:50%;transform:translateX(-50%);top:10px;}
       header{margin-top:50px;}
       .price-note{position:static;margin-top:15px;text-align:center;}
-      .booking-form{padding:15px;}
+      #bookingForm{padding:15px;margin:15px auto;}
     }
   </style>
 </head>
@@ -155,19 +163,8 @@
     <p data-he="בחרו את המגרש שבו תרצו לשחק" data-en="Choose a court from the aerial map below">בחרו את המגרש שבו תרצו לשחק</p>
   </header>
 
-  <!-- מפת מגרשים -->
-  <div class="courts-map" role="region" aria-label="מפת מגרשים">
-    <div class="court-btn" data-court="5" aria-label="מגרש 5"><span>מגרש 5</span><small>פנוי</small></div>
-    <div class="court-btn" data-court="6" aria-label="מגרש 6"><span>מגרש 6</span><small>פנוי</small></div>
-    <div class="court-btn" data-court="3" aria-label="מגרש 3"><span>מגרש 3</span><small>פנוי</small></div>
-    <div class="court-btn" data-court="4" aria-label="מגרש 4"><span>מגרש 4</span><small>פנוי</small></div>
-    <div class="court-btn" data-court="1" aria-label="מגרש 1"><span>מגרש 1</span><small>פנוי</small></div>
-    <div class="court-btn" data-court="2" aria-label="מגרש 2"><span>מגרש 2</span><small>פנוי</small></div>
-    <div class="wall-separator" aria-hidden="true"></div>
-  </div>
-
-  <!-- טופס הזמנה – מתחת למפה, באותו רוחב -->
-  <div id="bookingForm" class="booking-form" role="form" aria-labelledby="formTitle">
+  <!-- טופס הזמנה – מופיע מיד מתחת לכותרת, מעל המפה -->
+  <div id="bookingForm" role="form" aria-labelledby="formTitle">
     <h3 id="formTitle" data-he="פרטי הזמנה" data-en="Booking Details">פרטי הזמנה</h3>
     <div class="form-group">
       <label data-he="מגרש נבחר:" data-en="Selected Court:">מגרש נבחר:</label>
@@ -204,6 +201,17 @@
     <button class="submit-btn" data-he="אישור הזמנה" data-en="Confirm Booking">אישור הזמנה</button>
   </div>
 
+  <!-- מפת מגרשים -->
+  <div class="courts-map" role="region" aria-label="מפת מגרשים">
+    <div class="court-btn" data-court="5" aria-label="מגרש 5"><span>מגרש 5</span><small>פנוי</small></div>
+    <div class="court-btn" data-court="6" aria-label="מגרש 6"><span>מגרש 6</span><small>פנוי</small></div>
+    <div class="court-btn" data-court="3" aria-label="מגרש 3"><span>מגרש 3</span><small>פנוי</small></div>
+    <div class="court-btn" data-court="4" aria-label="מגרש 4"><span>מגרש 4</span><small>פנוי</small></div>
+    <div class="court-btn" data-court="1" aria-label="מגרש 1"><span>מגרש 1</span><small>פנוי</small></div>
+    <div class="court-btn" data-court="2" aria-label="מגרש 2"><span>מגרש 2</span><small>פנוי</small></div>
+    <div class="wall-separator" aria-hidden="true"></div>
+  </div>
+
   <div class="info-box">
     <p><strong data-he="כתובת:" data-en="Address:">כתובת:</strong> <span data-he="הרי גולן 6, אשדוד, ישראל" data-en="Harei Golan 6, Ashdod, Israel">הרי גולן 6, אשדוד, ישראל</span></p>
     <p><strong data-he="טלפון:" data-en="Phone:">טלפון:</strong> <a href="tel:088678400">08-8678400</a></p>
@@ -216,7 +224,7 @@
 </div>
 
 <script>
-  // יצירת רשימת שעות
+  // יצירת שעות
   const hours = [];
   for(let h = 8; h <= 21; h++) {
     hours.push(h.toString().padStart(2, '0') + ':00');
@@ -232,14 +240,10 @@
       selectedCourt: "מגרש נבחר:",
       selectDay: "בחר יום:",
       selectTime: "בחר שעה:",
-      duration: "משך זמן:",
       oneHour: "שעה אחת",
       twoHours: "שעתיים",
       total: "סה״כ לתשלום:",
       confirm: "אישור הזמנה",
-      address: "הרי גולן 6, אשדוד, ישראל",
-      phone: "08-8678400",
-      hours: "שעות פעילות: ראשון-שבת 08:00–21:00",
       priceNote: "תעריף: 40₪ לשעה",
       alertTitle: "הזמנה אושרה!",
       alertThanks: "תודה ששיחקת אצלנו!"
@@ -252,14 +256,10 @@
       selectedCourt: "Selected Court:",
       selectDay: "Select Day:",
       selectTime: "Select Time:",
-      duration: "Duration:",
       oneHour: "1 Hour",
       twoHours: "2 Hours",
       total: "Total Amount:",
       confirm: "Confirm Booking",
-      address: "Harei Golan 6, Ashdod, Israel",
-      phone: "08-8678400",
-      hours: "Hours: Sun-Sat 08:00–21:00",
       priceNote: "Rate: 40₪ per hour",
       alertTitle: "Booking confirmed!",
       alertThanks: "Thank you for playing with us!"
@@ -335,6 +335,9 @@
         bookingForm.classList.add('visible');
         updateFormLanguage(document.documentElement.lang);
         resetForm();
+
+        // גלילה אוטומטית לטופס (אם צריך)
+        bookingForm.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
       }
     });
   });
@@ -387,6 +390,13 @@
       `${t.alertThanks}`;
 
     alert(message);
+
+    // איפוס אחרי אישור
+    selectedBtn.classList.remove('selected');
+    selectedBtn = selectedCourt = null;
+    document.getElementById('selectedCourt').value = '';
+    bookingForm.classList.remove('visible');
+    resetForm();
   });
 </script>
 
