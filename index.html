@@ -286,8 +286,6 @@
       confirm: "אישור הזמנה",
       back: "חזור",
       priceNote: "תעריף: 40₪ לשעה",
-      alertTitle: "הזמנה אושרה!",
-      alertThanks: "תודה ששיחקת אצלנו!",
       missing: "אנא מלא את כל השדות הנדרשים",
       booked: "המגרש תפוס בזמן זה!"
     },
@@ -305,8 +303,6 @@
       confirm: "Confirm Booking",
       back: "Back",
       priceNote: "Rate: 40₪ per hour",
-      alertTitle: "Booking confirmed!",
-      alertThanks: "Thank you for playing with us!",
       missing: "Please fill all required fields",
       booked: "This court is already booked!"
     }
@@ -338,10 +334,10 @@
   function markBookedCourts() {
     const bookings = getBookings();
     document.querySelectorAll('.court-btn').forEach(btn => {
-      const court = btn.querySelector('span').textContent;
-      const isBooked = bookings.some(b => b.court.includes(court.split(' ')[1]));
-      if (isBooked) btn.classList.add('booked');
-      else btn.classList.remove('booked');
+      const courtText = btn.querySelector('span').textContent;
+      const courtNum = courtText.split(' ')[1];
+      const isBooked = bookings.some(b => b.court.includes(courtNum));
+      btn.classList.toggle('booked', isBooked);
     });
   }
 
@@ -393,6 +389,7 @@
     });
   });
 
+  // לחצן אישור הזמנה – עם fallback
   document.getElementById('confirmBookingBtn').addEventListener('click', () => {
     const day = document.getElementById('daySelect').value;
     const time = document.getElementById('timeSelect').value;
@@ -410,8 +407,18 @@
       return;
     }
 
-    const data = btoa(JSON.stringify({ court, day, time, duration, total: total + '₪', lang }));
-    window.open(`booking-details.html#${data}`, '_blank', 'width=700,height=800');
+    const data = { court, day, time, duration, total: total + '₪', lang };
+    const hash = btoa(JSON.stringify(data));
+
+    // ניסיון לפתוח בחלון חדש
+    const newWin = window.open(`booking-details.html#${hash}`, '_blank', 'width=700,height=800');
+
+    // אם נכשל – fallback ל-localStorage + טעינה ישירה
+    if (!newWin || newWin.closed || typeof newWin.closed === 'undefined') {
+      localStorage.setItem('pendingBooking', JSON.stringify(data));
+      window.location.href = 'booking-details.html';
+    }
+
     goBack();
   });
 
@@ -463,7 +470,7 @@
   });
 
   history.replaceState({ page: 'home' }, '', '#home');
-  markBookedCourts(); // סימון מגרשים תפוסים בטעינה
+  markBookedCourts();
 </script>
 
 </body>
