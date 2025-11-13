@@ -1,4 +1,4 @@
-
+<!DOCTYPE html>
 <html lang="he" dir="rtl">
 <head>
   <meta charset="UTF-8" />
@@ -35,20 +35,20 @@
     }
     .lang-switch a:hover,.lang-switch a.active{background:#e3f2fd;color:var(--primary);}
 
-    /* ---------- מפת מגרשים ---------- */
+    /* ---------- מפת מגרשים – מבנה מקורי (2 עמודות, 3 שורות + חומה) ---------- */
     .courts-map{
       display:grid;
-      grid-template-columns:1fr 1fr 1fr;
-      grid-template-rows:1fr auto 1fr; /* שורה עליונה + חומה + שורה תחתונה */
+      grid-template-columns:1fr 1fr;
+      grid-template-rows:1fr 1fr auto 1fr;
       gap:15px;
       max-width:700px;margin:30px auto;padding:20px;
       background:rgba(0,0,0,.1);border-radius:12px;
       direction:rtl;position:relative;
     }
 
-    /* חומה אמיתית – בין השורות */
+    /* חומה – בין שורה 2 ל-3 */
     .wall-separator {
-      grid-row: 2 / 3;
+      grid-row: 3 / 4;
       grid-column: 1 / -1;
       height: 30px;
       background: linear-gradient(135deg, #A0522D 0%, #8B4513 50%, #A0522D 100%);
@@ -62,13 +62,13 @@
       border-radius: 4px;
     }
 
-    /* סידור המגרשים – העמודות התחלפו (כמו בתמונה) */
-    .court-btn:nth-child(1){grid-area:1 / 1;} /* מגרש 1 – עליון שמאל */
-    .court-btn:nth-child(2){grid-area:1 / 2;} /* מגרש 2 – עליון אמצע */
-    .court-btn:nth-child(3){grid-area:1 / 3;} /* מגרש 3 – עליון ימין */
-    .court-btn:nth-child(4){grid-area:3 / 1;} /* מגרש 4 – תחתון שמאל */
-    .court-btn:nth-child(5){grid-area:3 / 2;} /* מגרש 5 – תחתון אמצע */
-    .court-btn:nth-child(6){grid-area:3 / 3;} /* מגרש 6 – תחתון ימין */
+    /* סידור חדש – בדיוק לפי בקשתך */
+    .court-btn:nth-child(1){grid-area:1 / 1;} /* מגרש 5 */
+    .court-btn:nth-child(2){grid-area:1 / 2;} /* מגרש 6 */
+    .court-btn:nth-child(3){grid-area:2 / 1;} /* מגרש 3 */
+    .court-btn:nth-child(4){grid-area:2 / 2;} /* מגרש 4 */
+    .court-btn:nth-child(5){grid-area:4 / 1;} /* מגרש 1 */
+    .court-btn:nth-child(6){grid-area:4 / 2;} /* מגרש 2 */
 
     .court-btn{
       padding:20px;background:var(--light);border:2px solid #ddd;border-radius:12px;
@@ -105,20 +105,20 @@
       border-radius:6px;font-size:.85rem;box-shadow:0 1px 5px rgba(0,0,0,.1);
     }
 
-    /* ---------- מובייל ---------- */
+    /* ---------- מובייל – 2 עמודות גם במובייל (כמו במקור) ---------- */
     @media (max-width:600px){
       .courts-map{
         grid-template-columns:1fr 1fr;
-        grid-template-rows:1fr auto 1fr 1fr; /* עליון + חומה + 2 שורות תחתונות */
+        grid-template-rows:1fr 1fr auto 1fr;
         gap:12px;
       }
       .wall-separator { height: 25px; }
-      .court-btn:nth-child(1){grid-area:1/1;} /* 1 */
-      .court-btn:nth-child(2){grid-area:1/2;} /* 2 */
-      .court-btn:nth-child(3){grid-area:3/1;} /* 3 */
-      .court-btn:nth-child(4){grid-area:3/2;} /* 4 */
-      .court-btn:nth-child(5){grid-area:4/1;} /* 5 */
-      .court-btn:nth-child(6){grid-area:4/2;} /* 6 */
+      .court-btn:nth-child(1){grid-area:1/1;} /*5*/
+      .court-btn:nth-child(2){grid-area:1/2;} /*6*/
+      .court-btn:nth-child(3){grid-area:2/1;} /*3*/
+      .court-btn:nth-child(4){grid-area:2/2;} /*4*/
+      .court-btn:nth-child(5){grid-area:4/1;} /*1*/
+      .court-btn:nth-child(6){grid-area:4/2;} /*2*/
       .lang-switch{position:static;text-align:center;margin-bottom:15px;}
       .price-note{position:static;margin-top:15px;text-align:center;}
     }
@@ -137,16 +137,15 @@
     <p data-he="בחרו מגרש מהמפה האווירית למטה" data-en="Choose a court from the aerial map below">בחרו מגרש מהמפה האווירית למטה</p>
   </header>
 
-  <!-- מפת מגרשים עם חומה אמיתית -->
+  <!-- מפת מגרשים – סידור חדש ב-2 עמודות -->
   <div class="courts-map">
-    <div class="court-btn" data-court="1">מגרש 1</div>
-    <div class="court-btn" data-court="2">מגרש 2</div>
-    <div class="court-btn" data-court="3">מגרש 3</div>
-    <div class="court-btn" data-court="4">מגרש 4</div>
     <div class="court-btn" data-court="5">מגרש 5</div>
     <div class="court-btn" data-court="6">מגרש 6</div>
+    <div class="court-btn" data-court="3">מגרש 3</div>
+    <div class="court-btn" data-court="4">מגרש 4</div>
+    <div class="court-btn" data-court="1">מגרש 1</div>
+    <div class="court-btn" data-court="2">מגרש 2</div>
 
-    <!-- החומה – בין השורות -->
     <div class="wall-separator"></div>
   </div>
 
@@ -210,13 +209,13 @@
 
   const translations = {
     he:{title:"הזמנת מגרש טניס",subtitle:"בחרו מגרש מהמפה האווירית למטה",
-        courts:["מגרש 1","מגרש 2","מגרש 3","מגרש 4","מגרש 5","מגרש 6"],
+        courts:["מגרש 5","מגרש 6","מגרש 3","מגרש 4","מגרש 1","מגרש 2"],
         bookingTitle:"פרטי הזמנה",selectedCourt:"מגרש נבחר:",selectDay:"בחר יום:",selectTime:"בחר שעה:",
         duration:"משך זמן:",oneHour:"שעה אחת",twoHours:"שעתיים",total:"סה״כ לתשלום:",confirm:"אישור הזמנה",
         address:"הרי גולן 6, אשדוד, ישראל",phone:"08-8678400",
         hours:"שעות פעילות: ראשון-שבת 08:00–21:00",priceNote:"תעריף: 40₪ לשעה"},
     en:{title:"Tennis Court Booking",subtitle:"Choose a court from the aerial map below",
-        courts:["Court 1","Court 2","Court 3","Court 4","Court 5","Court 6"],
+        courts:["Court 5","Court 6","Court 3","Court 4","Court 1","Court 2"],
         bookingTitle:"Booking Details",selectedCourt:"Selected Court:",selectDay:"Select Day:",selectTime:"Select Time:",
         duration:"Duration:",oneHour:"1 Hour",twoHours:"2 Hours",total:"Total Amount:",confirm:"Confirm Booking",
         address:"Harei Golan 6, Ashdod, Israel",phone:"08-8678400",
@@ -287,8 +286,10 @@
   document.querySelector('.submit-btn').addEventListener('click',()=>{
     const day=document.getElementById('daySelect').value, time=document.getElementById('timeSelect').value;
     if(!day||!time){alert(document.documentElement.lang==='he'?'אנא מלא את כל השדות':'Please fill all fields');return;}
-    alert((document.documentElement.lang==='he'?'הזמנה אושרה!\n':'Booking confirmed!\n')+
-          `מגרש: ${selectedCourt}\nיום: ${day}\nשעה: ${time}\nמשך: ${duration} שעה${duration>1?'ות':''}\nסה״כ: ${40*duration}₪`);
+    const lang = document.documentElement.lang;
+    alert((lang==='he'?'הזמנה אושרה!\n':'Booking confirmed!\n')+
+          `מגרש: ${document.getElementById('selectedCourt').value}\n`+
+          `יום: ${day}\nשעה: ${time}\nמשך: ${duration} שעה${duration>1?'ות':''}\nסה״כ: ${40*duration}₪`);
   });
 </script>
 
