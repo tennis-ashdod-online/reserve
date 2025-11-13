@@ -12,6 +12,7 @@
       --light: #f8f9fa;
       --dark: #333;
       --success: #e8f5e9;
+      --danger: #ffcdd2;
     }
     * {box-sizing:border-box;margin:0;padding:0;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;}
     body{
@@ -23,8 +24,7 @@
     .container{
       max-width:900px;margin:0 auto;background:rgba(255,255,255,.95);color:var(--dark);
       border-radius:15px;padding:30px;box-shadow:0 10px 40px rgba(0,0,0,.3);backdrop-filter:blur(8px);
-      position:relative;
-      text-align: center;
+      position:relative;text-align: center;
     }
 
     .lang-switch{
@@ -111,12 +111,12 @@
       border-radius:4px;z-index:10;
     }
 
-    .court-btn:nth-child(1){grid-area:1/1;} /* מגרש 5 */
-    .court-btn:nth-child(2){grid-area:1/2;} /* מגרש 6 */
-    .court-btn:nth-child(3){grid-area:2/1;} /* מגרש 4 */
-    .court-btn:nth-child(4){grid-area:2/2;} /* מגרש 3 */
-    .court-btn:nth-child(5){grid-area:4/1;} /* מגרש 2 */
-    .court-btn:nth-child(6){grid-area:4/2;} /* מגרש 1 */
+    .court-btn:nth-child(1){grid-area:1/1;}
+    .court-btn:nth-child(2){grid-area:1/2;}
+    .court-btn:nth-child(3){grid-area:2/1;}
+    .court-btn:nth-child(4){grid-area:2/2;}
+    .court-btn:nth-child(5){grid-area:4/1;}
+    .court-btn:nth-child(6){grid-area:4/2;}
 
     .court-btn{
       padding:20px;background:var(--light);border:2px solid #ddd;border-radius:12px;
@@ -131,6 +131,24 @@
     .court-btn.selected{
       background:var(--primary);color:#fff;border-color:var(--primary);
       transform:translateY(-5px);box-shadow:0 8px 20px rgba(26,115,232,.3);
+    }
+    .court-btn.booked {
+      background: var(--danger) !important;
+      color: #b71c1c;
+      cursor: not-allowed;
+      opacity: 0.8;
+      border-color: #e57373;
+    }
+    .court-btn.booked::after {
+      content: "תפוס";
+      font-size: 0.7rem;
+      background: #d32f2f;
+      color: white;
+      padding: 2px 6px;
+      border-radius: 4px;
+      position: absolute;
+      top: 8px;
+      right: 8px;
     }
 
     .form-group{margin-bottom:18px;}
@@ -270,7 +288,8 @@
       priceNote: "תעריף: 40₪ לשעה",
       alertTitle: "הזמנה אושרה!",
       alertThanks: "תודה ששיחקת אצלנו!",
-      missing: "אנא מלא את כל השדות הנדרשים"
+      missing: "אנא מלא את כל השדות הנדרשים",
+      booked: "המגרש תפוס בזמן זה!"
     },
     en: {
       title: "Am-Shalom Community Center",
@@ -288,7 +307,8 @@
       priceNote: "Rate: 40₪ per hour",
       alertTitle: "Booking confirmed!",
       alertThanks: "Thank you for playing with us!",
-      missing: "Please fill all required fields"
+      missing: "Please fill all required fields",
+      booked: "This court is already booked!"
     }
   };
 
@@ -305,6 +325,26 @@
   let selectedBtn = null;
   let duration = 1;
 
+  // פונקציות עזר
+  function getBookings() {
+    return JSON.parse(localStorage.getItem('tennisBookings') || '[]');
+  }
+
+  function isCourtBooked(court, day, time) {
+    const bookings = getBookings();
+    return bookings.some(b => b.court === court && b.day === day && b.time === time);
+  }
+
+  function markBookedCourts() {
+    const bookings = getBookings();
+    document.querySelectorAll('.court-btn').forEach(btn => {
+      const court = btn.querySelector('span').textContent;
+      const isBooked = bookings.some(b => b.court.includes(court.split(' ')[1]));
+      if (isBooked) btn.classList.add('booked');
+      else btn.classList.remove('booked');
+    });
+  }
+
   function goBack() {
     if (selectedBtn) selectedBtn.classList.remove('selected');
     selectedBtn = null;
@@ -316,6 +356,11 @@
   }
 
   function openBooking(courtBtn) {
+    if (courtBtn.classList.contains('booked')) {
+      const lang = document.documentElement.lang;
+      alert(translations[lang].booked);
+      return;
+    }
     if (selectedBtn) selectedBtn.classList.remove('selected');
     courtBtn.classList.add('selected');
     selectedBtn = courtBtn;
@@ -348,29 +393,25 @@
     });
   });
 
-  // אישור הזמנה → פתיחת דף פרטים אישיים
   document.getElementById('confirmBookingBtn').addEventListener('click', () => {
     const day = document.getElementById('daySelect').value;
     const time = document.getElementById('timeSelect').value;
     const court = document.getElementById('selectedCourt').value;
     const total = 40 * duration;
+    const lang = document.documentElement.lang;
 
     if (!day || !time || !court) {
-      const lang = document.documentElement.lang;
       alert(translations[lang].missing);
       return;
     }
 
-    const params = new URLSearchParams({
-      court: court,
-      day: day,
-      time: time,
-      duration: duration,
-      total: total + '₪'
-    });
+    if (isCourtBooked(court, day, time)) {
+      alert(translations[lang].booked);
+      return;
+    }
 
-    const url = `booking-details.html?${params.toString()}`;
-    window.open(url, '_blank', 'width=700,height=800');
+    const data = btoa(JSON.stringify({ court, day, time, duration, total: total + '₪', lang }));
+    window.open(`booking-details.html#${data}`, '_blank', 'width=700,height=800');
     goBack();
   });
 
@@ -398,6 +439,7 @@
       if (bookingForm.classList.contains('visible')) {
         updateFormLanguage(lang);
       }
+      markBookedCourts();
     });
   });
 
@@ -421,6 +463,7 @@
   });
 
   history.replaceState({ page: 'home' }, '', '#home');
+  markBookedCourts(); // סימון מגרשים תפוסים בטעינה
 </script>
 
 </body>
