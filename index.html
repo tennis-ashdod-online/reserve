@@ -148,7 +148,6 @@
       border-radius:6px;font-size:.85rem;box-shadow:0 1px 5px rgba(0,0,0,.1);
     }
 
-    /* דף פרטים אישיים */
     .required { color: var(--error); }
     .terms {
       display: flex; align-items: flex-start; gap: 8px; margin: 20px 0; font-size: 0.9rem;
@@ -188,7 +187,7 @@
     <div class="courts-map" role="region" aria-label="מפת מגרשים">
       <div class="court-btn" data-court="5" aria-label="מגרש 5"><span>מגרש 5</span></div>
       <div class="court-btn" data-court="6" aria-label="מגרש 6"><span>מגרש 6</span></div>
-      <div class="court-btn" data-court="4" aria-label="מגרש 4"><span>מגרש 4</span></div>
+      <LOCATION class="court-btn" data-court="4" aria-label="מגרש 4"><span>מגרש 4</span></div>
       <div class="court-btn" data-court="3" aria-label="מגרש 3"><span>מגרש 3</span></div>
       <div class="court-btn" data-court="2" aria-label="מגרש 2"><span>מגרש 2</span></div>
       <div class="court-btn" data-court="1" aria-label="מגרש 1"><span>מגרש 1</span></div>
@@ -302,7 +301,7 @@
   const hours = [];
   for(let h = 8; h <= 21; h++) hours.push(h.toString().padStart(2, '0') + ':00');
 
-  // תרגומים
+  // תרגומים – מלאים
   const translations = {
     he: {
       title: "רובע יא' - מרכז קהילתי עם שלום",
@@ -423,7 +422,7 @@
   }
 
   function submitBooking() {
-    if (!document.getElementById('detailsForm').checkValidity()) {
+    if (!detailsForm.checkValidity()) {
       alert(document.documentElement.lang === 'he' ? 'אנא מלא את כל השדות החובה' : 'Please fill all required fields');
       return;
     }
@@ -442,7 +441,7 @@
 
     alert(`${t.success}\n\n${t.thanks}`);
     goHome();
-    // כאן אפשר לשלוח לשרת: fetch('/api/book', { method: 'POST', body: JSON.stringify(data) })
+    // כאן אפשר לשלוח לשרת
   }
 
   // אירועים
@@ -451,6 +450,7 @@
   backBtn2.addEventListener('click', () => {
     detailsForm.classList.remove('visible');
     bookingForm.classList.add('visible');
+    history.pushState({ page: 'booking' }, '', '#booking');
   });
   confirmBtn.addEventListener('click', goToDetails);
 
@@ -487,9 +487,7 @@
       confirmBtn.textContent = t.confirmBooking;
       submitBtn.textContent = t.submitBooking;
 
-      if (bookingForm.classList.contains('visible') || detailsForm.classList.contains('visible')) {
-        updateFormLanguage(lang);
-      }
+      updateFormLanguage(lang);
     });
   });
 
@@ -497,5 +495,9 @@
     const t = translations[lang];
     document.getElementById('formTitle').textContent = t.bookingTitle;
     document.getElementById('detailsTitle').textContent = t.detailsTitle;
+
+    // עדכון טופס הזמנה
     document.querySelector('label[for="daySelect"]').textContent = t.selectDay;
-    document.querySelector('label[for="timeSe
+    document.querySelector('label[for="timeSelect"]').textContent = t.selectTime;
+    const durationBtns = document.querySelectorAll('.duration-options .duration-btn');
+    durat
