@@ -39,6 +39,7 @@
       display:flex;align-items:center;gap:6px;color:#666;text-decoration:none;
       padding:6px 10px;border-radius:6px;transition:all .2s;font-weight:500;
       cursor:pointer;
+      border:none;background:none;
     }
     .lang-btn:hover, .lang-btn.active{
       background:#e3f2fd;color:var(--primary);
@@ -130,6 +131,7 @@
       transition:all .3s;
       display:flex;align-items:center;justify-content:center;
       min-height:100px;
+      z-index: 1;
     }
     .court-btn:hover{
       transform:translateY(-3px);
@@ -145,8 +147,7 @@
       position:absolute;
       top:50%;left:50%;transform:translate(-50%,-50%);
       color:white;
-      font-weight:bold;
-      font-size:1.1rem;
+      font-weight:1.1rem;
       text-shadow:0 1px 3px rgba(0,0,0,.6);
       z-index:2;
     }
@@ -155,6 +156,7 @@
       position:absolute;
       top:0;left:0;right:0;bottom:0;
       pointer-events:none;
+      z-index:1;
     }
 
     .court-lines::before,
@@ -178,6 +180,7 @@
       background:var(--court-blue);
       border:2px solid white;
       border-radius:4px;
+      z-index:0;
     }
 
     .form-group{margin-bottom:18px;}
@@ -479,23 +482,25 @@
     document.getElementById('totalPrice').value = '40₪';
   }
 
-  // אירועים
+  // אירועים – תוקן!
   document.querySelectorAll('.court-btn').forEach(btn => {
-    btn.addEventListener('click', () => openBooking(btn));
+    btn.onclick = function() {
+      openBooking(this);
+    };
   });
 
-  backBtn.addEventListener('click', goBack);
+  backBtn.onclick = goBack;
 
   document.querySelectorAll('.duration-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
+    btn.onclick = function() {
       document.querySelectorAll('.duration-btn').forEach(b => b.classList.remove('selected'));
-      btn.classList.add('selected');
-      duration = +btn.dataset.duration;
+      this.classList.add('selected');
+      duration = +this.dataset.duration;
       document.getElementById('totalPrice').value = (40 * duration) + '₪';
-    });
+    };
   });
 
-  document.querySelector('.submit-btn').addEventListener('click', () => {
+  document.querySelector('.submit-btn').onclick = function() {
     const day = document.getElementById('daySelect').value;
     const time = document.getElementById('timeSelect').value;
     if (!day || !time) {
@@ -517,22 +522,19 @@
     alert(`${t.alertTitle}\n\nמגרש: ${booking.court}\nיום: ${day}\nשעה: ${time}\nמשך: ${duration} שעה${duration > 1 ? 'ות' : ''}\nסה״כ: ${booking.total}\n\n${t.alertThanks}`);
 
     goBack();
-  });
+  };
 
   // החלפת שפה – תוקן!
   document.querySelectorAll('.lang-btn').forEach(btn => {
-    btn.addEventListener('click', function(e) {
-      e.preventDefault();
+    btn.onclick = function() {
       const lang = this.dataset.lang;
       currentLang = lang;
 
-      // עדכן כפתור פעיל
       document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
       this.classList.add('active');
 
       const t = translations[lang];
 
-      // עדכן תוכן
       document.querySelector('h1').textContent = t.title;
       document.querySelector('header p').textContent = t.subtitle;
       document.querySelectorAll('[data-he]').forEach(el => {
@@ -542,4 +544,5 @@
         span.textContent = t.courts[i];
       });
       backBtn.textContent = t.back;
-      if (bookingForm.cl
+      if (bookingForm.classList.contains('visible')) {
+        updateForm
