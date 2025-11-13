@@ -27,13 +27,19 @@
     header{text-align:center;margin-bottom:25px;}
     h1{color:var(--primary);margin-bottom:8px;}
 
+    /* ---------- מחליף שפה – תיקון מיקום ---------- */
     .lang-switch{
-      position:absolute;top:15px;left:15px;font-size:.85rem;
+      position:absolute;top:15px;left:15px;font-size:.85rem;display:flex;gap:5px;
     }
     .lang-switch a{
+      position:relative;
       color:#666;text-decoration:none;padding:4px 8px;border-radius:4px;transition:background .2s;
     }
     .lang-switch a:hover,.lang-switch a.active{background:#e3f2fd;color:var(--primary);}
+    
+    /* תיקון מיקום טקסט – English לא זז */
+    .lang-btn[data-lang="he"] { right: 0; }
+    .lang-btn[data-lang="en"] { left: 0; }
 
     /* ---------- מפת מגרשים ---------- */
     .courts-map{
@@ -53,15 +59,10 @@
       background: linear-gradient(135deg, #A0522D 0%, #8B4513 50%, #A0522D 100%);
       border-top: 3px solid #D2691E;
       border-bottom: 3px solid #5D2E0D;
-      box-shadow: 
-        0 8px 15px rgba(0,0,0,0.4),
-        inset 0 2px 4px rgba(255,255,255,0.2);
-      position: relative;
-      z-index: 10;
-      border-radius: 4px;
+      box-shadow: 0 8px 15px rgba(0,0,0,0.4), inset 0 2px 4px rgba(255,255,255,0.2);
+      z-index: 10;border-radius: 4px;
     }
 
-    /* סידור לפי בקשתך */
     .court-btn:nth-child(1){grid-area:1 / 1;} /* מגרש 5 */
     .court-btn:nth-child(2){grid-area:1 / 2;} /* מגרש 6 */
     .court-btn:nth-child(3){grid-area:2 / 1;} /* מגרש 3 */
@@ -117,7 +118,7 @@
       .court-btn:nth-child(4){grid-area:2/2;}
       .court-btn:nth-child(5){grid-area:4/1;}
       .court-btn:nth-child(6){grid-area:4/2;}
-      .lang-switch{position:static;text-align:center;margin-bottom:15px;}
+      .lang-switch{position:static;text-align:center;margin-bottom:15px;justify-content:center;}
       .price-note{position:static;margin-top:15px;text-align:center;}
     }
   </style>
@@ -125,18 +126,18 @@
 <body>
 
 <div class="container">
+  <!-- מחליף שפה – English לא זז -->
   <div class="lang-switch">
-    <a href="#" class="lang-btn active" data-lang="he">עברית</a> |
+    <a href="#" class="lang-btn active" data-lang="he">עברית</a>
+    <span style="color:#666;">|</span>
     <a href="#" class="lang-btn" data-lang="en">English</a>
   </div>
 
   <header>
-    <!-- הכותרת החדשה -->
     <h1 data-he="רובע יא' - מרכז קהילתי עם שלום" data-en="Neighborhood 11 - Im Shalom Community Center">רובע יא' - מרכז קהילתי עם שלום</h1>
     <p data-he="בחרו מגרש מהמפה האווירית למטה" data-en="Choose a court from the aerial map below">בחרו מגרש מהמפה האווירית למטה</p>
   </header>
 
-  <!-- מפת מגרשים -->
   <div class="courts-map">
     <div class="court-btn" data-court="5">מגרש 5</div>
     <div class="court-btn" data-court="6">מגרש 6</div>
@@ -149,12 +150,10 @@
 
   <div id="bookingForm" class="booking-form">
     <h3 data-he="פרטי הזמנה" data-en="Booking Details">פרטי הזמנה</h3>
-
     <div class="form-group">
       <label data-he="מגרש נבחר:" data-en="Selected Court:">מגרש נבחר:</label>
       <input type="text" id="selectedCourt" readonly />
     </div>
-
     <div class="form-group">
       <label for="daySelect" data-he="בחר יום:" data-en="Select Day:">בחר יום:</label>
       <select id="daySelect">
@@ -168,12 +167,10 @@
         <option value="שבת">שבת</option>
       </select>
     </div>
-
     <div class="form-group">
       <label for="timeSelect" data-he="בחר שעה:" data-en="Select Time:">בחר שעה:</label>
       <select id="timeSelect"><option value="">-- בחר שעה --</option></select>
     </div>
-
     <div class="form-group">
       <label data-he="משך זמן:" data-en="Duration:">משך זמן:</label>
       <div class="duration-options">
@@ -181,12 +178,10 @@
         <div class="duration-btn" data-duration="2">שעתיים</div>
       </div>
     </div>
-
     <div class="form-group">
       <label data-he="סה״כ לתשלום:" data-en="Total Amount:">סה״כ לתשלום:</label>
       <input type="text" id="totalPrice" readonly value="40₪" />
     </div>
-
     <button class="submit-btn" data-he="אישור הזמנה" data-en="Confirm Booking">אישור הזמנה</button>
   </div>
 
@@ -228,12 +223,19 @@
 
   document.querySelectorAll('.lang-btn').forEach(b=>b.addEventListener('click',e=>{
     e.preventDefault(); const lang=b.dataset.lang;
-    document.documentElement.lang=lang; document.documentElement.dir=lang==='he'?'rtl':'ltr';
-    document.querySelectorAll('.lang-btn').forEach(x=>x.classList.remove('active')); b.classList.add('active');
+    document.documentElement.lang=lang; 
+    document.documentElement.dir=lang==='he'?'rtl':'ltr';
+    
+    // עדכון כפתור פעיל
+    document.querySelectorAll('.lang-btn').forEach(x=>x.classList.remove('active')); 
+    b.classList.add('active');
+
+    // עדכון תוכן
     document.querySelector('h1').textContent=translations[lang].title;
     document.querySelector('header p').textContent=translations[lang].subtitle;
     document.querySelectorAll('[data-he]').forEach(el=>el.textContent=lang==='en'?el.dataset.en:el.dataset.he);
     document.querySelectorAll('.court-btn').forEach((btn,i)=>btn.textContent=translations[lang].courts[i]);
+    
     if(document.getElementById('bookingForm').style.display!=='none') updateFormLanguage(lang);
   }));
 
@@ -256,7 +258,8 @@
     btn.addEventListener('click',()=>{
       if(btn===selectedBtn){
         btn.classList.remove('selected'); selectedBtn=selectedCourt=null;
-        document.getElementById('selectedCourt').value=''; document.getElementById('bookingForm').style.display='none';
+        document.getElementById('selectedCourt').value=''; 
+        document.getElementById('bookingForm').style.display='none';
         resetForm();
       }else{
         if(selectedBtn) selectedBtn.classList.remove('selected');
