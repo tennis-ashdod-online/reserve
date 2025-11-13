@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title> רובע יא' - מרכז קהילתי עם שלום</title>
+  <title>רובע יא' - מרכז קהילתי עם שלום</title>
   <style>
     :root {
       --primary: #1a73e8;
@@ -35,7 +35,7 @@
     }
     .lang-switch a:hover,.lang-switch a.active{background:#e3f2fd;color:var(--primary);}
 
-    /* ---------- מפת מגרשים – מבנה מקורי (2 עמודות, 3 שורות + חומה) ---------- */
+    /* ---------- מפת מגרשים ---------- */
     .courts-map{
       display:grid;
       grid-template-columns:1fr 1fr;
@@ -46,7 +46,6 @@
       direction:rtl;position:relative;
     }
 
-    /* חומה – בין שורה 2 ל-3 */
     .wall-separator {
       grid-row: 3 / 4;
       grid-column: 1 / -1;
@@ -62,7 +61,7 @@
       border-radius: 4px;
     }
 
-    /* סידור חדש – בדיוק לפי בקשתך */
+    /* סידור לפי בקשתך */
     .court-btn:nth-child(1){grid-area:1 / 1;} /* מגרש 5 */
     .court-btn:nth-child(2){grid-area:1 / 2;} /* מגרש 6 */
     .court-btn:nth-child(3){grid-area:2 / 1;} /* מגרש 3 */
@@ -105,7 +104,6 @@
       border-radius:6px;font-size:.85rem;box-shadow:0 1px 5px rgba(0,0,0,.1);
     }
 
-    /* ---------- מובייל – 2 עמודות גם במובייל (כמו במקור) ---------- */
     @media (max-width:600px){
       .courts-map{
         grid-template-columns:1fr 1fr;
@@ -113,12 +111,12 @@
         gap:12px;
       }
       .wall-separator { height: 25px; }
-      .court-btn:nth-child(1){grid-area:1/1;} /*5*/
-      .court-btn:nth-child(2){grid-area:1/2;} /*6*/
-      .court-btn:nth-child(3){grid-area:2/1;} /*3*/
-      .court-btn:nth-child(4){grid-area:2/2;} /*4*/
-      .court-btn:nth-child(5){grid-area:4/1;} /*1*/
-      .court-btn:nth-child(6){grid-area:4/2;} /*2*/
+      .court-btn:nth-child(1){grid-area:1/1;}
+      .court-btn:nth-child(2){grid-area:1/2;}
+      .court-btn:nth-child(3){grid-area:2/1;}
+      .court-btn:nth-child(4){grid-area:2/2;}
+      .court-btn:nth-child(5){grid-area:4/1;}
+      .court-btn:nth-child(6){grid-area:4/2;}
       .lang-switch{position:static;text-align:center;margin-bottom:15px;}
       .price-note{position:static;margin-top:15px;text-align:center;}
     }
@@ -133,11 +131,12 @@
   </div>
 
   <header>
-    <h1 data-he="הזמנת מגרש טניס" data-en="Tennis Court Booking">הזמנת מגרש טניס</h1>
+    <!-- הכותרת החדשה -->
+    <h1 data-he="רובע יא' - מרכז קהילתי עם שלום" data-en="Neighborhood 11 - Im Shalom Community Center">רובע יא' - מרכז קהילתי עם שלום</h1>
     <p data-he="בחרו מגרש מהמפה האווירית למטה" data-en="Choose a court from the aerial map below">בחרו מגרש מהמפה האווירית למטה</p>
   </header>
 
-  <!-- מפת מגרשים – סידור חדש ב-2 עמודות -->
+  <!-- מפת מגרשים -->
   <div class="courts-map">
     <div class="court-btn" data-court="5">מגרש 5</div>
     <div class="court-btn" data-court="6">מגרש 6</div>
@@ -145,7 +144,6 @@
     <div class="court-btn" data-court="4">מגרש 4</div>
     <div class="court-btn" data-court="1">מגרש 1</div>
     <div class="court-btn" data-court="2">מגרש 2</div>
-
     <div class="wall-separator"></div>
   </div>
 
@@ -208,18 +206,24 @@
   for(let h=8;h<=21;h++) hours.push(h.toString().padStart(2,'0')+':00');
 
   const translations = {
-    he:{title:"הזמנת מגרש טניס",subtitle:"בחרו מגרש מהמפה האווירית למטה",
-        courts:["מגרש 5","מגרש 6","מגרש 3","מגרש 4","מגרש 1","מגרש 2"],
-        bookingTitle:"פרטי הזמנה",selectedCourt:"מגרש נבחר:",selectDay:"בחר יום:",selectTime:"בחר שעה:",
-        duration:"משך זמן:",oneHour:"שעה אחת",twoHours:"שעתיים",total:"סה״כ לתשלום:",confirm:"אישור הזמנה",
-        address:"הרי גולן 6, אשדוד, ישראל",phone:"08-8678400",
-        hours:"שעות פעילות: ראשון-שבת 08:00–21:00",priceNote:"תעריף: 40₪ לשעה"},
-    en:{title:"Tennis Court Booking",subtitle:"Choose a court from the aerial map below",
-        courts:["Court 5","Court 6","Court 3","Court 4","Court 1","Court 2"],
-        bookingTitle:"Booking Details",selectedCourt:"Selected Court:",selectDay:"Select Day:",selectTime:"Select Time:",
-        duration:"Duration:",oneHour:"1 Hour",twoHours:"2 Hours",total:"Total Amount:",confirm:"Confirm Booking",
-        address:"Harei Golan 6, Ashdod, Israel",phone:"08-8678400",
-        hours:"Hours: Sun-Sat 08:00–21:00",priceNote:"Rate: 40₪ per hour"}
+    he:{
+      title:"רובע יא' - מרכז קהילתי עם שלום",
+      subtitle:"בחרו מגרש מהמפה האווירית למטה",
+      courts:["מגרש 5","מגרש 6","מגרש 3","מגרש 4","מגרש 1","מגרש 2"],
+      bookingTitle:"פרטי הזמנה",selectedCourt:"מגרש נבחר:",selectDay:"בחר יום:",selectTime:"בחר שעה:",
+      duration:"משך זמן:",oneHour:"שעה אחת",twoHours:"שעתיים",total:"סה״כ לתשלום:",confirm:"אישור הזמנה",
+      address:"הרי גולן 6, אשדוד, ישראל",phone:"08-8678400",
+      hours:"שעות פעילות: ראשון-שבת 08:00–21:00",priceNote:"תעריף: 40₪ לשעה"
+    },
+    en:{
+      title:"Neighborhood 11 - Im Shalom Community Center",
+      subtitle:"Choose a court from the aerial map below",
+      courts:["Court 5","Court 6","Court 3","Court 4","Court 1","Court 2"],
+      bookingTitle:"Booking Details",selectedCourt:"Selected Court:",selectDay:"Select Day:",selectTime:"Select Time:",
+      duration:"Duration:",oneHour:"1 Hour",twoHours:"2 Hours",total:"Total Amount:",confirm:"Confirm Booking",
+      address:"Harei Golan 6, Ashdod, Israel",phone:"08-8678400",
+      hours:"Hours: Sun-Sat 08:00–21:00",priceNote:"Rate: 40₪ per hour"
+    }
   };
 
   document.querySelectorAll('.lang-btn').forEach(b=>b.addEventListener('click',e=>{
