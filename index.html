@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>רובע יא' - מרכז קהילתי עם שלום</title>
-  <!-- Font Awesome לדגלים -->
+  <!-- Font Awesome לדגלים אמיתיים -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
     :root {
@@ -27,10 +27,8 @@
       border-radius:15px;padding:30px;box-shadow:0 10px 40px rgba(0,0,0,.3);backdrop-filter:blur(8px);
       position:relative;
     }
-    header{text-align:center;margin-bottom:25px;}
-    h1{color:var(--primary);margin-bottom:8px;}
 
-    /* ---------- מחליף שפה – קבוע, לא זז ---------- */
+    /* ---------- מחליף שפה – קבוע + דגלים קטנים ---------- */
     .lang-switch{
       position:absolute;
       top:15px;
@@ -44,24 +42,36 @@
     .lang-btn{
       display:flex;
       align-items:center;
-      gap:5px;
+      gap:6px;
       color:#666;
       text-decoration:none;
       padding:6px 10px;
       border-radius:6px;
       transition:background .2s, color .2s;
-      position:relative;
+      font-weight:500;
     }
     .lang-btn:hover, .lang-btn.active{
       background:#e3f2fd;
       color:var(--primary);
     }
     .lang-btn i{
-      font-size:1rem;
+      font-size:0.9rem;
     }
     .lang-separator{
       color:#aaa;
       font-weight:bold;
+    }
+
+    /* ---------- כותרת – מרווח גדול יותר מלמעלה ---------- */
+    header{
+      text-align:center;
+      margin-top:60px;   /* מרווח מהמחליף שפה */
+      margin-bottom:25px;
+    }
+    h1{
+      color:var(--primary);
+      margin-bottom:8px;
+      font-size:1.8rem;
     }
 
     /* ---------- מפת מגרשים ---------- */
@@ -136,6 +146,7 @@
       }
       .wall-separator { height: 25px; }
       .lang-switch{left:50%;transform:translateX(-50%);top:10px;}
+      header{margin-top:50px;}
       .price-note{position:static;margin-top:15px;text-align:center;}
     }
   </style>
@@ -143,17 +154,18 @@
 <body>
 
 <div class="container">
-  <!-- מחליף שפה – קבוע, עם דגלים -->
+  <!-- מחליף שפה – עם דגלים קטנים וקבועים -->
   <div class="lang-switch">
     <a href="#" class="lang-btn active" data-lang="he">
-      <i class="flag-icon il"></i> עברית
+      <i class="fas fa-flag"></i> עברית
     </a>
     <span class="lang-separator">|</span>
     <a href="#" class="lang-btn" data-lang="en">
-      <i class="flag-icon us"></i> English
+      <i class="fas fa-flag-usa"></i> English
     </a>
   </div>
 
+  <!-- כותרת – ירדה למטה -->
   <header>
     <h1 data-he="רובע יא' - מרכז קהילתי עם שלום" data-en="Neighborhood 11 - Im Shalom Community Center">רובע יא' - מרכז קהילתי עם שלום</h1>
     <p data-he="בחרו מגרש מהמפה האווירית למטה" data-en="Choose a court from the aerial map below">בחרו מגרש מהמפה האווירית למטה</p>
@@ -218,16 +230,6 @@
 </div>
 
 <script>
-  // דגלים עם Font Awesome
-  const flagStyle = `
-    <style>
-      .flag-icon.il:before { content: "\f024"; color: #0038b8; }
-      .flag-icon.us:before { content: "\f024"; color: #b22234; }
-      .flag-icon:before { font-family: "Font Awesome 6 Free"; font-weight: 900; }
-    </style>
-  `;
-  document.head.insertAdjacentHTML('beforeend', flagStyle);
-
   const hours = [];
   for(let h=8;h<=21;h++) hours.push(h.toString().padStart(2,'0')+':00');
 
@@ -256,11 +258,9 @@
     e.preventDefault();
     const lang = b.dataset.lang;
 
-    // עדכון כפתור פעיל
     document.querySelectorAll('.lang-btn').forEach(x=>x.classList.remove('active'));
     b.classList.add('active');
 
-    // עדכון תוכן – בלי לשנות dir!
     document.documentElement.lang = lang;
     document.querySelector('h1').textContent = translations[lang].title;
     document.querySelector('header p').textContent = translations[lang].subtitle;
