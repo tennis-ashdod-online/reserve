@@ -17,6 +17,7 @@
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
 
+    /* === רקע קבוע עם תמונת טניס + אפקט כהה === */
     body {
       background: linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.55)),
                   url('https://images.unsplash.com/photo-1622278494980-874d6f8bf7ed?ixlib=rb-4.0.3&auto=format&fit=crop&w=1950&q=80') 
@@ -65,69 +66,30 @@
       color: var(--primary);
     }
 
-    /* מפת מגרשים – 2 עמודות + קיר הפרדה */
-    .courts-map {
+    .courts {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      grid-template-rows: repeat(3, 1fr) 20px 1fr;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
       gap: 15px;
-      max-width: 600px;
-      margin: 30px auto;
-      padding: 20px;
-      background: rgba(0, 0, 0, 0.1);
-      border-radius: 12px;
-      direction: rtl;
-      position: relative;
+      margin: 20px 0;
     }
-
-    /* קיר הפרדה – שורה 4 */
-    .courts-map::before {
-      content: "";
-      grid-area: 4 / 1 / 5 / 3;
-      background: #999;
-      height: 4px;
-      border-radius: 2px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-      margin: 10px 0;
-    }
-
-    /* מיקום מדויק – לפי הסידור שלך */
-    .court-btn:nth-child(1) { grid-area: 5 / 1; }  /* מגרש 1 - תחתית ימין */
-    .court-btn:nth-child(2) { grid-area: 5 / 2; }  /* מגרש 2 - תחתית שמאל */
-    .court-btn:nth-child(3) { grid-area: 2 / 1; }  /* מגרש 3 - אמצע ימין */
-    .court-btn:nth-child(4) { grid-area: 2 / 2; }  /* מגרש 4 - אמצע שמאל */
-    .court-btn:nth-child(5) { grid-area: 1 / 1; }  /* מגרש 5 - עליון ימין */
-    .court-btn:nth-child(6) { grid-area: 1 / 2; }  /* מגרש 6 - עליון שמאל */
-
     .court-btn {
-      padding: 20px;
+      padding: 18px;
       background: var(--light);
       border: 2px solid #ddd;
-      border-radius: 12px;
+      border-radius: 10px;
       cursor: pointer;
       text-align: center;
       font-weight: bold;
       transition: all 0.3s;
-      min-height: 80px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.1rem;
     }
-
     .court-btn:hover {
       border-color: var(--primary);
       background: #e3f2fd;
-      transform: translateY(-3px);
-      box-shadow: 0 6px 15px rgba(0,0,0,0.15);
     }
-
     .court-btn.selected {
       background: var(--primary);
       color: white;
       border-color: var(--primary);
-      transform: translateY(-5px);
-      box-shadow: 0 8px 20px rgba(26, 115, 232, 0.3);
     }
 
     .booking-form {
@@ -205,21 +167,19 @@
     }
 
     @media (max-width: 600px) {
-      .courts-map {
-        grid-template-columns: 1fr;
-        grid-template-rows: repeat(6, 1fr) 15px 1fr;
-        gap: 12px;
-        max-width: 300px;
+      .courts {
+        grid-template-columns: repeat(2, 1fr);
       }
-      .courts-map::before {
-        grid-area: 7 / 1 / 8 / 2;
+      .lang-switch {
+        position: static;
+        text-align: center;
+        margin-bottom: 15px;
       }
-      .court-btn:nth-child(1) { grid-area: 8; }
-      .court-btn:nth-child(2) { grid-area: 9; }
-      .court-btn:nth-child(3) { grid-area: 4; }
-      .court-btn:nth-child(4) { grid-area: 5; }
-      .court-btn:nth-child(5) { grid-area: 1; }
-      .court-btn:nth-child(6) { grid-area: 2; }
+      .price-note {
+        position: static;
+        margin-top: 15px;
+        text-align: center;
+      }
     }
   </style>
 </head>
@@ -233,11 +193,10 @@
 
   <header>
     <h1 data-he="הזמנת מגרש טניס" data-en="Tennis Court Booking">הזמנת מגרש טניס</h1>
-    <p data-he="בחרו מגרש מהמפה האווירית למטה" data-en="Choose a court from the aerial map below">בחרו מגרש מהמפה האווירית למטה</p>
+    <p data-he="בחרו מגרש, יום ושעה להזמנה" data-en="Choose a court, date and time">בחרו מגרש, יום ושעה להזמנה</p>
   </header>
 
-  <!-- מפת מגרשים – בדיוק לפי הסידור שלך -->
-  <div class="courts-map">
+  <div class="courts">
     <div class="court-btn" data-court="1">מגרש 1</div>
     <div class="court-btn" data-court="2">מגרש 2</div>
     <div class="court-btn" data-court="3">מגרש 3</div>
@@ -314,7 +273,7 @@
   const translations = {
     he: {
       title: "הזמנת מגרש טניס",
-      subtitle: "בחרו מגרש מהמפה האווירית למטה",
+      subtitle: "בחרו מגרש, יום ושעה להזמנה",
       courts: ["מגרש 1", "מגרש 2", "מגרש 3", "מגרש 4", "מגרש 5", "מגרש 6"],
       bookingTitle: "פרטי הזמנה",
       selectedCourt: "מגרש נבחר:",
@@ -332,8 +291,8 @@
     },
     en: {
       title: "Tennis Court Booking",
-      subtitle: "Choose a court from the aerial map below",
-      courts: ["Court 1", "Court 2", "Court 3",", "Court 4", "Court 5", "Court 6"],
+      subtitle: "Choose a court, date and time",
+      courts: ["Court 1", "Court 2", "Court 3", "Court 4", "Court 5", "Court 6"],
       bookingTitle: "Booking Details",
       selectedCourt: "Selected Court:",
       selectDay: "Select Day:",
@@ -400,13 +359,14 @@
     timeSelect.appendChild(opt);
   });
 
-  // בחירת מגרש + ביטול
+  // בחירת מגרש + ביטול בחירה
   let selectedCourt = null;
   let selectedBtn = null;
 
   document.querySelectorAll('.court-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       if (btn === selectedBtn) {
+        // לחיצה שנייה על אותו מגרש – ביטול בחירה
         btn.classList.remove('selected');
         selectedBtn = null;
         selectedCourt = null;
@@ -414,6 +374,7 @@
         document.getElementById('bookingForm').style.display = 'none';
         resetForm();
       } else {
+        // בחירת מגרש חדש
         if (selectedBtn) selectedBtn.classList.remove('selected');
         btn.classList.add('selected');
         selectedBtn = btn;
@@ -423,7 +384,7 @@
         
         const lang = document.documentElement.lang;
         updateFormLanguage(lang);
-        resetForm();
+        resetForm(); // איפוס הטופס בכל בחירה חדשה
       }
     });
   });
