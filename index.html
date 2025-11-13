@@ -1,307 +1,427 @@
 <!DOCTYPE html>
-<html lang="he" dir="rtl">
+<html lang="he">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>הזמנת מגרש טניס - מרכז קהילתי עם שלום</title>
+  <meta name="description" content="הזמנת מגרשי טניס וכדורסל במרכז קהילתי עם שלום, רובע יא' אשדוד. מחיר: 40₪ לשעה. פתוח כל יום 08:00–21:00">
+  <title>רובע יא' - מרכז קהילתי עם שלום</title>
   <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/2991/2991119.png" type="image/png">
   <style>
     :root {
       --primary: #1a73e8;
       --light: #f8f9fa;
       --dark: #333;
+      --success: #e8f5e9;
     }
     * {box-sizing:border-box;margin:0;padding:0;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;}
     body{
-      background:linear-gradient(rgba(0,0,0,.6),rgba(0,0,0,.6)),
+      background:linear-gradient(rgba(0,0,0,.55),rgba(0,0,0,.55)),
                  url('https://images.unsplash.com/photo-1622278494980-874d6f8bf7ed?ixlib=rb-4.0.3&auto=format&fit=crop&w=1950&q=80')
                  center/cover no-repeat fixed;
       color:#fff;line-height:1.6;min-height:100vh;padding:20px;
     }
     .container{
-      max-width:800px;margin:40px auto;background:rgba(255,255,255,.97);color:var(--dark);
-      border-radius:15px;padding:30px;box-shadow:0 10px 40px rgba(0,0,0,.3);
-      text-align:center;position:relative;
+      max-width:900px;margin:0 auto;background:rgba(255,255,255,.95);color:var(--dark);
+      border-radius:15px;padding:30px;box-shadow:0 10px 40px rgba(0,0,0,.3);backdrop-filter:blur(8px);
+      position:relative;
+      text-align: center;
     }
+
     .lang-switch{
-      position:absolute;top:15px;left:15px;z-index:10;
+      position:absolute;top:15px;left:50%;transform:translateX(-50%);
+      font-size:.85rem;display:flex;gap:8px;z-index:100;
     }
     .lang-btn{
-      background:var(--primary);color:#fff;border:none;padding:8px 16px;
-      border-radius:6px;cursor:pointer;font-size:0.9rem;transition:.2s;
+      display:flex;align-items:center;gap:6px;color:#666;text-decoration:none;
+      padding:6px 10px;border-radius:6px;transition:all .2s;font-weight:500;
     }
-    .lang-btn:hover{background:#0d47a1;}
+    .lang-btn:hover, .lang-btn.active{
+      background:#e3f2fd;color:var(--primary);
+    }
+    .lang-separator{color:#aaa;font-weight:bold;}
+
+    header{
+      text-align:center;margin-top:60px;margin-bottom:25px;
+    }
     h1{
-      color:var(--primary);margin-bottom:25px;font-size:2rem;
+      color:var(--primary);margin-bottom:8px;font-size:1.8rem;
     }
-    .courts-grid{
-      display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:15px;
-      margin:30px 0;
+
+    .courts-wrapper {
+      max-width:700px;margin:0 auto;
+      transition: all 0.4s ease;
     }
+    .courts-wrapper.hidden {
+      opacity: 0;
+      transform: translateY(20px);
+      height: 0;
+      overflow: hidden;
+      margin: 0;
+      padding: 0;
+    }
+
+    #bookingForm {
+      display: none;
+      max-width: 700px;
+      margin: 20px auto;
+      padding: 20px;
+      background: #f9f9f9;
+      border-radius: 12px;
+      box-shadow: 0 6px 20px rgba(0,0,0,.15);
+      animation: slideDown 0.4s ease-out;
+    }
+    #bookingForm.visible {
+      display: block;
+    }
+
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .back-btn {
+      background: #f44336;
+      color: white;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 6px;
+      font-size: 0.9rem;
+      cursor: pointer;
+      margin-bottom: 15px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .back-btn:hover { background: #d32f2f; }
+
+    .courts-map{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      grid-template-rows:1fr 1fr auto 1fr;
+      gap:15px;padding:20px;
+      background:rgba(0,0,0,.1);border-radius:12px;position:relative;
+      z-index: 10;
+    }
+
+    .wall-separator {
+      grid-row: 3/4;grid-column:1/-1;height:30px;
+      background:linear-gradient(135deg,#A0522D 0%,#8B4513 50%,#A0522D 100%);
+      border-top:3px solid #D2691E;border-bottom:3px solid #5D2E0D;
+      box-shadow:0 8px 15px rgba(0,0,0,0.4),inset 0 2px 4px rgba(255,255,255,0.2);
+      border-radius:4px;z-index:10;
+    }
+
+    .court-btn:nth-child(1){grid-area:1/1;} /* מגרש 5 */
+    .court-btn:nth-child(2){grid-area:1/2;} /* מגרש 6 */
+    .court-btn:nth-child(3){grid-area:2/1;} /* מגרש 4 */
+    .court-btn:nth-child(4){grid-area:2/2;} /* מגרש 3 */
+    .court-btn:nth-child(5){grid-area:4/1;} /* מגרש 2 */
+    .court-btn:nth-child(6){grid-area:4/2;} /* מגרש 1 */
+
     .court-btn{
-      background:#fff;border:2px solid var(--primary);color:var(--primary);
-      padding:15px;border-radius:10px;cursor:pointer;font-weight:600;
-      transition:.3s;box-shadow:0 4px 10px rgba(0,0,0,.1);
+      padding:20px;background:var(--light);border:2px solid #ddd;border-radius:12px;
+      cursor:pointer;text-align:center;font-weight:bold;transition:all .3s;
+      min-height:80px;display:flex;flex-direction:column;align-items:center;justify-content:center;
+      position:relative;z-index:2;
     }
-    .court-btn:hover,.court-btn.selected{
-      background:var(--primary);color:#fff;transform:translateY(-3px);
+    .court-btn:hover{
+      border-color:var(--primary);background:#e3f2fd;transform:translateY(-3px);
+      box-shadow:0 6px 15px rgba(0,0,0,.15);
     }
-    .form-group{
-      margin:20px 0;text-align:right;
+    .court-btn.selected{
+      background:var(--primary);color:#fff;border-color:var(--primary);
+      transform:translateY(-5px);box-shadow:0 8px 20px rgba(26,115,232,.3);
     }
-    label{
-      display:block;margin-bottom:8px;font-weight:600;
+
+    .form-group{margin-bottom:18px;}
+    label{display:block;margin-bottom:8px;font-weight:600;text-align:right;}
+    select, input[type=text], input[type=email], input[type=tel]{
+      width:100%;padding:10px;border:1px solid #ccc;border-radius:6px;font-size:1rem;
+      text-align:right;
     }
-    select{
-      width:100%;padding:12px;border:1px solid #ccc;border-radius:6px;font-size:1rem;
+    .duration-options{display:flex;gap:15px;margin-top:10px;}
+    .duration-btn{
+      flex:1;padding:12px;text-align:center;border:2px solid #ddd;border-radius:8px;
+      cursor:pointer;transition:all .2s;
     }
-    .price-box{
-      background:#e8f5e9;padding:15px;border-radius:10px;margin:20px 0;
-      font-size:1.1rem;font-weight:600;color:#1b5e20;
+    .duration-btn.selected{
+      background:var(--primary);color:#fff;border-color:var(--primary);
     }
     .submit-btn{
-      background:var(--primary);color:#fff;border:none;padding:14px 24px;
-      font-size:1.1rem;border-radius:8px;cursor:pointer;width:100%;margin-top:20px;
-      transition:.2s;
+      background:var(--primary);color:#fff;border:none;padding:12px 24px;font-size:1rem;
+      border-radius:6px;cursor:pointer;width:100%;margin-top:15px;transition:.2s;
     }
     .submit-btn:hover{background:#0d47a1;}
-    .submit-btn:disabled{background:#aaa;cursor:not-allowed;}
+
+    .info-box{
+      margin-top:30px;padding:15px;background:var(--success);border-radius:8px;
+      font-size:.95rem;line-height:1.5;text-align:right;
+    }
+    .price-note{
+      position:absolute;bottom:15px;right:15px;background:#fff3e0;padding:8px 12px;
+      border-radius:6px;font-size:.85rem;box-shadow:0 1px 5px rgba(0,0,0,.1);
+    }
+
+    @media (max-width:600px){
+      .courts-map{gap:12px;}
+      .wall-separator{height:25px;}
+      .lang-switch{top:10px;}
+      header{margin-top:50px;}
+      .price-note{position:static;margin-top:15px;text-align:center;}
+      #bookingForm{padding:15px;margin:15px auto;}
+      .back-btn{font-size:0.85rem;padding:8px 12px;}
+      label, .info-box, select, input[type=text] { text-align: center; }
+    }
   </style>
 </head>
 <body>
+
 <div class="container">
-  <!-- כפתור החלפת שפה -->
   <div class="lang-switch">
-    <button class="lang-btn" id="langBtn">English</button>
+    <a href="#" class="lang-btn active" data-lang="he">IL עברית</a>
+    <span class="lang-separator">|</span>
+    <a href="#" class="lang-btn" data-lang="en">US English</a>
   </div>
 
-  <h1 id="pageTitle">הזמנת מגרש טניס</h1>
-  <p id="subtitle">בחר מגרש, יום, שעה ומשך</p>
+  <header>
+    <h1 data-he="רובע יא' - מרכז קהילתי עם שלום" data-en="Am-Shalom Community Center">רובע יא' - מרכז קהילתי עם שלום</h1>
+    <p data-he="בחרו את המגרש שבו תרצו לשחק" data-en="Choose the tennis court where you want to play">בחרו את המגרש שבו תרצו לשחק</p>
+  </header>
 
-  <div class="courts-grid" id="courtsGrid">
-    <!-- יתמלא דינמית -->
+  <div class="courts-wrapper" id="courtsWrapper">
+    <div class="courts-map" role="region" aria-label="מפת מגרשים">
+      <div class="court-btn" data-court="5" aria-label="מגרש 5"><span>מגרש 5</span></div>
+      <div class="court-btn" data-court="6" aria-label="מגרש 6"><span>מגרש 6</span></div>
+      <div class="court-btn" data-court="4" aria-label="מגרש 4"><span>מגרש 4</span></div>
+      <div class="court-btn" data-court="3" aria-label="מגרש 3"><span>מגרש 3</span></div>
+      <div class="court-btn" data-court="2" aria-label="מגרש 2"><span>מגרש 2</span></div>
+      <div class="court-btn" data-court="1" aria-label="מגרש 1"><span>מגרש 1</span></div>
+      <div class="wall-separator" aria-hidden="true"></div>
+    </div>
   </div>
 
-  <div class="form-group">
-    <label for="daySelect" id="dayLabel">בחר יום</label>
-    <select id="daySelect">
-      <option value="">-- בחר יום --</option>
-    </select>
+  <div id="bookingForm" role="form" aria-labelledby="formTitle">
+    <button class="back-btn" id="backBtn">חזור</button>
+    <h3 id="formTitle" data-he="פרטי הזמנה" data-en="Booking Details">פרטי הזמנה</h3>
+    <div class="form-group">
+      <label data-he="מגרש נבחר:" data-en="Selected Court:">מגרש נבחר:</label>
+      <input type="text" id="selectedCourt" readonly aria-readonly="true" />
+    </div>
+    <div class="form-group">
+      <label for="daySelect" data-he="בחר יום:" data-en="Select Day:">בחר יום:</label>
+      <select id="daySelect" required>
+        <option value="">-- בחר יום --</option>
+        <option value="ראשון">ראשון</option>
+        <option value="שני">שני</option>
+        <option value="שלישי">שלישי</option>
+        <option value="רביעי">רביעי</option>
+        <option value="חמישי">חמישי</option>
+        <option value="שישי">שישי</option>
+        <option value="שבת">שבת</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="timeSelect" data-he="בחר שעה:" data-en="Select Time:">בחר שעה:</label>
+      <select id="timeSelect" required><option value="">-- בחר שעה --</option></select>
+    </div>
+    <div class="form-group">
+      <label data-he="משך זמן:" data-en="Duration:">משך זמן:</label>
+      <div class="duration-options">
+        <div class="duration-btn" data-duration="2" aria-label="שעתיים">שעתיים</div>
+        <div class="duration-btn selected" data-duration="1" aria-label="שעה אחת">שעה אחת</div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label data-he="סה״כ לתשלום:" data-en="Total Amount:">סה״כ לתשלום:</label>
+      <input type="text" id="totalPrice" readonly value="40₪" aria-live="polite" />
+    </div>
+    <button class="submit-btn" id="confirmBookingBtn" data-he="אישור הזמנה" data-en="Confirm Booking">אישור הזמנה</button>
   </div>
 
-  <div class="form-group">
-    <label for="timeSelect" id="timeLabel">בחר שעה</label>
-    <select id="timeSelect" disabled>
-      <option value="">-- בחר שעה --</option>
-    </select>
+  <div class="info-box">
+    <p><strong data-he="כתובת:" data-en="Address:">כתובת:</strong> <span data-he="הרי גולן 6, אשדוד, ישראל" data-en="Harei Golan 6, Ashdod, Israel">הרי גולן 6, אשדוד, ישראל</span></p>
+    <p><strong data-he="טלפון:" data-en="Phone:">טלפון:</strong> <a href="tel:088678400">08-8678400</a></p>
+    <p data-he="שעות פעילות: ראשון-שבת 08:00–21:00" data-en="Hours: Sun-Sat 08:00–21:00">שעות פעילות: ראשון-שבת 08:00–21:00</p>
   </div>
 
-  <div class="form-group">
-    <label for="durationSelect" id="durationLabel">משך זמן</label>
-    <select id="durationSelect" disabled>
-      <option value="">-- בחר משך --</option>
-    </select>
+  <div class="price-note">
+    <span data-he="תעריף: 40₪ לשעה" data-en="Rate: 40₪ per hour">תעריף: 40₪ לשעה</span>
   </div>
-
-  <div class="price-box" id="priceBox" style="display:none;">
-    סה"כ לתשלום: <span id="totalPrice">0</span> ₪
-  </div>
-
-  <button class="submit-btn" id="submitBtn" disabled>המשך לפרטים אישיים</button>
 </div>
 
 <script>
-  // === תרגומים ===
+  const hours = [];
+  for(let h = 8; h <= 21; h++) hours.push(h.toString().padStart(2, '0') + ':00');
+
   const translations = {
     he: {
-      pageTitle: "הזמנת מגרש טניס",
-      subtitle: "בחר מגרש, יום, שעה ומשך",
-      dayLabel: "בחר יום",
-      timeLabel: "בחר שעה",
-      durationLabel: "משך זמן",
-      totalText: "סה\"כ לתשלום:",
-      continueBtn: "המשך לפרטים אישיים",
-      days: ["ראשון", "שני", "שלישי", "רביעי", "חמישי", "שישי", "שבת"],
-      hours: ["08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00", "21:00"],
-      duration1: "שעה אחת - 80 ₪",
-      duration2: "שעתיים - 150 ₪"
+      title: "רובע יא' - מרכז קהילתי עם שלום",
+      subtitle: "בחרו את המגרש שבו תרצו לשחק",
+      courts: ["מגרש 5","מגרש 6","מגרש 4","מגרש 3","מגרש 2","מגרש 1"],
+      bookingTitle: "פרטי הזמנה",
+      selectedCourt: "מגרש נבחר:",
+      selectDay: "בחר יום:",
+      selectTime: "בחר שעה:",
+      oneHour: "שעה אחת",
+      twoHours: "שעתיים",
+      total: "סה״כ לתשלום:",
+      confirm: "אישור הזמנה",
+      back: "חזור",
+      priceNote: "תעריף: 40₪ לשעה",
+      alertTitle: "הזמנה אושרה!",
+      alertThanks: "תודה ששיחקת אצלנו!",
+      missing: "אנא מלא את כל השדות הנדרשים"
     },
     en: {
-      pageTitle: "Tennis Court Booking",
-      subtitle: "Choose court, day, time and duration",
-      dayLabel: "Select Day",
-      timeLabel: "Select Time",
-      durationLabel: "Duration",
-      totalText: "Total to pay:",
-      continueBtn: "Continue to Personal Details",
-      days: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
-      hours: ["08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00", "21:00"],
-      duration1: "1 Hour - 80 ₪",
-      duration2: "2 Hours - 150 ₪"
+      title: "Am-Shalom Community Center",
+      subtitle: "Choose the tennis court where you want to play",
+      courts: ["Court 5","Court 6","Court 4","Court 3","Court 2","Court 1"],
+      bookingTitle: "Booking Details",
+      selectedCourt: "Selected Court:",
+      selectDay: "Select Day:",
+      selectTime: "Select Time:",
+      oneHour: "1 Hour",
+      twoHours: "2 Hours",
+      total: "Total Amount:",
+      confirm: "Confirm Booking",
+      back: "Back",
+      priceNote: "Rate: 40₪ per hour",
+      alertTitle: "Booking confirmed!",
+      alertThanks: "Thank you for playing with us!",
+      missing: "Please fill all required fields"
     }
   };
 
-  let currentLang = 'he';
-  let selectedCourt = '';
-  let selectedDay = '';
-  let selectedTime = '';
-  let selectedDuration = '';
+  const timeSelect = document.getElementById('timeSelect');
+  hours.forEach(h => {
+    const option = document.createElement('option');
+    option.value = option.textContent = h;
+    timeSelect.appendChild(option);
+  });
 
-  // === אלמנטים ===
-  const elements = {
-    pageTitle: document.getElementById('pageTitle'),
-    subtitle: document.getElementById('subtitle'),
-    dayLabel: document.getElementById('dayLabel'),
-    timeLabel: document.getElementById('timeLabel'),
-    durationLabel: document.getElementById('durationLabel'),
-    totalText: document.getElementById('totalPrice').previousSibling,
-    continueBtn: document.getElementById('submitBtn'),
-    daySelect: document.getElementById('daySelect'),
-    timeSelect: document.getElementById('timeSelect'),
-    durationSelect: document.getElementById('durationSelect'),
-    priceBox: document.getElementById('priceBox'),
-    langBtn: document.getElementById('langBtn')
-  };
+  const courtsWrapper = document.getElementById('courtsWrapper');
+  const bookingForm = document.getElementById('bookingForm');
+  const backBtn = document.getElementById('backBtn');
+  let selectedBtn = null;
+  let duration = 1;
 
-  // === החלפת שפה ===
-  function switchLanguage(lang) {
-    currentLang = lang;
+  function goBack() {
+    if (selectedBtn) selectedBtn.classList.remove('selected');
+    selectedBtn = null;
+    document.getElementById('selectedCourt').value = '';
+    bookingForm.classList.remove('visible');
+    courtsWrapper.classList.remove('hidden');
+    resetForm();
+    history.pushState({ page: 'home' }, '', '#home');
+  }
+
+  function openBooking(courtBtn) {
+    if (selectedBtn) selectedBtn.classList.remove('selected');
+    courtBtn.classList.add('selected');
+    selectedBtn = courtBtn;
+    document.getElementById('selectedCourt').value = courtBtn.querySelector('span').textContent;
+    bookingForm.classList.add('visible');
+    courtsWrapper.classList.add('hidden');
+    updateFormLanguage(document.documentElement.lang);
+    resetForm();
+    history.pushState({ page: 'booking' }, '', '#booking');
+  }
+
+  function resetForm() {
+    document.getElementById('daySelect').selectedIndex = 0;
+    document.getElementById('timeSelect').selectedIndex = 0;
+    document.querySelectorAll('.duration-btn').forEach(b => b.classList.remove('selected'));
+    document.querySelector('.duration-btn[data-duration="1"]').classList.add('selected');
+    duration = 1;
+    document.getElementById('totalPrice').value = '40₪';
+  }
+
+  document.querySelectorAll('.court-btn').forEach(btn => btn.addEventListener('click', () => openBooking(btn)));
+  backBtn.addEventListener('click', goBack);
+
+  document.querySelectorAll('.duration-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.duration-btn').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+      duration = +btn.dataset.duration;
+      document.getElementById('totalPrice').value = (40 * duration) + '₪';
+    });
+  });
+
+  // אישור הזמנה → פתיחת דף פרטים אישיים
+  document.getElementById('confirmBookingBtn').addEventListener('click', () => {
+    const day = document.getElementById('daySelect').value;
+    const time = document.getElementById('timeSelect').value;
+    const court = document.getElementById('selectedCourt').value;
+    const total = 40 * duration;
+
+    if (!day || !time || !court) {
+      const lang = document.documentElement.lang;
+      alert(translations[lang].missing);
+      return;
+    }
+
+    const params = new URLSearchParams({
+      court: court,
+      day: day,
+      time: time,
+      duration: duration,
+      total: total + '₪'
+    });
+
+    const url = booking-details.html?${params.toString()};
+    window.open(url, '_blank', 'width=700,height=800');
+    goBack();
+  });
+
+  // החלפת שפה
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.addEventListener('click', e => {
+      e.preventDefault();
+      const lang = btn.dataset.lang;
+      document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      document.documentElement.lang = lang;
+
+      const t = translations[lang];
+      document.querySelector('h1').textContent = t.title;
+      document.querySelector('header p').textContent = t.subtitle;
+      document.querySelectorAll('[data-he]').forEach(el => {
+        el.textContent = lang === 'en' ? el.dataset.en : el.dataset.he;
+      });
+      document.querySelectorAll('.court-btn span').forEach((span, i) => {
+        span.textContent = t.courts[i];
+      });
+      backBtn.textContent = t.back;
+      document.getElementById('confirmBookingBtn').textContent = t.confirm;
+
+      if (bookingForm.classList.contains('visible')) {
+        updateFormLanguage(lang);
+      }
+    });
+  });
+
+  function updateFormLanguage(lang) {
     const t = translations[lang];
+    document.getElementById('formTitle').textContent = t.bookingTitle;
+    document.querySelector('label[for="daySelect"]').textContent = t.selectDay;
+    document.querySelector('label[for="timeSelect"]').textContent = t.selectTime;
 
-    document.documentElement.lang = lang;
-    document.documentElement.dir = lang === 'he' ? 'rtl' : 'ltr';
+    const durationBtns = document.querySelectorAll('.duration-options .duration-btn');
+    durationBtns[0].textContent = t.twoHours;
+    durationBtns[1].textContent = t.oneHour;
 
-    elements.pageTitle.textContent = t.pageTitle;
-    elements.subtitle.textContent = t.subtitle;
-    elements.dayLabel.textContent = t.dayLabel;
-    elements.timeLabel.textContent = t.timeLabel;
-    elements.durationLabel.textContent = t.durationLabel;
-    elements.totalText.textContent = t.totalText + ' ';
-    elements.continueBtn.textContent = t.continueBtn;
-    elements.langBtn.textContent = lang === 'he' ? 'English' : 'עברית';
-
-    // עדכון ימים
-    elements.daySelect.innerHTML = '<option value="">-- ' + (lang === 'he' ? 'בחר יום' : 'Select Day') + ' --</option>';
-    t.days.forEach(day => {
-      const opt = document.createElement('option');
-      opt.value = opt.textContent = day;
-      elements.daySelect.appendChild(opt);
-    });
-
-    // עדכון שעות (אם כבר נבחר יום)
-    if (selectedDay) updateTimeOptions();
-
-    // עדכון משך
-    elements.durationSelect.innerHTML = `
-      <option value="">-- ${lang === 'he' ? 'בחר משך' : 'Select Duration'} --</option>
-      <option value="1">${t.duration1}</option>
-      <option value="2">${t.duration2}</option>
-    `;
-
-    // עדכון כיוון טקסט
-    document.querySelectorAll('input, select, textarea').forEach(el => {
-      el.style.textAlign = lang === 'he' ? 'right' : 'left';
-    });
+    document.querySelector('.submit-btn').textContent = t.confirm;
+    document.querySelector('.price-note span').textContent = t.priceNote;
   }
 
-  // === יצירת מגרשים ===
-  function createCourts() {
-    const grid = document.getElementById('courtsGrid');
-    for (let i = 1; i <= 6; i++) {
-      const btn = document.createElement('div');
-      btn.className = 'court-btn';
-      btn.textContent = currentLang === 'he' ? `מגרש ${i}` : `Court ${i}`;
-      btn.onclick = () => selectCourt(btn, i);
-      grid.appendChild(btn);
-    }
-  }
-
-  function selectCourt(btn, num) {
-    document.querySelectorAll('.court-btn').forEach(b => b.classList.remove('selected'));
-    btn.classList.add('selected');
-    selectedCourt = currentLang === 'he' ? `מגרש ${num}` : `Court ${num}`;
-    elements.daySelect.disabled = false;
-    resetSelection('day');
-  }
-
-  // === עדכון אפשרויות זמן ===
-  function updateTimeOptions() {
-    const t = translations[currentLang];
-    elements.timeSelect.innerHTML = '<option value="">-- ' + (currentLang === 'he' ? 'בחר שעה' : 'Select Time') + ' --</option>';
-    t.hours.forEach(h => {
-      const opt = document.createElement('option');
-      opt.value = opt.textContent = h;
-      elements.timeSelect.appendChild(opt);
-    });
-    elements.timeSelect.disabled = false;
-  }
-
-  // === חישוב מחיר ===
-  function calculatePrice() {
-    if (selectedDuration) {
-      const price = selectedDuration === '1' ? 80 : 150;
-      document.getElementById('totalPrice').textContent = price;
-      elements.priceBox.style.display = 'block';
-      elements.continueBtn.disabled = false;
-    }
-  }
-
-  // === איפוס בחירות ===
-  function resetSelection(from) {
-    if (from === 'day') {
-      selectedDay = '';
-      elements.timeSelect.innerHTML = '<option value="">-- בחר שעה --</option>';
-      elements.timeSelect.disabled = true;
-    }
-    if (from === 'day' || from === 'time') {
-      selectedTime = '';
-      elements.durationSelect.innerHTML = '<option value="">-- בחר משך --</option>';
-      elements.durationSelect.disabled = true;
-    }
-    if (from !== 'duration') {
-      selectedDuration = '';
-      elements.priceBox.style.display = 'none';
-      elements.continueBtn.disabled = true;
-    }
-  }
-
-  // === אירועים ===
-  elements.daySelect.addEventListener('change', function() {
-    selectedDay = this.value;
-    if (selectedDay) {
-      updateTimeOptions();
-      resetSelection('day');
-    }
+  window.addEventListener('popstate', e => {
+    if (e.state && e.state.page === 'home') goBack();
+    else if (bookingForm.classList.contains('visible')) goBack();
   });
 
-  elements.timeSelect.addEventListener('change', function() {
-    selectedTime = this.value;
-    if (selectedTime) {
-      elements.durationSelect.disabled = false;
-      resetSelection('time');
-    }
-  });
-
-  elements.durationSelect.addEventListener('change', function() {
-    selectedDuration = this.value;
-    if (selectedDuration) {
-      calculatePrice();
-    }
-  });
-
-  elements.continueBtn.addEventListener('click', function() {
-    const url = `booking-details.html?court=${encodeURIComponent(selectedCourt)}&day=${encodeURIComponent(selectedDay)}&time=${encodeURIComponent(selectedTime)}&duration=${selectedDuration}&total=${selectedDuration === '1' ? 80 : 150}`;
-    window.location.href = url;
-  });
-
-  elements.langBtn.addEventListener('click', function() {
-    switchLanguage(currentLang === 'he' ? 'en' : 'he');
-    createCourts(); // עדכן מגרשים
-  });
-
-  // === אתחול ===
-  createCourts();
-  switchLanguage('he'); // ברירת מחדל
+  history.replaceState({ page: 'home' }, '', '#home');
 </script>
+
 </body>
 </html>
