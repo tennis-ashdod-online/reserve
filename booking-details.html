@@ -166,14 +166,7 @@
     form.style.display = 'none';
     finalMessage.style.display = 'block';
 
-    // נועלים חזרה
-    history.pushState(null, null, location.href);
-    window.onpopstate = () => history.go(1);
-  }
-
-  // חוסם חזרה מההתחלה
-  history.pushState(null, null, location.href);
-  window.onpopstate = () => history.go(1);
+   
 </script>
 </body>
 </html>
