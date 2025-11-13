@@ -63,6 +63,16 @@
     .final-message strong{
       display:block;margin-top:10px;font-size:1.3rem;
     }
+    .back-link {
+      display: block;
+      margin-top: 20px;
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .back-link:hover {
+      text-decoration: underline;
+    }
   </style>
 </head>
 <body>
@@ -70,22 +80,20 @@
   <h1 id="pageTitle">השלם את ההזמנה</h1>
   <div class="summary-box" id="summary"></div>
 
-  <!-- טופס – שליחה עם AJAX -->
-  <form id="personalDetailsForm" enctype="multipart/form-data">
+  <form id="personalDetailsForm">
     <div class="form-group">
-      <label for="fullName">שם מלא *</label>
+      <label for="fullName" id="nameLabel">שם מלא *</label>
       <input type="text" id="fullName" name="שם מלא" required placeholder="הכנס שם מלא" />
     </div>
     <div class="form-group">
-      <label for="phone">טלפון *</label>
+      <label for="phone" id="phoneLabel">טלפון *</label>
       <input type="tel" id="phone" name="טלפון" required placeholder="05X-XXXXXXX" />
     </div>
     <div class="form-group">
-      <label for="email">אימייל</label>
+      <label for="email" id="emailLabel">אימייל</label>
       <input type="email" id="email" name="אימייל" placeholder="example@email.com" />
     </div>
 
-    <!-- שדות נסתרים – עם name! -->
     <input type="hidden" name="מגרש" id="hiddenCourt">
     <input type="hidden" name="יום" id="hiddenDay">
     <input type="hidden" name="שעה" id="hiddenTime">
@@ -95,101 +103,141 @@
     <button type="submit" class="submit-btn" id="submitBtn">אישור סופי והזמנה</button>
   </form>
 
-  <!-- הודעה סופית -->
   <div class="final-message" id="finalMessage" style="display:none;">
-    <strong>ההזמנה נשלחה בהצלחה!</strong>
-    תודה רבה! נשלח לך אישור ב-SMS ו/או במייל.
+    <strong id="successTitle">ההזמנה נשלחה בהצלחה!</strong>
+    <span id="successText">תודה רבה! נשלח לך אישור ב-SMS ו/או במייל.</span>
     <br><br>
-    <small>אין צורך לשלוח שוב – ההזמנה כבר נקלטה במערכת.</small>
+    <small id="successNote">אין צורך לשלוח שוב – ההזמנה כבר נקלטה במערכת.</small>
   </div>
+
+  <a href="index.html" class="back-link" id="backLink">חזרה לבחירת מגרש</a>
 </div>
 
 <script>
-  // קריאת פרמטרים מה-URL
-  const params = new URLSearchParams(window.location.search);
-  const court = params.get('court');
-  const day = params.get('day');
-  const time = params.get('time');
-  const duration = params.get('duration');
-  const total = params.get('total');
+  const translations = {
+    he: {
+      pageTitle: "השלם את ההזמנה",
+      nameLabel: "שם מלא *",
+      phoneLabel: "טלפון *",
+      emailLabel: "אימייל",
+      submitBtn: "אישור סופי והזמנה",
+      successTitle: "ההזמנה נשלחה בהצלחה!",
+      successText: "תודה רבה! נשלח לך אישור ב-SMS ו/או במייל.",
+      successNote: "אין צורך לשלוח שוב – ההזמנה כבר נקלטה במערכת.",
+      backLink: "חזרה לבחירת מגרש",
+      court: "מגרש",
+      day: "יום",
+      time: "שעה",
+      duration: "משך",
+      total: "סה\"כ לתשלום",
+      oneHour: "שעה אחת",
+      twoHours: "שעתיים"
+    },
+    en: {
+      pageTitle: "Complete Your Booking",
+      nameLabel: "Full Name *",
+      phoneLabel: "Phone *",
+      emailLabel: "Email",
+      submitBtn: "Confirm Booking",
+      successTitle: "Booking Sent Successfully!",
+      successText: "Thank you! A confirmation will be sent via SMS and/or email.",
+      successNote: "No need to submit again – your booking is already in the system.",
+      backLink: "Back to Court Selection",
+      court: "Court",
+      day: "Day",
+      time: "Time",
+      duration: "Duration",
+      total: "Total Amount",
+      oneHour: "1 Hour",
+      twoHours: "2 Hours"
+    }
+  };
 
-  // הצגת פרטים
+  const params = new URLSearchParams(window.location.search);
+  const lang = params.get('lang') || 'he';
+  const court = params.get('court') || '';
+  const day = params.get('day') || '';
+  const time = params.get('time') || '';
+  const duration = params.get('duration') || '1';
+  const total = params.get('total') || '40₪';
+
+  document.documentElement.lang = lang;
+  document.documentElement.dir = lang === 'en' ? 'ltr' : 'rtl';
+
+  const t = translations[lang];
+
+  document.getElementById('pageTitle').textContent = t.pageTitle;
+  document.getElementById('nameLabel').textContent = t.nameLabel;
+  document.getElementById('phoneLabel').textContent = t.phoneLabel;
+  document.getElementById('emailLabel').textContent = t.emailLabel;
+  document.getElementById('submitBtn').textContent = t.submitBtn;
+  document.getElementById('successTitle').textContent = t.successTitle;
+  document.getElementById('successText').textContent = t.successText;
+  document.getElementById('successNote').textContent = t.successNote;
+  document.getElementById('backLink').textContent = t.backLink;
+
+  const durationText = duration === '1' ? t.oneHour : t.twoHours;
   document.getElementById('summary').innerHTML = `
-    <p><strong>מגרש:</strong> ${court}</p>
-    <p><strong>יום:</strong> ${day}</p>
-    <p><strong>שעה:</strong> ${time}</p>
-    <p><strong>משך:</strong> ${duration === '1' ? 'שעה אחת' : 'שעתיים'}</p>
-    <p><strong>סה"כ לתשלום:</strong> ${total}</p>
+    <p><strong>${t.court}:</strong> ${court}</p>
+    <p><strong>${t.day}:</strong> ${day}</p>
+    <p><strong>${t.time}:</strong> ${time}</p>
+    <p><strong>${t.duration}:</strong> ${durationText}</p>
+    <p><strong>${t.total}:</strong> ${total}</p>
   `;
 
-  // שמירת ערכים
   document.getElementById('hiddenCourt').value = court;
   document.getElementById('hiddenDay').value = day;
   document.getElementById('hiddenTime').value = time;
-  document.getElementById('hiddenDuration').value = duration === '1' ? 'שעה אחת' : 'שעתיים';
+  document.getElementById('hiddenDuration').value = durationText;
   document.getElementById('hiddenTotal').value = total;
 
   const form = document.getElementById('personalDetailsForm');
   const submitBtn = document.getElementById('submitBtn');
   const finalMessage = document.getElementById('finalMessage');
-  const pageTitle = document.getElementById('pageTitle');
   let isSubmitted = false;
 
-  // שליחה ב-AJAX
   form.addEventListener('submit', async function(e) {
     e.preventDefault();
-
     if (isSubmitted) return;
 
     const name = document.getElementById('fullName').value.trim();
     const phone = document.getElementById('phone').value.trim();
 
     if (!name || !phone) {
-      alert('אנא מלא שם וטלפון');
+      alert(lang === 'he' ? 'אנא מלא שם וטלפון' : 'Please fill name and phone');
       return;
     }
 
     isSubmitted = true;
     submitBtn.disabled = true;
-    submitBtn.textContent = 'שולח...';
+    submitBtn.textContent = lang === 'he' ? 'שולח...' : 'Sending...';
 
     const formData = new FormData(form);
 
     try {
-      const response = await fetch('https://formspree.io/f/mzzyzyzo', {
+      const response = await fetch('https://formspree.io/f/ה-ID-שלך-כאן', {
         method: 'POST',
         body: formData,
-        headers: {
-          'Accept': 'application/json'
-        }
+        headers: { 'Accept': 'application/json' }
       });
 
-      const result = await response.json();
-
       if (response.ok) {
-        // הצלחה
         form.style.display = 'none';
         finalMessage.style.display = 'block';
-        pageTitle.textContent = 'סיכום הזמנה';
-
+        document.getElementById('pageTitle').textContent = lang === 'he' ? 'סיכום הזמנה' : 'Booking Summary';
         history.pushState(null, null, location.href);
         window.onpopstate = () => history.go(1);
       } else {
-        // שגיאה מפורטת
-        alert(`שגיאה: ${result.error || 'שגיאה בשליחה'}`);
-        submitBtn.disabled = false;
-        submitBtn.textContent = 'אישור סופי והזמנה';
-        isSubmitted = false;
+        throw new Error();
       }
     } catch (error) {
-      alert('שגיאה בחיבור. בדוק חיבור לאינטרנט.');
+      alert(lang === 'he' ? 'שגיאה בשליחה. נסה שוב.' : 'Error sending. Try again.');
       submitBtn.disabled = false;
-      submitBtn.textContent = 'אישור סופי והזמנה';
+      submitBtn.textContent = t.submitBtn;
       isSubmitted = false;
     }
   });
 
-  // חוסם חזרה
   history.pushState(null, null, location.href);
   window.onpopstate = () => history.go(1);
 </script>
