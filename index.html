@@ -4,6 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>רובע יא' - מרכז קהילתי עם שלום</title>
+  <!-- Font Awesome לדגלים -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
     :root {
       --primary: #1a73e8;
@@ -23,23 +25,44 @@
     .container{
       max-width:900px;margin:0 auto;background:rgba(255,255,255,.95);color:var(--dark);
       border-radius:15px;padding:30px;box-shadow:0 10px 40px rgba(0,0,0,.3);backdrop-filter:blur(8px);
+      position:relative;
     }
     header{text-align:center;margin-bottom:25px;}
     h1{color:var(--primary);margin-bottom:8px;}
 
-    /* ---------- מחליף שפה – תיקון מיקום ---------- */
+    /* ---------- מחליף שפה – קבוע, לא זז ---------- */
     .lang-switch{
-      position:absolute;top:15px;left:15px;font-size:.85rem;display:flex;gap:5px;
+      position:absolute;
+      top:15px;
+      left:15px;
+      font-size:.85rem;
+      display:flex;
+      align-items:center;
+      gap:8px;
+      z-index:100;
     }
-    .lang-switch a{
+    .lang-btn{
+      display:flex;
+      align-items:center;
+      gap:5px;
+      color:#666;
+      text-decoration:none;
+      padding:6px 10px;
+      border-radius:6px;
+      transition:background .2s, color .2s;
       position:relative;
-      color:#666;text-decoration:none;padding:4px 8px;border-radius:4px;transition:background .2s;
     }
-    .lang-switch a:hover,.lang-switch a.active{background:#e3f2fd;color:var(--primary);}
-    
-    /* תיקון מיקום טקסט – English לא זז */
-    .lang-btn[data-lang="he"] { right: 0; }
-    .lang-btn[data-lang="en"] { left: 0; }
+    .lang-btn:hover, .lang-btn.active{
+      background:#e3f2fd;
+      color:var(--primary);
+    }
+    .lang-btn i{
+      font-size:1rem;
+    }
+    .lang-separator{
+      color:#aaa;
+      font-weight:bold;
+    }
 
     /* ---------- מפת מגרשים ---------- */
     .courts-map{
@@ -112,13 +135,7 @@
         gap:12px;
       }
       .wall-separator { height: 25px; }
-      .court-btn:nth-child(1){grid-area:1/1;}
-      .court-btn:nth-child(2){grid-area:1/2;}
-      .court-btn:nth-child(3){grid-area:2/1;}
-      .court-btn:nth-child(4){grid-area:2/2;}
-      .court-btn:nth-child(5){grid-area:4/1;}
-      .court-btn:nth-child(6){grid-area:4/2;}
-      .lang-switch{position:static;text-align:center;margin-bottom:15px;justify-content:center;}
+      .lang-switch{left:50%;transform:translateX(-50%);top:10px;}
       .price-note{position:static;margin-top:15px;text-align:center;}
     }
   </style>
@@ -126,11 +143,15 @@
 <body>
 
 <div class="container">
-  <!-- מחליף שפה – English לא זז -->
+  <!-- מחליף שפה – קבוע, עם דגלים -->
   <div class="lang-switch">
-    <a href="#" class="lang-btn active" data-lang="he">עברית</a>
-    <span style="color:#666;">|</span>
-    <a href="#" class="lang-btn" data-lang="en">English</a>
+    <a href="#" class="lang-btn active" data-lang="he">
+      <i class="flag-icon il"></i> עברית
+    </a>
+    <span class="lang-separator">|</span>
+    <a href="#" class="lang-btn" data-lang="en">
+      <i class="flag-icon us"></i> English
+    </a>
   </div>
 
   <header>
@@ -197,6 +218,16 @@
 </div>
 
 <script>
+  // דגלים עם Font Awesome
+  const flagStyle = `
+    <style>
+      .flag-icon.il:before { content: "\f024"; color: #0038b8; }
+      .flag-icon.us:before { content: "\f024"; color: #b22234; }
+      .flag-icon:before { font-family: "Font Awesome 6 Free"; font-weight: 900; }
+    </style>
+  `;
+  document.head.insertAdjacentHTML('beforeend', flagStyle);
+
   const hours = [];
   for(let h=8;h<=21;h++) hours.push(h.toString().padStart(2,'0')+':00');
 
@@ -222,35 +253,35 @@
   };
 
   document.querySelectorAll('.lang-btn').forEach(b=>b.addEventListener('click',e=>{
-    e.preventDefault(); const lang=b.dataset.lang;
-    document.documentElement.lang=lang; 
-    document.documentElement.dir=lang==='he'?'rtl':'ltr';
-    
+    e.preventDefault();
+    const lang = b.dataset.lang;
+
     // עדכון כפתור פעיל
-    document.querySelectorAll('.lang-btn').forEach(x=>x.classList.remove('active')); 
+    document.querySelectorAll('.lang-btn').forEach(x=>x.classList.remove('active'));
     b.classList.add('active');
 
-    // עדכון תוכן
-    document.querySelector('h1').textContent=translations[lang].title;
-    document.querySelector('header p').textContent=translations[lang].subtitle;
-    document.querySelectorAll('[data-he]').forEach(el=>el.textContent=lang==='en'?el.dataset.en:el.dataset.he);
-    document.querySelectorAll('.court-btn').forEach((btn,i)=>btn.textContent=translations[lang].courts[i]);
-    
-    if(document.getElementById('bookingForm').style.display!=='none') updateFormLanguage(lang);
+    // עדכון תוכן – בלי לשנות dir!
+    document.documentElement.lang = lang;
+    document.querySelector('h1').textContent = translations[lang].title;
+    document.querySelector('header p').textContent = translations[lang].subtitle;
+    document.querySelectorAll('[data-he]').forEach(el=>el.textContent = lang==='en'?el.dataset.en:el.dataset.he);
+    document.querySelectorAll('.court-btn').forEach((btn,i)=>btn.textContent = translations[lang].courts[i]);
+
+    if(document.getElementById('bookingForm').style.display !== 'none') updateFormLanguage(lang);
   }));
 
   function updateFormLanguage(lang){
-    const t=translations[lang];
-    document.querySelector('#bookingForm h3').textContent=t.bookingTitle;
-    document.querySelector('label[for="daySelect"]').textContent=t.selectDay;
-    document.querySelector('label[for="timeSelect"]').textContent=t.selectTime;
-    document.querySelector('.duration-options .duration-btn:nth-child(1)').textContent=t.oneHour;
-    document.querySelector('.duration-options .duration-btn:nth-child(2)').textContent=t.twoHours;
-    document.querySelector('.submit-btn').textContent=t.confirm;
-    document.querySelector('.price-note span').textContent=t.priceNote;
+    const t = translations[lang];
+    document.querySelector('#bookingForm h3').textContent = t.bookingTitle;
+    document.querySelector('label[for="daySelect"]').textContent = t.selectDay;
+    document.querySelector('label[for="timeSelect"]').textContent = t.selectTime;
+    document.querySelector('.duration-options .duration-btn:nth-child(1)').textContent = t.oneHour;
+    document.querySelector('.duration-options .duration-btn:nth-child(2)').textContent = t.twoHours;
+    document.querySelector('.submit-btn').textContent = t.confirm;
+    document.querySelector('.price-note span').textContent = t.priceNote;
   }
 
-  const timeSelect=document.getElementById('timeSelect');
+  const timeSelect = document.getElementById('timeSelect');
   hours.forEach(h=>{const o=document.createElement('option');o.value=o.textContent=h;timeSelect.appendChild(o);});
 
   let selectedCourt=null, selectedBtn=null;
