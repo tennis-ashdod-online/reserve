@@ -70,139 +70,7 @@
   <h1>השלם את ההזמנה</h1>
   <div class="summary-box" id="summary"></div>
 
-  <!-- טופס – שליחה ב-AJAX -->
-  <form id="personalDetailsForm">
-    <div class="form-group">
-      <label for="fullName">שם מלא *</label>
-      <input type="text" id="fullName" name="שם מלא" required placeholder="הכנס שם מלא" />
-    </div>
-    <div class="form-group">
-      <label for="phone">טלפון *</label>
-      <input type="tel" id="phone" name="טלפון" required placeholder="05X-XXXXXXX" />
-    </div>
-    <div class="form-group">
-      <label for="email">אימייל</label>
-      <input type="email" id="email" name="אימייל" placeholder="example@email.com" />
-    </div>
-
-    <!-- שדות נסתרים -->
-    <input type="hidden" name="מגרש" id="hiddenCourt">
-    <input type="hidden" name="יום" id="hiddenDay">
-    <input type="hidden" name="שעה" id="hiddenTime">
-    <input type="hidden" name="משך" id="hiddenDuration">
-    <input type="hidden" name="סהכ" id="hiddenTotal">
-
-    <button type="submit" class="submit-btn" id="submitBtn">אישור סופי והזמנה</button>
-  </form>
-
-  <!-- הודעה סופית -->
-  <div class="final-message" id="finalMessage" style="display:none;">
-    <strong>ההזמנה נשלחה בהצלחה!</strong>
-    תודה רבה! נשלח לך אישור ב-SMS ו/או במייל.
-    <br><br>
-    <small>אין צורך לשלוח שוב – ההזמנה כבר נקלטה במערכת.</small>
-  </div>
-</div>
-
-<script>
-  // קריאת פרמטרים
-  const params = new URLSearchParams(window.location.search);
-  const court = params.get('court');
-  const day = params.get('day');
-  const time = params.get('time');
-  const duration = params.get('duration');
-  const total = params.get('total');
-
-  // הצגת פרטים
-  document.getElementById('summary').innerHTML = `
-    <p><strong>מגרש:</strong> ${court}</p>
-    <p><strong>יום:</strong> ${day}</p>
-    <p><strong>שעה:</strong> ${time}</p>
-    <p><strong>משך:</strong> ${duration === '1' ? 'שעה אחת' : 'שעתיים'}</p>
-    <p><strong>סה"כ לתשלום:</strong> ${total}</p>
-  `;
-
-  // שמירת ערכים
-  document.getElementById('hiddenCourt').value = court;
-  document.getElementById('hiddenDay').value = day;
-  document.getElementById('hiddenTime').value = time;
-  document.getElementById('hiddenDuration').value = duration === '1' ? 'שעה אחת' : 'שעתיים';
-  document.getElementById('hiddenTotal').value = total;
-
-  const form = document.getElementById('personalDetailsForm');
-  const submitBtn = document.getElementById('submitBtn');
-  const finalMessage = document.getElementById('finalMessage');
-  let isSubmitted = false;
-
-  // שליחה ב-AJAX
-  form.addEventListener('submit', async function(e) {
-    e.preventDefault(); // מונע טעינה של דף חדש
-
-    if (isSubmitted) return;
-
-    const name = document.getElementById('fullName').value.trim();
-    const phone = document.getElementById('phone').value.trim();
-
-    if (!name || !phone) {
-      alert('אנא מלא שם וטלפון');
-      return;
-    }
-
-    isSubmitted = true;
-    submitBtn.disabled = true;
-    submitBtn.textContent = 'שולח...';
-
-    // איסוף כל השדות
-    const formData = new FormData(form);
-    formData.append('_replyto', document.getElementById('email').value); // אופציונלי
-
-    try {
-      const response = await fetch('https://formspree.io/f/ה-ID-שלך-כאן', {
-        method: 'POST',
-        body: formData,
-        headers: {
-          'Accept': 'application/json'
-        }
-      });
-
-      if (response.ok) {
-        // הצלחה – מציגים הודעה
-        form.style.display = 'none';
-        finalMessage.style.display = 'block';
-
-        // נועלים חזרה
-        history.pushState(null, null, location.href);
-        window.onpopstate = () => history.go(1);
-      } else {
-        alert('שגיאה בשליחה. נסה שוב.');
-        submitBtn.disabled = false;
-        submitBtn.textContent = 'אישור סופי והזמנה';
-        isSubmitted = false;
-      }
-    } catch (error) {
-      alert('שגיאה בחיבור. בדוק חיבור לאינטרנט.');
-      submitBtn.disabled = false;
-      submitBtn.textContent = 'אישור סופי והזמנה';
-      isSubmitted = false;
-    }
-  });
-
-  // חוסם חזרה מההתחלה
-  history.pushState(null, null, location.href);
-  window.onpopstate = () => history.go(1);
-</script>
-</body>
-</html>    .final-message strong{
-      display:block;margin-top:10px;font-size:1.3rem;
-    }
-  </style>
-</head>
-<body>
-<div class="container">
-  <h1>השלם את ההזמנה</h1>
-  <div class="summary-box" id="summary"></div>
-
-  <!-- טופס -->
+  <!-- טופס עם _next -->
   <form id="personalDetailsForm" action="https://formspree.io/f/mzzyzyzo" method="POST">
     <div class="form-group">
       <label for="fullName">שם מלא *</label>
@@ -224,10 +92,13 @@
     <input type="hidden" name="משך" id="hiddenDuration">
     <input type="hidden" name="סהכ" id="hiddenTotal">
 
+    <!-- חשוב: _next – חוזר לאותו דף -->
+    <input type="hidden" name="_next" value="#thanks">
+
     <button type="submit" class="submit-btn" id="submitBtn">אישור סופי והזמנה</button>
   </form>
 
-  <!-- הודעה סופית -->
+  <!-- הודעה סופית – מופיעה אחרי שליחה -->
   <div class="final-message" id="finalMessage" style="display:none;">
     <strong>ההזמנה נשלחה בהצלחה!</strong>
     תודה רבה! נשלח לך אישור ב-SMS ו/או במייל.
@@ -266,6 +137,7 @@
   const finalMessage = document.getElementById('finalMessage');
   let isSubmitted = false;
 
+  // שליחה רגילה – אבל עם _next
   form.addEventListener('submit', function(e) {
     if (isSubmitted) {
       e.preventDefault();
@@ -285,26 +157,23 @@
     submitBtn.disabled = true;
     submitBtn.textContent = 'שולח...';
 
-    // נועלים חזרה בדפדפן – בלי הודעה!
-    history.pushState(null, null, location.href);
-    window.onpopstate = function () {
-      history.go(1);
-    };
-
-    // הצגת הודעה אחרי שליחה
-    setTimeout(() => {
-      form.style.display = 'none';
-      finalMessage.style.display = 'block';
-    }, 800);
+    // הסתרת הטופס מיידית
+    form.style.display = 'none';
   });
 
-  // חוסמים חזרה – אבל בלי ההודעה של הדפדפן!
-  history.pushState(null, null, location.href);
-  window.onpopstate = function () {
-    history.go(1);
-  };
+  // אם חזרנו עם #thanks – הצג הודעה
+  if (window.location.hash === '#thanks') {
+    form.style.display = 'none';
+    finalMessage.style.display = 'block';
 
-  // הסרנו את beforeunload – לא צריך!
+    // נועלים חזרה
+    history.pushState(null, null, location.href);
+    window.onpopstate = () => history.go(1);
+  }
+
+  // חוסם חזרה מההתחלה
+  history.pushState(null, null, location.href);
+  window.onpopstate = () => history.go(1);
 </script>
 </body>
 </html>
