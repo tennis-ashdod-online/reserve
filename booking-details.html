@@ -69,7 +69,9 @@
   <button class="close-btn" onclick="window.close()">×</button>
   <h1>השלם את ההזמנה</h1>
 
-  <div class="summary-box" id="summary"></div>
+  <div class="summary-box" id="summary">
+    <!-- יתמלא דינמית -->
+  </div>
 
   <form id="personalDetailsForm">
     <div class="form-group">
@@ -78,7 +80,7 @@
     </div>
     <div class="form-group">
       <label for="phone">טלפון *</label>
-      <input type="tel" id="phone" required pattern="05[0-9]-[0-9]{7}" placeholder="050-1234567" title="טלפון בפורמט: 05X-XXXXXXX" />
+      <input type="tel" id="phone" required placeholder="05X-XXXXXXX" />
     </div>
     <div class="form-group">
       <label for="email">אימייל</label>
@@ -88,47 +90,30 @@
     <button type="submit" class="submit-btn">אישור סופי והזמנה</button>
   </form>
 
-  <div class="final-message" id="finalMessage"></div>
+  <div class="final-message" id="finalMessage">
+    תודה! ההזמנה נקלטה במערכת. נשלח לך אישור ב-SMS.
+  </div>
 </div>
 
 <script>
-  // קריאת נתונים – hash או localStorage
-  let data = null;
-  const hash = window.location.hash.substring(1);
+  // קריאת פרמטרים מה-URL
+  const params = new URLSearchParams(window.location.search);
+  const court = params.get('court');
+  const day = params.get('day');
+  const time = params.get('time');
+  const duration = params.get('duration');
+  const total = params.get('total');
 
-  if (hash) {
-    try { data = JSON.parse(atob(hash)); } catch(e) {}
-  }
-
-  if (!data) {
-    const pending = localStorage.getItem('pendingBooking');
-    if (pending) {
-      data = JSON.parse(pending);
-      localStorage.removeItem('pendingBooking');
-    }
-  }
-
-  if (!data) {
-    document.body.innerHTML = '<h2 style="text-align:center;color:red;">שגיאה: אין נתוני הזמנה</h2>';
-    throw new Error("No booking data");
-  }
-
-  const { court, day, time, duration, total, lang = 'he' } = data;
-
-  const finalMsg = lang === 'en'
-    ? "Thank you! Your booking is confirmed. Confirmation sent via SMS."
-    : "תודה! ההזמנה נקלטה במערכת. נשלח לך אישור ב-SMS.";
-
-  document.getElementById('finalMessage').textContent = finalMsg;
-
+  // הצגת פרטי ההזמנה
   document.getElementById('summary').innerHTML = `
     <p><strong>מגרש:</strong> ${court}</p>
     <p><strong>יום:</strong> ${day}</p>
     <p><strong>שעה:</strong> ${time}</p>
-    <p><strong>משך:</strong> ${duration === '1' ? (lang === 'en' ? '1 Hour' : 'שעה אחת') : (lang === 'en' ? '2 Hours' : 'שעתיים')}</p>
+    <p><strong>משך:</strong> ${duration === '1' ? 'שעה אחת' : 'שעתיים'}</p>
     <p><strong>סה"כ לתשלום:</strong> ${total}</p>
   `;
 
+  // שליחת הטופס
   document.getElementById('personalDetailsForm').addEventListener('submit', function(e) {
     e.preventDefault();
 
@@ -137,15 +122,14 @@
     const email = document.getElementById('email').value.trim();
 
     if (!name || !phone) {
-      alert(lang === 'en' ? 'Please enter name and phone' : 'אנא מלא שם וטלפון');
+      alert('אנא מלא שם וטלפון');
       return;
     }
 
-    const booking = { court, day, time, duration, total, name, phone, email, timestamp: new Date().toISOString() };
-    let bookings = JSON.parse(localStorage.getItem('tennisBookings') || '[]');
-    bookings.push(booking);
-    localStorage.setItem('tennisBookings', JSON.stringify(bookings));
+    // כאן אפשר לשלוח לשרת, WhatsApp, או דוא"ל
+    console.log('הזמנה:', { court, day, time, duration, total, name, phone, email });
 
+    // הצגת הודעת אישור
     document.getElementById('personalDetailsForm').style.display = 'none';
     document.getElementById('finalMessage').style.display = 'block';
   });
@@ -153,3 +137,4 @@
 
 </body>
 </html>
+
