@@ -67,13 +67,10 @@
 </head>
 <body>
 <div class="container">
-  <!-- אין כפתור סגירה! -->
   <h1>השלם את ההזמנה</h1>
-  <div class="summary-box" id="summary">
-    <!-- יתמלא דינמית -->
-  </div>
+  <div class="summary-box" id="summary"></div>
 
-  <!-- טופס עם Formspree -->
+  <!-- טופס -->
   <form id="personalDetailsForm" action="https://formspree.io/f/mzzyzyzo" method="POST">
     <div class="form-group">
       <label for="fullName">שם מלא *</label>
@@ -98,7 +95,7 @@
     <button type="submit" class="submit-btn" id="submitBtn">אישור סופי והזמנה</button>
   </form>
 
-  <!-- הודעה סופית – מופיעה אחרי שליחה -->
+  <!-- הודעה סופית -->
   <div class="final-message" id="finalMessage" style="display:none;">
     <strong>ההזמנה נשלחה בהצלחה!</strong>
     תודה רבה! נשלח לך אישור ב-SMS ו/או במייל.
@@ -108,7 +105,7 @@
 </div>
 
 <script>
-  // קריאת פרמטרים מה-URL
+  // קריאת פרמטרים
   const params = new URLSearchParams(window.location.search);
   const court = params.get('court');
   const day = params.get('day');
@@ -125,7 +122,7 @@
     <p><strong>סה"כ לתשלום:</strong> ${total}</p>
   `;
 
-  // שמירת ערכים בשדות נסתרים
+  // שמירת ערכים
   document.getElementById('hiddenCourt').value = court;
   document.getElementById('hiddenDay').value = day;
   document.getElementById('hiddenTime').value = time;
@@ -135,7 +132,6 @@
   const form = document.getElementById('personalDetailsForm');
   const submitBtn = document.getElementById('submitBtn');
   const finalMessage = document.getElementById('finalMessage');
-
   let isSubmitted = false;
 
   form.addEventListener('submit', function(e) {
@@ -157,7 +153,7 @@
     submitBtn.disabled = true;
     submitBtn.textContent = 'שולח...';
 
-    // נועלים את ההיסטוריה – לא ניתן לחזור
+    // נועלים חזרה בדפדפן – בלי הודעה!
     history.pushState(null, null, location.href);
     window.onpopstate = function () {
       history.go(1);
@@ -170,19 +166,13 @@
     }, 800);
   });
 
-  // מניעת חזרה בדפדפן
-  window.addEventListener('beforeunload', function(e) {
-    if (isSubmitted) {
-      e.preventDefault();
-      e.returnValue = '';
-    }
-  });
-
-  // נועלים חזרה מההתחלה
+  // חוסמים חזרה – אבל בלי ההודעה של הדפדפן!
   history.pushState(null, null, location.href);
   window.onpopstate = function () {
     history.go(1);
   };
+
+  // הסרנו את beforeunload – לא צריך!
 </script>
 </body>
 </html>
