@@ -1,25 +1,403 @@
 <!DOCTYPE html>
 <html lang="he" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>הזמנת מגרשי טניס אשדוד</title>
-    <style>
-        body { font-family: Arial, sans-serif; text-align: center; padding: 50px; }
-        button { padding: 10px 20px; font-size: 16px; background: #4CAF50; color: white; border: none; cursor: pointer; }
-        button:hover { background: #45a049; }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>הזמנת מגרש טניס - אשדוד</title>
+  <style>
+    :root {
+      --primary: #1a73e8;
+      --light: #f8f9fa;
+      --dark: #333;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    body {
+      background: #f5f7fa;
+      color: var(--dark);
+      line-height: 1.6;
+      padding: 20px;
+    }
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 12px;
+      padding: 25px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+    header {
+      text-align: center;
+      margin-bottom: 25px;
+    }
+    h1 {
+      color: var(--primary);
+      margin-bottom: 8px;
+    }
+    .lang-switch {
+      position: absolute;
+      top: 15px;
+      left: 15px;
+      font-size: 0.85rem;
+    }
+    .lang-switch a {
+      color: #666;
+      text-decoration: none;
+      padding: 4px 8px;
+      border-radius: 4px;
+      transition: background 0.2s;
+    }
+    .lang-switch a:hover, .lang-switch a.active {
+      background: #e3f2fd;
+      color: var(--primary);
+    }
+    .courts {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 15px;
+      margin: 20px 0;
+    }
+    .court-btn {
+      padding: 18px;
+      background: var(--light);
+      border: 2px solid #ddd;
+      border-radius: 10px;
+      cursor: pointer;
+      text-align: center;
+      font-weight: bold;
+      transition: all 0.3s;
+    }
+    .court-btn:hover {
+      border-color: var(--primary);
+      background: #e3f2fd;
+    }
+    .court-btn.selected {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+    }
+    .booking-form {
+      margin-top: 25px;
+      padding: 20px;
+      background: #f9f9f9;
+      border-radius: 10px;
+      display: none;
+    }
+    .form-group {
+      margin-bottom: 18px;
+    }
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+    select, input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 1rem;
+    }
+    .duration-options {
+      display: flex;
+      gap: 15px;
+      margin-top: 10px;
+    }
+    .duration-btn {
+      flex: 1;
+      padding: 12px;
+      text-align: center;
+      border: 2px solid #ddd;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .duration-btn.selected {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+    }
+    .submit-btn {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      font-size: 1rem;
+      border-radius: 6px;
+      cursor: pointer;
+      width: 100%;
+      margin-top: 15px;
+    }
+    .submit-btn:hover {
+      background: #0d47a1;
+    }
+    .info-box {
+      margin-top: 30px;
+      padding: 15px;
+      background: #e8f5e9;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+    .price-note {
+      position: absolute;
+      bottom: 15px;
+      right: 15px;
+      background: #fff3e0;
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      box-shadow: 0 1px 5px rgba(0,0,0,0.1);
+    }
+    .hidden {
+      display: none;
+    }
+    @media (max-width: 600px) {
+      .courts {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .lang-switch {
+        position: static;
+        text-align: center;
+        margin-bottom: 15px;
+      }
+      .price-note {
+        position: static;
+        margin-top: 15px;
+        text-align: center;
+      }
+    }
+  </style>
 </head>
 <body>
-    <h1>הזמנת מגרש בי"א</h1>
-    <p>בחר תאריך:</p>
-    <input type="date" id="date">
-    <br><br>
-    <button onclick="bookCourt()">הזמן מגרש</button>
-    <script>
-        function bookCourt() {
-            alert('ההזמנה נשמרה! (זה דוגמה)');
-        }
-    </script>
+
+<div class="container">
+  <div class="lang-switch">
+    <a href="#" class="lang-btn active" data-lang="he">עברית</a> | 
+    <a href="#" class="lang-btn" data-lang="en">English</a>
+  </div>
+
+  <header>
+    <h1 data-he="הזמנת מגרש טניס" data-en="Tennis Court Booking">הזמנת מגרש טניס</h1>
+    <p data-he="בחרו מגרש, יום ושעה להזמנה" data-en="Choose a court, date and time">בחרו מגרש, יום ושעה להזמנה</p>
+  </header>
+
+  <div class="courts">
+    <div class="court-btn" data-court="1">מגרש 1</div>
+    <div class="court-btn" data-court="2">מגרש 2</div>
+    <div class="court-btn" data-court="3">מגרש 3</div>
+    <div class="court-btn" data-court="4">מגרש 4</div>
+    <div class="court-btn" data-court="5">מגרש 5</div>
+    <div class="court-btn" data-court="6">מגרש 6</div>
+  </div>
+
+  <div id="bookingForm" class="booking-form">
+    <h3 data-he="פרטי הזמנה" data-en="Booking Details">פרטי הזמנה</h3>
+    
+    <div class="form-group">
+      <label data-he="מגרש נבחר:" data-en="Selected Court:">מגרש נבחר:</label>
+      <input type="text" id="selectedCourt" readonly />
+    </div>
+
+    <div class="form-group">
+      <label for="daySelect" data-he="בחר יום:" data-en="Select Day:">בחר יום:</label>
+      <select id="daySelect">
+        <option value="">-- בחר יום --</option>
+        <option value="ראשון">ראשון</option>
+        <option value="שני">שני</option>
+        <option value="שלישי">שלישי</option>
+        <option value="רביעי">רביעי</option>
+        <option value="חמישי">חמישי</option>
+        <option value="שישי">שישי</option>
+        <option value="שבת">שבת</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="timeSelect" data-he="בחר שעה:" data-en="Select Time:">בחר שעה:</label>
+      <select id="timeSelect">
+        <option value="">-- בחר שעה --</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label data-he="משך זמן:" data-en="Duration:">משך זמן:</label>
+      <div class="duration-options">
+        <div class="duration-btn selected" data-duration="1">שעה אחת</div>
+        <div class="duration-btn" data-duration="2">שעתיים</div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label data-he="סה״כ לתשלום:" data-en="Total Amount:">סה״כ לתשלום:</label>
+      <input type="text" id="totalPrice" readonly value="40₪" />
+    </div>
+
+    <button class="submit-btn" data-he="אישור הזמנה" data-en="Confirm Booking">אישור הזמנה</button>
+  </div>
+
+  <div class="info-box">
+    <p><strong data-he="כתובת:" data-en="Address:">כתובת:</strong> <span data-he="הרי גולן 6, אשדוד, ישראל" data-en="Harei Golan 6, Ashdod, Israel">הרי גולן 6, אשדוד, ישראל</span></p>
+    <p><strong data-he="טלפון:" data-en="Phone:">טלפון:</strong> <a href="tel:088678400">08-8678400</a></p>
+    <p data-he="שעות פעילות: ראשון-שבת 08:00–21:00" data-en="Hours: Sun-Sat 08:00–21:00">שעות פעילות: ראשון-שבת 08:00–21:00</p>
+  </div>
+
+  <div class="price-note">
+    <span data-he="תעריף: 40₪ לשעה" data-en="Rate: 40₪ per hour">תעריף: 40₪ לשעה</span>
+  </div>
+</div>
+
+<script>
+  // שעות זמינות
+  const hours = [];
+  for (let h = 8; h <= 21; h++) {
+    const hour = h.toString().padStart(2, '0') + ':00';
+    hours.push(hour);
+  }
+
+  // תרגומים
+  const translations = {
+    he: {
+      title: "הזמנת מגרש טניס",
+      subtitle: "בחרו מגרש, יום ושעה להזמנה",
+      courts: ["מגרש 1", "מגרש 2", "מגרש 3", "מגרש 4", "מגרש 5", "מגרש 6"],
+      bookingTitle: "פרטי הזמנה",
+      selectedCourt: "מגרש נבחר:",
+      selectDay: "בחר יום:",
+      selectTime: "בחר שעה:",
+      duration: "משך זמן:",
+      oneHour: "שעה אחת",
+      twoHours: "שעתיים",
+      total: "סה״כ לתשלום:",
+      confirm: "אישור הזמנה",
+      address: "הרי גולן 6, אשדוד, ישראל",
+      phone: "08-8678400",
+      hours: "שעות פעילות: ראשון-שבת 08:00–21:00",
+      priceNote: "תעריף: 40₪ לשעה"
+    },
+    en: {
+      title: "Tennis Court Booking",
+      subtitle: "Choose a court, date and time",
+      courts: ["Court 1", "Court 2", "Court 3", "Court 4", "Court 5", "Court 6"],
+      bookingTitle: "Booking Details",
+      selectedCourt: "Selected Court:",
+      selectDay: "Select Day:",
+      selectTime: "Select Time:",
+      duration: "Duration:",
+      oneHour: "1 Hour",
+      twoHours: "2 Hours",
+      total: "Total Amount:",
+      confirm: "Confirm Booking",
+      address: "Harei Golan 6, Ashdod, Israel",
+      phone: "08-8678400",
+      hours: "Hours: Sun-Sat 08:00–21:00",
+      priceNote: "Rate: 40₪ per hour"
+    }
+  };
+
+  // החלפת שפה
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      const lang = btn.dataset.lang;
+      
+      document.documentElement.lang = lang;
+      document.documentElement.dir = lang === 'he' ? 'rtl' : 'ltr';
+      
+      // עדכון כפתור פעיל
+      document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      
+      // עדכון טקסטים
+      document.querySelector('h1').textContent = translations[lang].title;
+      document.querySelector('header p').textContent = translations[lang].subtitle;
+      
+      document.querySelectorAll('[data-he]').forEach(el => {
+        const text = lang === 'en' ? el.dataset.en : el.dataset.he;
+        if (text) el.textContent = text;
+      });
+
+      // עדכון מגרשים
+      document.querySelectorAll('.court-btn').forEach((btn, i) => {
+        btn.textContent = translations[lang].courts[i];
+      });
+
+      // עדכון טופס
+      if (document.getElementById('bookingForm').style.display !== 'none') {
+        updateFormLanguage(lang);
+      }
+    });
+  });
+
+  function updateFormLanguage(lang) {
+    const t = translations[lang];
+    document.querySelector('#bookingForm h3').textContent = t.bookingTitle;
+    document.querySelector('label[for="daySelect"]').textContent = t.selectDay;
+    document.querySelector('label[for="timeSelect"]').textContent = t.selectTime;
+    document.querySelector('.duration-options .duration-btn:nth-child(1)').textContent = t.oneHour;
+    document.querySelector('.duration-options .duration-btn:nth-child(2)').textContent = t.twoHours;
+    document.querySelector('.submit-btn').textContent = t.confirm;
+    document.querySelector('.price-note span').textContent = t.priceNote;
+  }
+
+  // מילוי שעות
+  const timeSelect = document.getElementById('timeSelect');
+  hours.forEach(hour => {
+    const opt = document.createElement('option');
+    opt.value = hour;
+    opt.textContent = hour;
+    timeSelect.appendChild(opt);
+  });
+
+  // בחירת מגרש
+  let selectedCourt = null;
+  document.querySelectorAll('.court-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.court-btn').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+      selectedCourt = btn.dataset.court;
+      document.getElementById('selectedCourt').value = btn.textContent;
+      document.getElementById('bookingForm').style.display = 'block';
+      
+      const lang = document.documentElement.lang;
+      updateFormLanguage(lang);
+    });
+  });
+
+  // בחירת משך זמן
+  let duration = 1;
+  document.querySelectorAll('.duration-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.duration-btn').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+      duration = parseInt(btn.dataset.duration);
+      document.getElementById('totalPrice').value = (40 * duration) + '₪';
+    });
+  });
+
+  // עדכון מחיר בזמן אמת
+  document.getElementById('timeSelect').addEventListener('change', () => {
+    document.getElementById('totalPrice').value = (40 * duration) + '₪';
+  });
+
+  // שליחת הזמנה (הדגמה)
+  document.querySelector('.submit-btn').addEventListener('click', () => {
+    const day = document.getElementById('daySelect').value;
+    const time = document.getElementById('timeSelect').value;
+    if (!day || !time) {
+      alert(document.documentElement.lang === 'he' ? 'אנא מלא את כל השדות' : 'Please fill all fields');
+      return;
+    }
+    alert(
+      (document.documentElement.lang === 'he' ? 'הזמנה אושרה!\n' : 'Booking confirmed!\n') +
+      `מגרש: ${selectedCourt}\nיום: ${day}\nשעה: ${time}\nמשך: ${duration} שעה${duration > 1 ? 'ות' : ''}\nסה״כ: ${40 * duration}₪`
+    );
+  });
+</script>
+
 </body>
 </html>
