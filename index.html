@@ -153,7 +153,7 @@
     .submit-btn:hover{background:#0d47a1;}
 
     .info-box{
-      margin-top:30px;padding:15px;background:var(--success);border-radius:8px;
+      margin-top:404px;padding:15px;background:var(--success);border-radius:8px;
       font-size:.95rem;line-height:1.5;text-align:right;
     }
     .price-note{
@@ -249,237 +249,236 @@
 </div>
 
 <script>
-  const hours = [];
-  for(let h = 8; h <= 21; h++) hours.push(h.toString().padStart(2, '0') + ':00');
+  // ממתין עד שה-DOM נטען
+  document.addEventListener('DOMContentLoaded', () => {
+    const hours = [];
+    for(let h = 8; h <= 21; h++) hours.push(h.toString().padStart(2, '0') + ':00');
 
-  const translations = {
-    he: {
-      title: "רובע יא' - מרכז קהילתי עם שלום",
-      subtitle: "בחרו את המגרש שבו תרצו לשחק",
-      courts: ["מגרש 5","מגרש 6","מגרש 4","מגרש 3","מגרש 2","מגרש 1"],
-      bookingTitle: "פרטי הזמנה",
-      selectedCourt: "מגרש נבחר:",
-      selectDay: "בחר יום:",
-      selectTime: "בחר שעה:",
-      oneHour: "שעה אחת",
-      twoHours: "שעתיים",
-      total: "סה״כ לתשלום:",
-      confirm: "אישור הזמנה",
-      back: "חזור",
-      priceNote: "תעריף: 40₪ לשעה",
-      alertTitle: "הזמנה אושרה!",
-      alertThanks: "תודה ששיחקת אצלנו!",
-      missing: "אנא מלא את כל השדות הנדרשים",
-      confirmModal: "האם אתה בטוח שברצונך לאשר את ההזמנה?",
-      yes: "כן",
-      no: "לא"
-    },
-    en: {
-      title: "Am-Shalom Community Center",
-      subtitle: "Choose the tennis court where you want to play",
-      courts: ["Court 5","Court 6","Court 4","Court 3","Court 2","Court 1"],
-      bookingTitle: "Booking Details",
-      selectedCourt: "Selected Court:",
-      selectDay: "Select Day:",
-      selectTime: "Select Time:",
-      oneHour: "1 Hour",
-      twoHours: "2 Hours",
-      total: "Total Amount:",
-      confirm: "Confirm Booking",
-      back: "Back",
-      priceNote: "Rate: 40₪ per hour",
-      alertTitle: "Booking confirmed!",
-      alertThanks: "Thank you for playing with us!",
-      missing: "Please fill all required fields",
-      confirmModal: "Are you sure you want to confirm the booking?",
-      yes: "Yes",
-      no: "No"
-    }
-  };
-
-  const timeSelect = document.getElementById('timeSelect');
-  hours.forEach(h => {
-    const option = document.createElement('option');
-    option.value = option.textContent = h;
-    timeSelect.appendChild(option);
-  });
-
-  const courtsWrapper = document.getElementById('courtsWrapper');
-  const bookingForm = document.getElementById('bookingForm');
-  const backBtn = document.getElementById('backBtn');
-  let selectedBtn = null;
-  let duration = 1;
-
-  function goBack() {
-    if (selectedBtn) selectedBtn.classList.remove('selected');
-    selectedBtn = null;
-    document.getElementById('selectedCourt').value = '';
-    bookingForm.classList.remove('visible');
-    courtsWrapper.classList.remove('hidden');
-    resetForm();
-    history.pushState({ page: 'home' }, '', '#home');
-  }
-
-  function openBooking(courtBtn) {
-    if (selectedBtn) selectedBtn.classList.remove('selected');
-    courtBtn.classList.add('selected');
-    selectedBtn = courtBtn;
-    document.getElementById('selectedCourt').value = courtBtn.querySelector('span').textContent;
-    bookingForm.classList.add('visible');
-    courtsWrapper.classList.add('hidden');
-    updateFormLanguage(document.documentElement.lang);
-    resetForm();
-    history.pushState({ page: 'booking' }, '', '#booking');
-  }
-
-  function resetForm() {
-    document.getElementById('daySelect').selectedIndex = 0;
-    document.getElementById('timeSelect').selectedIndex = 0;
-    document.querySelectorAll('.duration-btn').forEach(b => b.classList.remove('selected'));
-    document.querySelector('.duration-btn[data-duration="1"]').classList.add('selected');
-    duration = 1;
-    document.getElementById('totalPrice').value = '40₪';
-  }
-
-  document.querySelectorAll('.court-btn').forEach(btn => btn.addEventListener('click', () => openBooking(btn)));
-  backBtn.addEventListener('click', goBack);
-
-  document.querySelectorAll('.duration-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('.duration-btn').forEach(b => b.classList.remove('selected'));
-      btn.classList.add('selected');
-      duration = +btn.dataset.duration;
-      document.getElementById('totalPrice').value = (40 * duration) + '₪';
-    });
-  });
-
-  // אישור הזמנה → חלונית אישור
-  document.getElementById('confirmBookingBtn').addEventListener('click', () => {
-    const day = document.getElementById('daySelect').value;
-    const time = document.getElementById('timeSelect').value;
-    const court = document.getElementById('selectedCourt').value;
-    const total = 40 * duration;
-
-    if (!day || !time || !court) {
-      const lang = document.documentElement.lang;
-      alert(translations[lang].missing);
-      return;
-    }
-
-    const lang = document.documentElement.lang;
-    const t = translations[lang];
-
-    // יצירת חלונית אישור
-    const modal = document.createElement('div');
-    modal.style.cssText = `
-      position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);
-      display:flex;align-items:center;justify-content:center;z-index:9999;
-      animation: fadeIn 0.3s ease;
-    `;
-
-    modal.innerHTML = `
-      <div style="background:#fff;color:#333;padding:25px;border-radius:12px;max-width:340px;width:90%;text-align:center;box-shadow:0 10px 30px rgba(0,0,0,0.3);animation: slideUp 0.3s ease;">
-        <h3 style="margin:0 0 15px;color:var(--primary);font-size:1.3rem;">${t.confirmModal}</h3>
-        <p style="margin:10px 0;font-size:1rem;color:#555;line-height:1.6;">
-          מגרש ${court}<br>
-          ${day} | ${time}<br>
-          ${duration === 1 ? 'שעה אחת' : 'שעתיים'}<br>
-          <strong>סה"כ: ${total}₪</strong>
-        </p>
-        <div style="display:flex;gap:12px;margin-top:20px;">
-          <button id="confirmYes" style="flex:1;background:var(--primary);color:#fff;border:none;padding:12px;border-radius:8px;font-weight:bold;cursor:pointer;">
-            ${t.yes}
-          </button>
-          <button id="confirmNo" style="flex:1;background:#ccc;color:#333;border:none;padding:12px;border-radius:8px;font-weight:bold;cursor:pointer;">
-            ${t.no}
-          </button>
-        </div>
-      </div>
-    `;
-
-    document.body.appendChild(modal);
-
-    // כן
-    document.getElementById('confirmYes').onclick = () => {
-      const params = new URLSearchParams({
-        court: court,
-        day: day,
-        time: time,
-        duration: duration,
-        total: total + '₪'
-      });
-      const url = `booking-details.html?${params.toString()}`;
-      window.open(url, '_blank', 'width=700,height=800');
-      goBack();
-      modal.remove();
-    };
-
-    // לא
-    document.getElementById('confirmNo').onclick = () => {
-      modal.remove();
-    };
-
-    // לחיצה מחוץ לחלון
-    modal.onclick = (e) => {
-      if (e.target === modal) modal.remove();
-    };
-  });
-
-  // החלפת שפה
-  document.querySelectorAll('.lang-btn').forEach(btn => {
-    btn.addEventListener('click', e => {
-      e.preventDefault();
-      const lang = btn.dataset.lang;
-      document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      document.documentElement.lang = lang;
-
-      const t = translations[lang];
-      document.querySelector('h1').textContent = t.title;
-      document.querySelector('header p').textContent = t.subtitle;
-      document.querySelectorAll('[data-he]').forEach(el => {
-        el.textContent = lang === 'en' ? el.dataset.en : el.dataset.he;
-      });
-      document.querySelectorAll('.court-btn span').forEach((span, i) => {
-        span.textContent = t.courts[i];
-      });
-      backBtn.textContent = t.back;
-      document.getElementById('confirmBookingBtn').textContent = t.confirm;
-
-      if (bookingForm.classList.contains('visible')) {
-        updateFormLanguage(lang);
+    const translations = {
+      he: {
+        title: "רובע יא' - מרכז קהילתי עם שלום",
+        subtitle: "בחרו את המגרש שבו תרצו לשחק",
+        courts: ["מגרש 5","מגרש 6","מגרש 4","מגרש 3","מגרש 2","מגרש 1"],
+        bookingTitle: "פרטי הזמנה",
+        selectedCourt: "מגרש נבחר:",
+        selectDay: "בחר יום:",
+        selectTime: "בחר שעה:",
+        oneHour: "שעה אחת",
+        twoHours: "שעתיים",
+        total: "סה״כ לתשלום:",
+        confirm: "אישור הזמנה",
+        back: "חזור",
+        priceNote: "תעריף: 40₪ לשעה",
+        missing: "אנא מלא את כל השדות הנדרשים",
+        confirmModal: "האם אתה בטוח שברצונך לאשר את ההזמנה?",
+        yes: "כן",
+        no: "לא"
+      },
+      en: {
+        title: "Am-Shalom Community Center",
+        subtitle: "Choose the tennis court where you want to play",
+        courts: ["Court 5","Court 6","Court 4","Court 3","Court 2","Court 1"],
+        bookingTitle: "Booking Details",
+        selectedCourt: "Selected Court:",
+        selectDay: "Select Day:",
+        selectTime: "Select Time:",
+        oneHour: "1 Hour",
+        twoHours: "2 Hours",
+        total: "Total Amount:",
+        confirm: "Confirm Booking",
+        back: "Back",
+        priceNote: "Rate: 40₪ per hour",
+        missing: "Please fill all required fields",
+        confirmModal: "Are you sure you want to confirm the booking?",
+        yes: "Yes",
+        no: "No"
       }
+    };
+
+    const timeSelect = document.getElementById('timeSelect');
+    hours.forEach(h => {
+      const option = document.createElement('option');
+      option.value = option.textContent = h;
+      timeSelect.appendChild(option);
     });
+
+    const courtsWrapper = document.getElementById('courtsWrapper');
+    const bookingForm = document.getElementById('bookingForm');
+    const backBtn = document.getElementById('backBtn');
+    let selectedBtn = null;
+    let duration = 1;
+
+    function goBack() {
+      if (selectedBtn) selectedBtn.classList.remove('selected');
+      selectedBtn = null;
+      document.getElementById('selectedCourt').value = '';
+      bookingForm.classList.remove('visible');
+      courtsWrapper.classList.remove('hidden');
+      resetForm();
+      history.pushState({ page: 'home' }, '', '#home');
+    }
+
+    function openBooking(courtBtn) {
+      if (selectedBtn) selectedBtn.classList.remove('selected');
+      courtBtn.classList.add('selected');
+      selectedBtn = courtBtn;
+      document.getElementById('selectedCourt').value = courtBtn.querySelector('span').textContent;
+      bookingForm.classList.add('visible');
+      courtsWrapper.classList.add('hidden');
+      updateFormLanguage(document.documentElement.lang);
+      resetForm();
+      history.pushState({ page: 'booking' }, '', '#booking');
+    }
+
+    function resetForm() {
+      document.getElementById('daySelect').selectedIndex = 0;
+      document.getElementById('timeSelect').selectedIndex = 0;
+      document.querySelectorAll('.duration-btn').forEach(b => b.classList.remove('selected'));
+      document.querySelector('.duration-btn[data-duration="1"]').classList.add('selected');
+      duration = 1;
+      document.getElementById('totalPrice').value = '40₪';
+    }
+
+    // עכשיו הכול נטען – מוסיפים את ה-listeners
+    document.querySelectorAll('.court-btn').forEach(btn => {
+      btn.addEventListener('click', () => openBooking(btn));
+    });
+
+    backBtn.addEventListener('click', goBack);
+
+    document.querySelectorAll('.duration-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.duration-btn').forEach(b => b.classList.remove('selected'));
+        btn.classList.add('selected');
+        duration = +btn.dataset.duration;
+        document.getElementById('totalPrice').value = (40 * duration) + '₪';
+      });
+    });
+
+    // אישור הזמנה → חלונית אישור
+    document.getElementById('confirmBookingBtn').addEventListener('click', () => {
+      const day = document.getElementById('daySelect').value;
+      const time = document.getElementById('timeSelect').value;
+      const court = document.getElementById('selectedCourt').value;
+      const total = 40 * duration;
+
+      if (!day || !time || !court) {
+        const lang = document.documentElement.lang;
+        alert(translations[lang].missing);
+        return;
+      }
+
+      const lang = document.documentElement.lang;
+      const t = translations[lang];
+
+      const modal = document.createElement('div');
+      modal.style.cssText = `
+        position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);
+        display:flex;align-items:center;justify-content:center;z-index:9999;
+        animation: fadeIn 0.3s ease;
+      `;
+
+      modal.innerHTML = `
+        <div style="background:#fff;color:#333;padding:25px;border-radius:12px;max-width:340px;width:90%;text-align:center;box-shadow:0 10px 30px rgba(0,0,0,0.3);animation: slideUp 0.3s ease;">
+          <h3 style="margin:0 0 15px;color:var(--primary);font-size:1.3rem;">${t.confirmModal}</h3>
+          <p style="margin:10px 0;font-size:1rem;color:#555;line-height:1.6;">
+            מגרש ${court}<br>
+            ${day} | ${time}<br>
+            ${duration === 1 ? 'שעה אחת' : 'שעתיים'}<br>
+            <strong>סה"כ: ${total}₪</strong>
+          </p>
+          <div style="display:flex;gap:12px;margin-top:20px;">
+            <button id="confirmYes" style="flex:1;background:var(--primary);color:#fff;border:none;padding:12px;border-radius:8px;font-weight:bold;cursor:pointer;">
+              ${t.yes}
+            </button>
+            <button id="confirmNo" style="flex:1;background:#ccc;color:#333;border:none;padding:12px;border-radius:8px;font-weight:bold;cursor:pointer;">
+              ${t.no}
+            </button>
+          </div>
+        </div>
+      `;
+
+      document.body.appendChild(modal);
+
+      document.getElementById('confirmYes').onclick = () => {
+        const params = new URLSearchParams({
+          court: court,
+          day: day,
+          time: time,
+          duration: duration,
+          total: total + '₪'
+        });
+        const url = `booking-details.html?${params.toString()}`;
+        window.open(url, '_blank', 'width=700,height=800');
+        goBack();
+        modal.remove();
+      };
+
+      document.getElementById('confirmNo').onclick = () => {
+        modal.remove();
+      };
+
+      modal.onclick = (e) => {
+        if (e.target === modal) modal.remove();
+      };
+    });
+
+    // החלפת שפה
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+      btn.addEventListener('click', e => {
+        e.preventDefault();
+        const lang = btn.dataset.lang;
+        document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        document.documentElement.lang = lang;
+
+        const t = translations[lang];
+        document.querySelector('h1').textContent = t.title;
+        document.querySelector('header p').textContent = t.subtitle;
+        document.querySelectorAll('[data-he]').forEach(el => {
+          el.textContent = lang === 'en' ? el.dataset.en : el.dataset.he;
+        });
+        document.querySelectorAll('.court-btn span').forEach((span, i) => {
+          span.textContent = t.courts[i];
+        });
+        backBtn.textContent = t.back;
+        document.getElementById('confirmBookingBtn').textContent = t.confirm;
+
+        if (bookingForm.classList.contains('visible')) {
+          updateFormLanguage(lang);
+        }
+      });
+    });
+
+    function updateFormLanguage(lang) {
+      const t = translations[lang];
+      document.getElementById('formTitle').textContent = t.bookingTitle;
+      document.querySelector('label[for="daySelect"]').textContent = t.selectDay;
+      document.querySelector('label[for="timeSelect"]').textContent = t.selectTime;
+
+      const durationBtns = document.querySelectorAll('.duration-options .duration-btn');
+      durationBtns[0].textContent = t.twoHours;
+      durationBtns[1].textContent = t.oneHour;
+
+      document.querySelector('.submit-btn').textContent = t.confirm;
+      document.querySelector('.price-note span').textContent = t.priceNote;
+    }
+
+    window.addEventListener('popstate', e => {
+      if (e.state && e.state.page === 'home') goBack();
+      else if (bookingForm.classList.contains('visible')) goBack();
+    });
+
+    history.replaceState({ page: 'home' }, '', '#home');
+
+    // אנימציות
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+      @keyframes slideUp { from { transform: translateY(30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+    `;
+    document.head.appendChild(style);
   });
-
-  function updateFormLanguage(lang) {
-    const t = translations[lang];
-    document.getElementById('formTitle').textContent = t.bookingTitle;
-    document.querySelector('label[for="daySelect"]').textContent = t.selectDay;
-    document.querySelector('label[for="timeSelect"]').textContent = t.selectTime;
-
-    const durationBtns = document.querySelectorAll('.duration-options .duration-btn');
-    durationBtns[0].textContent = t.twoHours;
-    durationBtns[1].textContent = t.oneHour;
-
-    document.querySelector('.submit-btn').textContent = t.confirm;
-    document.querySelector('.price-note span').textContent = t.priceNote;
-  }
-
-  window.addEventListener('popstate', e => {
-    if (e.state && e.state.page === 'home') goBack();
-    else if (bookingForm.classList.contains('visible')) goBack();
-  });
-
-  history.replaceState({ page: 'home' }, '', '#home');
-
-  // אנימציות
-  const style = document.createElement('style');
-  style.textContent = `
-    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-    @keyframes slideUp { from { transform: translateY(30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-  `;
-  document.head.appendChild(style);
 </script>
 
 </body>
