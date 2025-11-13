@@ -47,7 +47,21 @@
       color:var(--primary);margin-bottom:8px;font-size:1.8rem;
     }
 
-    /* אזור הטופס – מופיע בין הכותרת למפה */
+    /* מצב ראשוני: רק המפה */
+    .courts-wrapper {
+      max-width:700px;margin:0 auto;
+      transition: all 0.4s ease;
+    }
+    .courts-wrapper.hidden {
+      opacity: 0;
+      transform: translateY(20px);
+      height: 0;
+      overflow: hidden;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* טופס הזמנה – מופיע במקום המפה */
     #bookingForm {
       display: none;
       max-width: 700px;
@@ -57,7 +71,6 @@
       border-radius: 12px;
       box-shadow: 0 6px 20px rgba(0,0,0,.15);
       animation: slideDown 0.4s ease-out;
-      z-index: 50;
     }
     #bookingForm.visible {
       display: block;
@@ -68,12 +81,28 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
+    /* כפתור חזור */
+    .back-btn {
+      background: #f44336;
+      color: white;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 6px;
+      font-size: 0.9rem;
+      cursor: pointer;
+      margin-bottom: 15px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .back-btn:hover { background: #d32f2f; }
+
     /* מפת מגרשים */
     .courts-map{
       display:grid;
       grid-template-columns:1fr 1fr;
       grid-template-rows:1fr 1fr auto 1fr;
-      gap:15px;max-width:700px;margin:0 auto;padding:20px;
+      gap:15px;padding:20px;
       background:rgba(0,0,0,.1);border-radius:12px;position:relative;
       z-index: 10;
     }
@@ -146,6 +175,7 @@
       header{margin-top:50px;}
       .price-note{position:static;margin-top:15px;text-align:center;}
       #bookingForm{padding:15px;margin:15px auto;}
+      .back-btn{font-size:0.85rem;padding:8px 12px;}
     }
   </style>
 </head>
@@ -163,8 +193,24 @@
     <p data-he="בחרו את המגרש שבו תרצו לשחק" data-en="Choose a court from the aerial map below">בחרו את המגרש שבו תרצו לשחק</p>
   </header>
 
-  <!-- טופס הזמנה – מופיע מיד מתחת לכותרת, מעל המפה -->
+  <!-- עטיפת המפה – ניתנת להסתרה -->
+  <div class="courts-wrapper" id="courtsWrapper">
+    <div class="courts-map" role="region" aria-label="מפת מגרשים">
+      <div class="court-btn" data-court="5" aria-label="מגרש 5"><span>מגרש 5</span><small>פנוי</small></div>
+      <div class="court-btn" data-court="6" aria-label="מגרש 6"><span>מגרש 6</span><small>פנוי</small></div>
+      <div class="court-btn" data-court="3" aria-label="מגרש 3"><span>מגרש 3</span><small>פנוי</small></div>
+      <div class="court-btn" data-court="4" aria-label="מגרש 4"><span>מגרש 4</span><small>פנוי</small></div>
+      <div class="court-btn" data-court="1" aria-label="מגרש 1"><span>מגרש 1</span><small>פנוי</small></div>
+      <div class="court-btn" data-court="2" aria-label="מגרש 2"><span>מגרש 2</span><small>פנוי</small></div>
+      <div class="wall-separator" aria-hidden="true"></div>
+    </div>
+  </div>
+
+  <!-- טופס הזמנה – עם כפתור חזור -->
   <div id="bookingForm" role="form" aria-labelledby="formTitle">
+    <button class="back-btn" id="backBtn">
+      חזור
+    </button>
     <h3 id="formTitle" data-he="פרטי הזמנה" data-en="Booking Details">פרטי הזמנה</h3>
     <div class="form-group">
       <label data-he="מגרש נבחר:" data-en="Selected Court:">מגרש נבחר:</label>
@@ -201,17 +247,6 @@
     <button class="submit-btn" data-he="אישור הזמנה" data-en="Confirm Booking">אישור הזמנה</button>
   </div>
 
-  <!-- מפת מגרשים -->
-  <div class="courts-map" role="region" aria-label="מפת מגרשים">
-    <div class="court-btn" data-court="5" aria-label="מגרש 5"><span>מגרש 5</span><small>פנוי</small></div>
-    <div class="court-btn" data-court="6" aria-label="מגרש 6"><span>מגרש 6</span><small>פנוי</small></div>
-    <div class="court-btn" data-court="3" aria-label="מגרש 3"><span>מגרש 3</span><small>פנוי</small></div>
-    <div class="court-btn" data-court="4" aria-label="מגרש 4"><span>מגרש 4</span><small>פנוי</small></div>
-    <div class="court-btn" data-court="1" aria-label="מגרש 1"><span>מגרש 1</span><small>פנוי</small></div>
-    <div class="court-btn" data-court="2" aria-label="מגרש 2"><span>מגרש 2</span><small>פנוי</small></div>
-    <div class="wall-separator" aria-hidden="true"></div>
-  </div>
-
   <div class="info-box">
     <p><strong data-he="כתובת:" data-en="Address:">כתובת:</strong> <span data-he="הרי גולן 6, אשדוד, ישראל" data-en="Harei Golan 6, Ashdod, Israel">הרי גולן 6, אשדוד, ישראל</span></p>
     <p><strong data-he="טלפון:" data-en="Phone:">טלפון:</strong> <a href="tel:088678400">08-8678400</a></p>
@@ -244,6 +279,7 @@
       twoHours: "שעתיים",
       total: "סה״כ לתשלום:",
       confirm: "אישור הזמנה",
+      back: "חזור",
       priceNote: "תעריף: 40₪ לשעה",
       alertTitle: "הזמנה אושרה!",
       alertThanks: "תודה ששיחקת אצלנו!"
@@ -260,6 +296,7 @@
       twoHours: "2 Hours",
       total: "Total Amount:",
       confirm: "Confirm Booking",
+      back: "Back",
       priceNote: "Rate: 40₪ per hour",
       alertTitle: "Booking confirmed!",
       alertThanks: "Thank you for playing with us!"
@@ -274,15 +311,100 @@
     timeSelect.appendChild(option);
   });
 
+  // אלמנטים
+  const courtsWrapper = document.getElementById('courtsWrapper');
+  const bookingForm = document.getElementById('bookingForm');
+  const backBtn = document.getElementById('backBtn');
+  let selectedBtn = null;
+  let duration = 1;
+
+  // פונקציה: חזור למצב ראשוני
+  function goBack() {
+    if (selectedBtn) selectedBtn.classList.remove('selected');
+    selectedBtn = null;
+    document.getElementById('selectedCourt').value = '';
+    bookingForm.classList.remove('visible');
+    courtsWrapper.classList.remove('hidden');
+    resetForm();
+    // עדכון היסטוריה – כדי ש-back button יעבוד
+    history.pushState({ page: 'home' }, '', '#home');
+  }
+
+  // פונקציה: פתח טופס
+  function openBooking(courtBtn) {
+    if (selectedBtn) selectedBtn.classList.remove('selected');
+    courtBtn.classList.add('selected');
+    selectedBtn = courtBtn;
+    document.getElementById('selectedCourt').value = courtBtn.querySelector('span').textContent;
+    bookingForm.classList.add('visible');
+    courtsWrapper.classList.add('hidden');
+    updateFormLanguage(document.documentElement.lang);
+    resetForm();
+    // עדכון היסטוריה
+    history.pushState({ page: 'booking' }, '', '#booking');
+  }
+
+  // בחירת מגרש
+  document.querySelectorAll('.court-btn').forEach(btn => {
+    btn.addEventListener('click', () => openBooking(btn));
+  });
+
+  // כפתור חזור
+  backBtn.addEventListener('click', goBack);
+
+  // איפוס טופס
+  function resetForm() {
+    document.getElementById('daySelect').selectedIndex = 0;
+    document.getElementById('timeSelect').selectedIndex = 0;
+    document.querySelectorAll('.duration-btn').forEach(b => b.classList.remove('selected'));
+    document.querySelector('.duration-btn[data-duration="1"]').classList.add('selected');
+    duration = 1;
+    document.getElementById('totalPrice').value = '40₪';
+  }
+
+  // משך זמן
+  document.querySelectorAll('.duration-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.duration-btn').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+      duration = +btn.dataset.duration;
+      document.getElementById('totalPrice').value = (40 * duration) + '₪';
+    });
+  });
+
+  // אישור הזמנה
+  document.querySelector('.submit-btn').addEventListener('click', () => {
+    const day = document.getElementById('daySelect').value;
+    const time = document.getElementById('timeSelect').value;
+    if (!day || !time) {
+      alert(document.documentElement.lang === 'he' 
+        ? 'אנא מלא את כל השדות הנדרשים' 
+        : 'Please fill all required fields');
+      return;
+    }
+
+    const lang = document.documentElement.lang;
+    const t = translations[lang];
+    const courtName = document.getElementById('selectedCourt').value;
+
+    alert(`${t.alertTitle}\n\n` +
+      `מגרש: ${courtName}\n` +
+      `יום: ${day}\n` +
+      `שעה: ${time}\n` +
+      `משך: ${duration} שעה${duration > 1 ? 'ות' : ''}\n` +
+      `סה״כ: ${40 * duration}₪\n\n` +
+      `${t.alertThanks}`);
+
+    goBack(); // חזרה אוטומטית אחרי אישור
+  });
+
   // מחליף שפה
   document.querySelectorAll('.lang-btn').forEach(btn => {
     btn.addEventListener('click', e => {
       e.preventDefault();
       const lang = btn.dataset.lang;
-      
       document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
-
       document.documentElement.lang = lang;
       document.body.dir = lang === 'he' ? 'rtl' : 'ltr';
       document.querySelector('.container').style.textAlign = lang === 'he' ? 'right' : 'left';
@@ -296,8 +418,8 @@
       document.querySelectorAll('.court-btn span').forEach((span, i) => {
         span.textContent = t.courts[i];
       });
-
-      if (document.getElementById('bookingForm').classList.contains('visible')) {
+      backBtn.textContent = t.back;
+      if (bookingForm.classList.contains('visible')) {
         updateFormLanguage(lang);
       }
     });
@@ -314,90 +436,18 @@
     document.querySelector('.price-note span').textContent = t.priceNote;
   }
 
-  // בחירת מגרש
-  let selectedCourt = null, selectedBtn = null;
-  const bookingForm = document.getElementById('bookingForm');
-
-  document.querySelectorAll('.court-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      if (btn === selectedBtn) {
-        btn.classList.remove('selected');
-        selectedBtn = selectedCourt = null;
-        document.getElementById('selectedCourt').value = '';
-        bookingForm.classList.remove('visible');
-        resetForm();
-      } else {
-        if (selectedBtn) selectedBtn.classList.remove('selected');
-        btn.classList.add('selected');
-        selectedBtn = btn;
-        selectedCourt = btn.dataset.court;
-        document.getElementById('selectedCourt').value = btn.querySelector('span').textContent;
-        bookingForm.classList.add('visible');
-        updateFormLanguage(document.documentElement.lang);
-        resetForm();
-
-        // גלילה אוטומטית לטופס (אם צריך)
-        bookingForm.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-      }
-    });
-  });
-
-  function resetForm() {
-    document.getElementById('daySelect').selectedIndex = 0;
-    document.getElementById('timeSelect').selectedIndex = 0;
-    document.querySelectorAll('.duration-btn').forEach(b => b.classList.remove('selected'));
-    document.querySelector('.duration-btn[data-duration="1"]').classList.add('selected');
-    duration = 1;
-    document.getElementById('totalPrice').value = '40₪';
-  }
-
-  let duration = 1;
-  document.querySelectorAll('.duration-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('.duration-btn').forEach(b => b.classList.remove('selected'));
-      btn.classList.add('selected');
-      duration = +btn.dataset.duration;
-      document.getElementById('totalPrice').value = (40 * duration) + '₪';
-    });
-  });
-
-  document.getElementById('timeSelect').addEventListener('change', () => {
-    document.getElementById('totalPrice').value = (40 * duration) + '₪';
-  });
-
-  // אישור הזמנה
-  document.querySelector('.submit-btn').addEventListener('click', () => {
-    const day = document.getElementById('daySelect').value;
-    const time = document.getElementById('timeSelect').value;
-    if (!day || !time) {
-      const msg = document.documentElement.lang === 'he' 
-        ? 'אנא מלא את כל השדות הנדרשים' 
-        : 'Please fill all required fields';
-      alert(msg);
-      return;
+  // תמיכה בלחצן חזור של הטלפון
+  window.addEventListener('popstate', (e) => {
+    if (e.state && e.state.page === 'home') {
+      goBack();
+    } else if (bookingForm.classList.contains('visible')) {
+      goBack();
     }
-
-    const lang = document.documentElement.lang;
-    const t = translations[lang];
-    const courtName = document.getElementById('selectedCourt').value;
-
-    const message = `${t.alertTitle}\n\n` +
-      `מגרש: ${courtName}\n` +
-      `יום: ${day}\n` +
-      `שעה: ${time}\n` +
-      `משך: ${duration} שעה${duration > 1 ? 'ות' : ''}\n` +
-      `סה״כ: ${40 * duration}₪\n\n` +
-      `${t.alertThanks}`;
-
-    alert(message);
-
-    // איפוס אחרי אישור
-    selectedBtn.classList.remove('selected');
-    selectedBtn = selectedCourt = null;
-    document.getElementById('selectedCourt').value = '';
-    bookingForm.classList.remove('visible');
-    resetForm();
   });
+
+  // אתחול: ודא שההיסטוריה מתחילה נכון
+  history.replaceState({ page: 'home' }, '', '#home');
 </script>
+
 </body>
 </html>
