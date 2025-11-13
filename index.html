@@ -347,20 +347,52 @@
       document.getElementById('totalPrice').value = (40 * duration) + '₪';
     });
   });
+// אישור הזמנה → חלונית אישור לפני פתיחת הדף
+document.getElementById('confirmBookingBtn').addEventListener('click', () => {
+  const day = document.getElementById('daySelect').value;
+  const time = document.getElementById('timeSelect').value;
+  const court = document.getElementById('selectedCourt').value;
+  const total = 40 * duration;
 
-  // אישור הזמנה → פתיחת דף פרטים אישיים
-  document.getElementById('confirmBookingBtn').addEventListener('click', () => {
-    const day = document.getElementById('daySelect').value;
-    const time = document.getElementById('timeSelect').value;
-    const court = document.getElementById('selectedCourt').value;
-    const total = 40 * duration;
+  if (!day || !time || !court) {
+    const lang = document.documentElement.lang;
+    alert(translations[lang].missing);
+    return;
+  }
 
-    if (!day || !time || !court) {
-      const lang = document.documentElement.lang;
-      alert(translations[lang].missing);
-      return;
-    }
+  // יצירת חלונית אישור (Modal)
+  const modal = document.createElement('div');
+  modal.style.cssText = `
+    position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);
+    display:flex;align-items:center;justify-content:center;z-index:9999;
+  `;
 
+  const lang = document.documentElement.lang;
+  const confirmText = lang === 'he' ? 'האם אתה בטוח שברצונך לאשר את ההזמנה?' : 'Are you sure you want to confirm the booking?';
+  const yesText = lang === 'he' ? 'כן' : 'Yes';
+  const noText = lang === 'he' ? 'לא' : 'No';
+
+  modal.innerHTML = `
+    <div style="background:#fff;color:#333;padding:25px;border-radius:12px;max-width:320px;width:90%;text-align:center;box-shadow:0 10px 30px rgba(0,0,0,0.3);">
+      <h3 style="margin:0 0 15px;color:var(--primary);font-size:1.3rem;">${confirmText}</h3>
+      <p style="margin:10px 0;font-size:1rem;color:#555;">
+        מגרש ${court}<br>${day} | ${time} | ${duration === 1 ? 'שעה אחת' : 'שעתיים'}<br>סה"כ: ${total}₪
+      </p>
+      <div style="display:flex;gap:12px;margin-top:20px;">
+        <button id="confirmYes" style="flex:1;background:var(--primary);color:#fff;border:none;padding:12px;border-radius:8px;font-weight:bold;cursor:pointer;">
+          ${yesText}
+        </button>
+        <button id="confirmNo" style="flex:1;background:#ccc;color:#333;border:none;padding:12px;border-radius:8px;font-weight:bold;cursor:pointer;">
+          ${noText}
+        </button>
+      </div>
+    </div>
+  `;
+
+  document.body.appendChild(modal);
+
+  // כפתור כן
+  document.getElementById('confirmYes').onclick = () => {
     const params = new URLSearchParams({
       court: court,
       day: day,
@@ -372,6 +404,19 @@
     const url = `booking-details.html?${params.toString()}`;
     window.open(url, '_blank', 'width=700,height=800');
     goBack();
+    modal.remove();
+  };
+
+  // כפתור לא
+  document.getElementById('confirmNo').onclick = () => {
+    modal.remove();
+  };
+
+  // סגירה בלחיצה מחוץ לחלון
+  modal.onclick = (e) => {
+    if (e.target === modal) modal.remove();
+  };
+});
   });
 
   // החלפת שפה
