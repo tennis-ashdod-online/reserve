@@ -22,7 +22,7 @@
     .container{
       max-width:600px;margin:40px auto;background:rgba(255,255,255,.97);color:var(--dark);
       border-radius:15px;padding:30px;box-shadow:0 10px 40px rgba(0,0,0,.3);
-      text-align:center;
+      text-align:center;position:relative;
     }
     h1{
       color:var(--primary);margin-bottom:20px;font-size:1.8rem;
@@ -52,6 +52,9 @@
       border-radius:8px;cursor:pointer;width:100%;margin-top:20px;transition:.2s;
     }
     .submit-btn:hover{background:#0d47a1;}
+    .submit-btn:disabled{
+      background:#aaa;cursor:not-allowed;
+    }
     .close-btn{
       position:absolute;top:15px;left:15px;background:#f44336;color:#fff;
       border:none;padding:8px 12px;border-radius:6px;cursor:pointer;font-size:0.9rem;
@@ -64,30 +67,36 @@
   </style>
 </head>
 <body>
-
 <div class="container">
   <button class="close-btn" onclick="window.close()">×</button>
   <h1>השלם את ההזמנה</h1>
-
   <div class="summary-box" id="summary">
     <!-- יתמלא דינמית -->
   </div>
 
-  <form id="personalDetailsForm">
+  <!-- טופס עם Formspree -->
+  <form id="personalDetailsForm" action="https://formspree.io/f/mzzyzyzo" method="POST">
     <div class="form-group">
       <label for="fullName">שם מלא *</label>
-      <input type="text" id="fullName" required placeholder="הכנס שם מלא" />
+      <input type="text" id="fullName" name="שם מלא" required placeholder="הכנס שם מלא" />
     </div>
     <div class="form-group">
       <label for="phone">טלפון *</label>
-      <input type="tel" id="phone" required placeholder="05X-XXXXXXX" />
+      <input type="tel" id="phone" name="טלפון" required placeholder="05X-XXXXXXX" />
     </div>
     <div class="form-group">
       <label for="email">אימייל</label>
-      <input type="email" id="email" placeholder="example@email.com" />
+      <input type="email" id="email" name="אימייל" placeholder="example@email.com" />
     </div>
 
-    <button type="submit" class="submit-btn">אישור סופי והזמנה</button>
+    <!-- שדות נסתרים – פרטי ההזמנה -->
+    <input type="hidden" name="מגרש" id="hiddenCourt">
+    <input type="hidden" name="יום" id="hiddenDay">
+    <input type="hidden" name="שעה" id="hiddenTime">
+    <input type="hidden" name="משך" id="hiddenDuration">
+    <input type="hidden" name="סהכ" id="hiddenTotal">
+
+    <button type="submit" class="submit-btn" id="submitBtn">אישור סופי והזמנה</button>
   </form>
 
   <div class="final-message" id="finalMessage">
@@ -113,28 +122,40 @@
     <p><strong>סה"כ לתשלום:</strong> ${total}</p>
   `;
 
-  // שליחת הטופס
-  document.getElementById('personalDetailsForm').addEventListener('submit', function(e) {
-    e.preventDefault();
+  // שמירת הפרטים בשדות נסתרים
+  document.getElementById('hiddenCourt').value = court;
+  document.getElementById('hiddenDay').value = day;
+  document.getElementById('hiddenTime').value = time;
+  document.getElementById('hiddenDuration').value = duration === '1' ? 'שעה אחת' : 'שעתיים';
+  document.getElementById('hiddenTotal').value = total;
 
+  // שליחת הטופס
+  const form = document.getElementById('personalDetailsForm');
+  const submitBtn = document.getElementById('submitBtn');
+  const finalMessage = document.getElementById('finalMessage');
+
+  form.addEventListener('submit', function(e) {
+    // בדיקה ששדות חובה מולאו
     const name = document.getElementById('fullName').value.trim();
     const phone = document.getElementById('phone').value.trim();
-    const email = document.getElementById('email').value.trim();
 
     if (!name || !phone) {
       alert('אנא מלא שם וטלפון');
+      e.preventDefault();
       return;
     }
 
-    // כאן אפשר לשלוח לשרת, WhatsApp, או דוא"ל
-    console.log('הזמנה:', { court, day, time, duration, total, name, phone, email });
+    // השבתת כפתור ושינוי טקסט
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'שולח...';
 
-    // הצגת הודעת אישור
-    document.getElementById('personalDetailsForm').style.display = 'none';
-    document.getElementById('finalMessage').style.display = 'block';
+    // Formspree יטפל בשליחה
+    // לאחר שליחה מוצלחת – נציג הודעה
+    setTimeout(() => {
+      form.style.display = 'none';
+      finalMessage.style.display = 'block';
+    }, 800);
   });
 </script>
-
 </body>
 </html>
-
