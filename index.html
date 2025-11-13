@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+!DOCTYPE html>
 <html lang="he" dir="rtl">
 <head>
   <meta charset="UTF-8" />
@@ -10,8 +10,7 @@
       --light: #f8f9fa;
       --dark: #333;
       --wall: #8B4513;
-      --wall-light: #A0522D;
-      --wall-dark: #5D2E0D;
+      --wall-shadow: #5D2E0D;
     }
     * {box-sizing:border-box;margin:0;padding:0;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;}
 
@@ -36,39 +35,40 @@
     }
     .lang-switch a:hover,.lang-switch a.active{background:#e3f2fd;color:var(--primary);}
 
-    /* ---------- מפת מגרשים – 3 שורות: עליון | חומה | תחתון ---------- */
+    /* ---------- מפת מגרשים ---------- */
     .courts-map{
       display:grid;
-      grid-template-columns:1fr 1fr;
-      grid-template-rows:1fr auto 1fr 1fr;
+      grid-template-columns:1fr 1fr 1fr;
+      grid-template-rows:1fr auto 1fr; /* שורה עליונה + חומה + שורה תחתונה */
       gap:15px;
-      max-width:600px;margin:30px auto;padding:20px;
+      max-width:700px;margin:30px auto;padding:20px;
       background:rgba(0,0,0,.1);border-radius:12px;
-      direction:rtl;
+      direction:rtl;position:relative;
     }
 
-    /* חומה – שורה 2 */
+    /* חומה אמיתית – בין השורות */
     .wall-separator {
       grid-row: 2 / 3;
       grid-column: 1 / -1;
-      height: 35px;
-      background: linear-gradient(135deg, var(--wall-light) 0%, var(--wall) 50%, var(--wall-light) 100%);
-      border-top: 4px solid #D2691E;
-      border-bottom: 4px solid var(--wall-dark);
+      height: 30px;
+      background: linear-gradient(135deg, #A0522D 0%, #8B4513 50%, #A0522D 100%);
+      border-top: 3px solid #D2691E;
+      border-bottom: 3px solid #5D2E0D;
       box-shadow: 
-        0 10px 20px rgba(0,0,0,0.5),
-        inset 0 3px 6px rgba(255,255,255,0.2);
-      border-radius: 6px;
+        0 8px 15px rgba(0,0,0,0.4),
+        inset 0 2px 4px rgba(255,255,255,0.2);
+      position: relative;
       z-index: 10;
+      border-radius: 4px;
     }
 
-    /* סידור בדיוק כמו בתמונה */
-    .court-btn:nth-child(1) { grid-area: 1 / 2; } /* מגרש 1 – ימין עליון */
-    .court-btn:nth-child(2) { grid-area: 1 / 1; } /* מגרש 2 – שמאל עליון */
-    .court-btn:nth-child(3) { grid-area: 3 / 2; } /* מגרש 3 – ימין אמצע */
-    .court-btn:nth-child(4) { grid-area: 3 / 1; } /* מגרש 4 – שמאל אמצע */
-    .court-btn:nth-child(5) { grid-area: 4 / 2; } /* מגרש 5 – ימין תחתון */
-    .court-btn:nth-child(6) { grid-area: 4 / 1; } /* מגרש 6 – שמאל תחתון */
+    /* סידור המגרשים – העמודות התחלפו (כמו בתמונה) */
+    .court-btn:nth-child(1){grid-area:1 / 1;} /* מגרש 1 – עליון שמאל */
+    .court-btn:nth-child(2){grid-area:1 / 2;} /* מגרש 2 – עליון אמצע */
+    .court-btn:nth-child(3){grid-area:1 / 3;} /* מגרש 3 – עליון ימין */
+    .court-btn:nth-child(4){grid-area:3 / 1;} /* מגרש 4 – תחתון שמאל */
+    .court-btn:nth-child(5){grid-area:3 / 2;} /* מגרש 5 – תחתון אמצע */
+    .court-btn:nth-child(6){grid-area:3 / 3;} /* מגרש 6 – תחתון ימין */
 
     .court-btn{
       padding:20px;background:var(--light);border:2px solid #ddd;border-radius:12px;
@@ -108,21 +108,17 @@
     /* ---------- מובייל ---------- */
     @media (max-width:600px){
       .courts-map{
-        grid-template-columns:1fr;
-        grid-template-rows:repeat(6,1fr) auto;
+        grid-template-columns:1fr 1fr;
+        grid-template-rows:1fr auto 1fr 1fr; /* עליון + חומה + 2 שורות תחתונות */
         gap:12px;
-        max-width:350px;
       }
-      .wall-separator { 
-        grid-row: 3 / 4; 
-        height: 28px; 
-      }
-      .court-btn:nth-child(1) { grid-area: 1 / 1; } /* 1 */
-      .court-btn:nth-child(2) { grid-area: 2 / 1; } /* 2 */
-      .court-btn:nth-child(3) { grid-area: 4 / 1; } /* 3 */
-      .court-btn:nth-child(4) { grid-area: 5 / 1; } /* 4 */
-      .court-btn:nth-child(5) { grid-area: 6 / 1; } /* 5 */
-      .court-btn:nth-child(6) { grid-area: 7 / 1; } /* 6 */
+      .wall-separator { height: 25px; }
+      .court-btn:nth-child(1){grid-area:1/1;} /* 1 */
+      .court-btn:nth-child(2){grid-area:1/2;} /* 2 */
+      .court-btn:nth-child(3){grid-area:3/1;} /* 3 */
+      .court-btn:nth-child(4){grid-area:3/2;} /* 4 */
+      .court-btn:nth-child(5){grid-area:4/1;} /* 5 */
+      .court-btn:nth-child(6){grid-area:4/2;} /* 6 */
       .lang-switch{position:static;text-align:center;margin-bottom:15px;}
       .price-note{position:static;margin-top:15px;text-align:center;}
     }
@@ -141,7 +137,7 @@
     <p data-he="בחרו מגרש מהמפה האווירית למטה" data-en="Choose a court from the aerial map below">בחרו מגרש מהמפה האווירית למטה</p>
   </header>
 
-  <!-- מפת מגרשים – בדיוק כמו בתמונה -->
+  <!-- מפת מגרשים עם חומה אמיתית -->
   <div class="courts-map">
     <div class="court-btn" data-court="1">מגרש 1</div>
     <div class="court-btn" data-court="2">מגרש 2</div>
@@ -150,7 +146,7 @@
     <div class="court-btn" data-court="5">מגרש 5</div>
     <div class="court-btn" data-court="6">מגרש 6</div>
 
-    <!-- החומה – בין השורה העליונה לאמצעית -->
+    <!-- החומה – בין השורות -->
     <div class="wall-separator"></div>
   </div>
 
