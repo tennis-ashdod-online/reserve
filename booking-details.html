@@ -131,7 +131,10 @@
       duration: "משך",
       total: "סה\"כ לתשלום",
       oneHour: "שעה אחת",
-      twoHours: "שעתיים"
+      twoHours: "שעתיים",
+      namePlaceholder: "הכנס שם מלא",
+      phonePlaceholder: "05X-XXXXXXX",
+      emailPlaceholder: "example@email.com"
     },
     en: {
       pageTitle: "Complete Your Booking",
@@ -149,7 +152,10 @@
       duration: "Duration",
       total: "Total Amount",
       oneHour: "1 Hour",
-      twoHours: "2 Hours"
+      twoHours: "2 Hours",
+      namePlaceholder: "Enter full name",
+      phonePlaceholder: "05X-XXXXXXX",
+      emailPlaceholder: "example@email.com"
     }
   };
 
@@ -166,6 +172,7 @@
 
   const t = translations[lang];
 
+  // === עדכון טקסטים ===
   document.getElementById('pageTitle').textContent = t.pageTitle;
   document.getElementById('nameLabel').textContent = t.nameLabel;
   document.getElementById('phoneLabel').textContent = t.phoneLabel;
@@ -176,6 +183,12 @@
   document.getElementById('successNote').textContent = t.successNote;
   document.getElementById('backLink').textContent = t.backLink;
 
+  // === עדכון Placeholders ===
+  document.getElementById('fullName').placeholder = t.namePlaceholder;
+  document.getElementById('phone').placeholder = t.phonePlaceholder;
+  document.getElementById('email').placeholder = t.emailPlaceholder;
+
+  // === הצגת פרטים ===
   const durationText = duration === '1' ? t.oneHour : t.twoHours;
   document.getElementById('summary').innerHTML = `
     <p><strong>${t.court}:</strong> ${court}</p>
@@ -191,6 +204,7 @@
   document.getElementById('hiddenDuration').value = durationText;
   document.getElementById('hiddenTotal').value = total;
 
+  // === שליחה ל-Formspree ===
   const form = document.getElementById('personalDetailsForm');
   const submitBtn = document.getElementById('submitBtn');
   const finalMessage = document.getElementById('finalMessage');
