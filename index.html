@@ -16,20 +16,29 @@
       padding: 0;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
+
+    /* === רקע קבוע עם תמונת טניס + אפקט כהה === */
     body {
-      background: #f5f7fa;
-      color: var(--dark);
+      background: linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.55)),
+                  url('https://images.unsplash.com/photo-1622278494980-874d6f8bf7ed?ixlib=rb-4.0.3&auto=format&fit=crop&w=1950&q=80') 
+                  center/cover no-repeat fixed;
+      color: white;
       line-height: 1.6;
+      min-height: 100vh;
       padding: 20px;
     }
+
     .container {
       max-width: 900px;
       margin: 0 auto;
-      background: white;
-      border-radius: 12px;
-      padding: 25px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      background: rgba(255, 255, 255, 0.95);
+      color: var(--dark);
+      border-radius: 15px;
+      padding: 30px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(8px);
     }
+
     header {
       text-align: center;
       margin-bottom: 25px;
@@ -38,6 +47,7 @@
       color: var(--primary);
       margin-bottom: 8px;
     }
+
     .lang-switch {
       position: absolute;
       top: 15px;
@@ -55,6 +65,7 @@
       background: #e3f2fd;
       color: var(--primary);
     }
+
     .courts {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
@@ -80,6 +91,7 @@
       color: white;
       border-color: var(--primary);
     }
+
     .booking-form {
       margin-top: 25px;
       padding: 20px;
@@ -153,9 +165,7 @@
       font-size: 0.85rem;
       box-shadow: 0 1px 5px rgba(0,0,0,0.1);
     }
-    .hidden {
-      display: none;
-    }
+
     @media (max-width: 600px) {
       .courts {
         grid-template-columns: repeat(2, 1fr);
@@ -308,11 +318,9 @@
       document.documentElement.lang = lang;
       document.documentElement.dir = lang === 'he' ? 'rtl' : 'ltr';
       
-      // עדכון כפתור פעיל
       document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       
-      // עדכון טקסטים
       document.querySelector('h1').textContent = translations[lang].title;
       document.querySelector('header p').textContent = translations[lang].subtitle;
       
@@ -321,12 +329,10 @@
         if (text) el.textContent = text;
       });
 
-      // עדכון מגרשים
       document.querySelectorAll('.court-btn').forEach((btn, i) => {
         btn.textContent = translations[lang].courts[i];
       });
 
-      // עדכון טופס
       if (document.getElementById('bookingForm').style.display !== 'none') {
         updateFormLanguage(lang);
       }
@@ -379,12 +385,12 @@
     });
   });
 
-  // עדכון מחיר בזמן אמת
+  // עדכון מחיר
   document.getElementById('timeSelect').addEventListener('change', () => {
     document.getElementById('totalPrice').value = (40 * duration) + '₪';
   });
 
-  // שליחת הזמנה (הדגמה)
+  // שליחת הזמנה
   document.querySelector('.submit-btn').addEventListener('click', () => {
     const day = document.getElementById('daySelect').value;
     const time = document.getElementById('timeSelect').value;
@@ -398,43 +404,6 @@
     );
   });
 </script>
-<!-- כפתור בחירת תמונת רקע -->
-<div class="bg-selector" style="position: fixed; bottom: 20px; left: 20px; z-index: 1000;">
-  <input type="file" id="bgUpload" accept="image/*" style="display: none;">
-  <button onclick="document.getElementById('bgUpload').click()" 
-          style="background: rgba(0,0,0,0.6); color: white; border: none; padding: 10px 15px; border-radius: 8px; font-size: 0.9rem; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.2);">
-    Change Background
-  </button>
-</div>
 
-<script>
-// בחירת תמונת רקע
-document.getElementById('bgUpload').addEventListener('change', function(e) {
-  const file = e.target.files[0];
-  if (file) {
-    const reader = new FileReader();
-    reader.onload = function(event) {
-      document.body.style.backgroundImage = `url(${event.target.result})`;
-      document.body.style.backgroundSize = 'cover';
-      document.body.style.backgroundPosition = 'center';
-      document.body.style.backgroundAttachment = 'fixed';
-      // שמירה ב-localStorage כדי שתישאר אחרי רענון (באותו דפדפן)
-      localStorage.setItem('customBg', event.target.result);
-    };
-    reader.readAsDataURL(file);
-  }
-});
-
-// טעינה של תמונת רקע שמורה (אם קיימת)
-window.addEventListener('load', () => {
-  const savedBg = localStorage.getItem('customBg');
-  if (savedBg) {
-    document.body.style.backgroundImage = `url(${savedBg})`;
-    document.body.style.backgroundSize = 'cover';
-    document.body.style.backgroundPosition = 'center';
-    document.body.style.backgroundAttachment = 'fixed';
-  }
-});
-</script>
 </body>
 </html>
