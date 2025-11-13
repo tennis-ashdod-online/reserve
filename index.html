@@ -359,20 +359,44 @@
     timeSelect.appendChild(opt);
   });
 
-  // בחירת מגרש
+  // בחירת מגרש + ביטול בחירה
   let selectedCourt = null;
+  let selectedBtn = null;
+
   document.querySelectorAll('.court-btn').forEach(btn => {
     btn.addEventListener('click', () => {
-      document.querySelectorAll('.court-btn').forEach(b => b.classList.remove('selected'));
-      btn.classList.add('selected');
-      selectedCourt = btn.dataset.court;
-      document.getElementById('selectedCourt').value = btn.textContent;
-      document.getElementById('bookingForm').style.display = 'block';
-      
-      const lang = document.documentElement.lang;
-      updateFormLanguage(lang);
+      if (btn === selectedBtn) {
+        // לחיצה שנייה על אותו מגרש – ביטול בחירה
+        btn.classList.remove('selected');
+        selectedBtn = null;
+        selectedCourt = null;
+        document.getElementById('selectedCourt').value = '';
+        document.getElementById('bookingForm').style.display = 'none';
+        resetForm();
+      } else {
+        // בחירת מגרש חדש
+        if (selectedBtn) selectedBtn.classList.remove('selected');
+        btn.classList.add('selected');
+        selectedBtn = btn;
+        selectedCourt = btn.dataset.court;
+        document.getElementById('selectedCourt').value = btn.textContent;
+        document.getElementById('bookingForm').style.display = 'block';
+        
+        const lang = document.documentElement.lang;
+        updateFormLanguage(lang);
+        resetForm(); // איפוס הטופס בכל בחירה חדשה
+      }
     });
   });
+
+  function resetForm() {
+    document.getElementById('daySelect').selectedIndex = 0;
+    document.getElementById('timeSelect').selectedIndex = 0;
+    document.querySelectorAll('.duration-btn').forEach(b => b.classList.remove('selected'));
+    document.querySelector('.duration-btn[data-duration="1"]').classList.add('selected');
+    duration = 1;
+    document.getElementById('totalPrice').value = '40₪';
+  }
 
   // בחירת משך זמן
   let duration = 1;
