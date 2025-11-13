@@ -89,9 +89,20 @@
       font-weight:normal;opacity:.8;font-size:.8rem;margin-top:4px;
     }
 
+    /* טופס הזמנה – מתחת למפה, באותו רוחב */
     .booking-form{
-      margin-top:25px;padding:20px;background:#f9f9f9;border-radius:10px;display:none;
+      display:none;
+      max-width:700px;
+      margin:25px auto 0;
+      padding:20px;
+      background:#f9f9f9;
+      border-radius:10px;
+      box-shadow:0 4px 15px rgba(0,0,0,.1);
     }
+    .booking-form.visible{
+      display:block;
+    }
+
     .form-group{margin-bottom:18px;}
     label{display:block;margin-bottom:8px;font-weight:600;}
     select, input[type=text]{
@@ -126,6 +137,7 @@
       .lang-switch{left:50%;transform:translateX(-50%);top:10px;}
       header{margin-top:50px;}
       .price-note{position:static;margin-top:15px;text-align:center;}
+      .booking-form{padding:15px;}
     }
   </style>
 </head>
@@ -143,6 +155,7 @@
     <p data-he="בחרו את המגרש שבו תרצו לשחק" data-en="Choose a court from the aerial map below">בחרו את המגרש שבו תרצו לשחק</p>
   </header>
 
+  <!-- מפת מגרשים -->
   <div class="courts-map" role="region" aria-label="מפת מגרשים">
     <div class="court-btn" data-court="5" aria-label="מגרש 5"><span>מגרש 5</span><small>פנוי</small></div>
     <div class="court-btn" data-court="6" aria-label="מגרש 6"><span>מגרש 6</span><small>פנוי</small></div>
@@ -153,6 +166,7 @@
     <div class="wall-separator" aria-hidden="true"></div>
   </div>
 
+  <!-- טופס הזמנה – מתחת למפה, באותו רוחב -->
   <div id="bookingForm" class="booking-form" role="form" aria-labelledby="formTitle">
     <h3 id="formTitle" data-he="פרטי הזמנה" data-en="Booking Details">פרטי הזמנה</h3>
     <div class="form-group">
@@ -202,9 +216,13 @@
 </div>
 
 <script>
+  // יצירת רשימת שעות
   const hours = [];
-  for(let h=8; h<=21; h++) hours.push(h.toString().padStart(2,'0') + ':00');
+  for(let h = 8; h <= 21; h++) {
+    hours.push(h.toString().padStart(2, '0') + ':00');
+  }
 
+  // תרגומים
   const translations = {
     he: {
       title: "רובע יא' - מרכז קהילתי עם שלום",
@@ -251,9 +269,9 @@
   // מילוי שעות
   const timeSelect = document.getElementById('timeSelect');
   hours.forEach(h => {
-    const o = document.createElement('option');
-    o.value = o.textContent = h;
-    timeSelect.appendChild(o);
+    const option = document.createElement('option');
+    option.value = option.textContent = h;
+    timeSelect.appendChild(option);
   });
 
   // מחליף שפה
@@ -279,7 +297,7 @@
         span.textContent = t.courts[i];
       });
 
-      if (document.getElementById('bookingForm').style.display !== 'none') {
+      if (document.getElementById('bookingForm').classList.contains('visible')) {
         updateFormLanguage(lang);
       }
     });
@@ -298,13 +316,15 @@
 
   // בחירת מגרש
   let selectedCourt = null, selectedBtn = null;
+  const bookingForm = document.getElementById('bookingForm');
+
   document.querySelectorAll('.court-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       if (btn === selectedBtn) {
         btn.classList.remove('selected');
         selectedBtn = selectedCourt = null;
         document.getElementById('selectedCourt').value = '';
-        document.getElementById('bookingForm').style.display = 'none';
+        bookingForm.classList.remove('visible');
         resetForm();
       } else {
         if (selectedBtn) selectedBtn.classList.remove('selected');
@@ -312,7 +332,7 @@
         selectedBtn = btn;
         selectedCourt = btn.dataset.court;
         document.getElementById('selectedCourt').value = btn.querySelector('span').textContent;
-        document.getElementById('bookingForm').style.display = 'block';
+        bookingForm.classList.add('visible');
         updateFormLanguage(document.documentElement.lang);
         resetForm();
       }
