@@ -92,17 +92,25 @@
 </div>
 
 <script>
-  // קריאה מה-hash
+  // קריאת נתונים – hash או localStorage
+  let data = null;
   const hash = window.location.hash.substring(1);
-  if (!hash) {
-    document.body.innerHTML = '<h2 style="text-align:center;color:red;">שגיאה: אין נתוני הזמנה</h2>';
+
+  if (hash) {
+    try { data = JSON.parse(atob(hash)); } catch(e) {}
   }
 
-  let data;
-  try {
-    data = JSON.parse(atob(hash));
-  } catch (e) {
-    document.body.innerHTML = '<h2 style="text-align:center;color:red;">שגיאה בנתונים</h2>';
+  if (!data) {
+    const pending = localStorage.getItem('pendingBooking');
+    if (pending) {
+      data = JSON.parse(pending);
+      localStorage.removeItem('pendingBooking');
+    }
+  }
+
+  if (!data) {
+    document.body.innerHTML = '<h2 style="text-align:center;color:red;">שגיאה: אין נתוני הזמנה</h2>';
+    throw new Error("No booking data");
   }
 
   const { court, day, time, duration, total, lang = 'he' } = data;
@@ -133,19 +141,10 @@
       return;
     }
 
-    // שמירה ב-localStorage
     const booking = { court, day, time, duration, total, name, phone, email, timestamp: new Date().toISOString() };
     let bookings = JSON.parse(localStorage.getItem('tennisBookings') || '[]');
     bookings.push(booking);
     localStorage.setItem('tennisBookings', JSON.stringify(bookings));
-
-    // שליחה ל-WhatsApp (הפעל אם תרצה)
-    /*
-    const waMsg = encodeURIComponent(
-      `הזמנה חדשה!\nמגרש: ${court}\nיום: ${day}\nשעה: ${time}\nמשך: ${duration} שעות\nשם: ${name}\nטלפון: ${phone}`
-    );
-    window.open(`https://wa.me/972501234567?text=${waMsg}`);
-    */
 
     document.getElementById('personalDetailsForm').style.display = 'none';
     document.getElementById('finalMessage').style.display = 'block';
