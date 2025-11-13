@@ -65,23 +65,35 @@
       color: var(--primary);
     }
 
-    /* מפת מגרשים – 2 עמודות בלבד, בדיוק לפי הסידור שלך */
+    /* מפת מגרשים – 2 עמודות + קיר הפרדה */
     .courts-map {
       display: grid;
-      grid-template-columns: 1fr 1fr; /* רק 2 עמודות */
-      grid-template-rows: repeat(3, 1fr);
-      gap: 20px;
-      max-width: 500px;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: repeat(3, 1fr) 20px 1fr;
+      gap: 15px;
+      max-width: 600px;
       margin: 30px auto;
       padding: 20px;
       background: rgba(0, 0, 0, 0.1);
       border-radius: 12px;
       direction: rtl;
+      position: relative;
     }
 
-    /* מיקום מדויק – עמודה ימנית: 5,3,1 | עמודה שמאלית: 6,4,2 */
-    .court-btn:nth-child(1) { grid-area: 3 / 1; }  /* מגרש 1 - תחתית ימין */
-    .court-btn:nth-child(2) { grid-area: 3 / 2; }  /* מגרש 2 - תחתית שמאל */
+    /* קיר הפרדה – שורה 4 */
+    .courts-map::before {
+      content: "";
+      grid-area: 4 / 1 / 5 / 3;
+      background: #999;
+      height: 4px;
+      border-radius: 2px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      margin: 10px 0;
+    }
+
+    /* מיקום מדויק – לפי הסידור שלך */
+    .court-btn:nth-child(1) { grid-area: 5 / 1; }  /* מגרש 1 - תחתית ימין */
+    .court-btn:nth-child(2) { grid-area: 5 / 2; }  /* מגרש 2 - תחתית שמאל */
     .court-btn:nth-child(3) { grid-area: 2 / 1; }  /* מגרש 3 - אמצע ימין */
     .court-btn:nth-child(4) { grid-area: 2 / 2; }  /* מגרש 4 - אמצע שמאל */
     .court-btn:nth-child(5) { grid-area: 1 / 1; }  /* מגרש 5 - עליון ימין */
@@ -195,27 +207,19 @@
     @media (max-width: 600px) {
       .courts-map {
         grid-template-columns: 1fr;
-        grid-template-rows: repeat(6, 1fr);
+        grid-template-rows: repeat(6, 1fr) 15px 1fr;
         gap: 12px;
         max-width: 300px;
       }
-      /* סדר אנכי בטלפון – לפי הסדר הלוגי */
-      .court-btn:nth-child(1) { grid-area: 6; }  /* 1 */
-      .court-btn:nth-child(2) { grid-area: 5; }  /* 2 */
-      .court-btn:nth-child(3) { grid-area: 4; }  /* 3 */
-      .court-btn:nth-child(4) { grid-area: 3; }  /* 4 */
-      .court-btn:nth-child(5) { grid-area: 2; }  /* 5 */
-      .court-btn:nth-child(6) { grid-area: 1; }  /* 6 */
-      .lang-switch {
-        position: static;
-        text-align: center;
-        margin-bottom: 15px;
+      .courts-map::before {
+        grid-area: 7 / 1 / 8 / 2;
       }
-      .price-note {
-        position: static;
-        margin-top: 15px;
-        text-align: center;
-      }
+      .court-btn:nth-child(1) { grid-area: 8; }
+      .court-btn:nth-child(2) { grid-area: 9; }
+      .court-btn:nth-child(3) { grid-area: 4; }
+      .court-btn:nth-child(4) { grid-area: 5; }
+      .court-btn:nth-child(5) { grid-area: 1; }
+      .court-btn:nth-child(6) { grid-area: 2; }
     }
   </style>
 </head>
@@ -329,7 +333,7 @@
     en: {
       title: "Tennis Court Booking",
       subtitle: "Choose a court from the aerial map below",
-      courts: ["Court 1", "Court 2", "Court 3", "Court 4", "Court 5", "Court 6"],
+      courts: ["Court 1", "Court 2", "Court 3",", "Court 4", "Court 5", "Court 6"],
       bookingTitle: "Booking Details",
       selectedCourt: "Selected Court:",
       selectDay: "Select Day:",
