@@ -55,20 +55,19 @@
     .submit-btn:disabled{
       background:#aaa;cursor:not-allowed;
     }
-    .close-btn{
-      position:absolute;top:15px;left:15px;background:#f44336;color:#fff;
-      border:none;padding:8px 12px;border-radius:6px;cursor:pointer;font-size:0.9rem;
-    }
-    .close-btn:hover{background:#d32f2f;}
     .final-message{
-      margin-top:25px;padding:15px;background:var(--success);border-radius:8px;
-      font-weight:600;color:#1b5e20;display:none;
+      margin-top:25px;padding:20px;background:var(--success);border-radius:12px;
+      font-weight:600;color:#1b5e20;font-size:1.2rem;
+      line-height:1.6;
+    }
+    .final-message strong{
+      display:block;margin-top:10px;font-size:1.3rem;
     }
   </style>
 </head>
 <body>
 <div class="container">
-  <button class="close-btn" onclick="window.close()">×</button>
+  <!-- אין כפתור סגירה! -->
   <h1>השלם את ההזמנה</h1>
   <div class="summary-box" id="summary">
     <!-- יתמלא דינמית -->
@@ -89,7 +88,7 @@
       <input type="email" id="email" name="אימייל" placeholder="example@email.com" />
     </div>
 
-    <!-- שדות נסתרים – פרטי ההזמנה -->
+    <!-- שדות נסתרים -->
     <input type="hidden" name="מגרש" id="hiddenCourt">
     <input type="hidden" name="יום" id="hiddenDay">
     <input type="hidden" name="שעה" id="hiddenTime">
@@ -99,8 +98,12 @@
     <button type="submit" class="submit-btn" id="submitBtn">אישור סופי והזמנה</button>
   </form>
 
-  <div class="final-message" id="finalMessage">
-    תודה! ההזמנה נקלטה במערכת. נשלח לך אישור ב-SMS.
+  <!-- הודעה סופית – מופיעה אחרי שליחה -->
+  <div class="final-message" id="finalMessage" style="display:none;">
+    <strong>ההזמנה נשלחה בהצלחה!</strong>
+    תודה רבה! נשלח לך אישור ב-SMS ו/או במייל.
+    <br><br>
+    <small>אין צורך לשלוח שוב – ההזמנה כבר נקלטה במערכת.</small>
   </div>
 </div>
 
@@ -113,7 +116,7 @@
   const duration = params.get('duration');
   const total = params.get('total');
 
-  // הצגת פרטי ההזמנה
+  // הצגת פרטים
   document.getElementById('summary').innerHTML = `
     <p><strong>מגרש:</strong> ${court}</p>
     <p><strong>יום:</strong> ${day}</p>
@@ -122,20 +125,25 @@
     <p><strong>סה"כ לתשלום:</strong> ${total}</p>
   `;
 
-  // שמירת הפרטים בשדות נסתרים
+  // שמירת ערכים בשדות נסתרים
   document.getElementById('hiddenCourt').value = court;
   document.getElementById('hiddenDay').value = day;
   document.getElementById('hiddenTime').value = time;
   document.getElementById('hiddenDuration').value = duration === '1' ? 'שעה אחת' : 'שעתיים';
   document.getElementById('hiddenTotal').value = total;
 
-  // שליחת הטופס
   const form = document.getElementById('personalDetailsForm');
   const submitBtn = document.getElementById('submitBtn');
   const finalMessage = document.getElementById('finalMessage');
 
+  let isSubmitted = false;
+
   form.addEventListener('submit', function(e) {
-    // בדיקה ששדות חובה מולאו
+    if (isSubmitted) {
+      e.preventDefault();
+      return;
+    }
+
     const name = document.getElementById('fullName').value.trim();
     const phone = document.getElementById('phone').value.trim();
 
@@ -145,17 +153,36 @@
       return;
     }
 
-    // השבתת כפתור ושינוי טקסט
+    isSubmitted = true;
     submitBtn.disabled = true;
     submitBtn.textContent = 'שולח...';
 
-    // Formspree יטפל בשליחה
-    // לאחר שליחה מוצלחת – נציג הודעה
+    // נועלים את ההיסטוריה – לא ניתן לחזור
+    history.pushState(null, null, location.href);
+    window.onpopstate = function () {
+      history.go(1);
+    };
+
+    // הצגת הודעה אחרי שליחה
     setTimeout(() => {
       form.style.display = 'none';
       finalMessage.style.display = 'block';
     }, 800);
   });
+
+  // מניעת חזרה בדפדפן
+  window.addEventListener('beforeunload', function(e) {
+    if (isSubmitted) {
+      e.preventDefault();
+      e.returnValue = '';
+    }
+  });
+
+  // נועלים חזרה מההתחלה
+  history.pushState(null, null, location.href);
+  window.onpopstate = function () {
+    history.go(1);
+  };
 </script>
 </body>
 </html>
