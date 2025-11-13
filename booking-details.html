@@ -11,6 +11,7 @@
       --light: #f8f9fa;
       --dark: #333;
       --success: #e8f5e9;
+      --error: #ffebee;
     }
     * {box-sizing:border-box;margin:0;padding:0;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;}
     body{
@@ -45,7 +46,16 @@
     }
     input[type=text], input[type=email], input[type=tel]{
       width:100%;padding:12px;border:1px solid #ccc;border-radius:6px;font-size:1rem;
-      text-align:right;
+      text-align:right;transition:border .2s;
+    }
+    input.error{
+      border-color:#e53935 !important;background:#ffebee;
+    }
+    .error-msg{
+      color:#e53935;font-size:0.9rem;margin-top:5px;display:none;text-align:right;
+    }
+    .error-msg.show{
+      display:block;
     }
     .submit-btn{
       background:var(--primary);color:#fff;border:none;padding:14px 24px;font-size:1.1rem;
@@ -83,15 +93,20 @@
   <form id="personalDetailsForm">
     <div class="form-group">
       <label for="fullName" id="nameLabel">שם מלא *</label>
-      <input type="text" id="fullName" name="שם מלא" required placeholder="הכנס שם מלא" />
+      <input type="text" id="fullName" name="שם מלא" required />
+      <div class="error-msg" id="nameError">שם מלא הוא שדה חובה</div>
     </div>
+
     <div class="form-group">
       <label for="phone" id="phoneLabel">טלפון *</label>
-      <input type="tel" id="phone" name="טלפון" required placeholder="05X-XXXXXXX" />
+      <input type="tel" id="phone" name="טלפון" required />
+      <div class="error-msg" id="phoneError">הזן מספר טלפון ישראלי תקין (לדוגמה: 0501234567)</div>
     </div>
+
     <div class="form-group">
       <label for="email" id="emailLabel">אימייל</label>
-      <input type="email" id="email" name="אימייל" placeholder="example@email.com" />
+      <input type="email" id="email" name="אימייל" />
+      <div class="error-msg" id="emailError">הזן כתובת אימייל תקינה</div>
     </div>
 
     <input type="hidden" name="מגרש" id="hiddenCourt">
@@ -100,7 +115,7 @@
     <input type="hidden" name="משך" id="hiddenDuration">
     <input type="hidden" name="סהכ" id="hiddenTotal">
 
-    <button type="submit" class="submit-btn" id="submitBtn">אישור סופי והזמנה</button>
+    <button type="submit" class="submit-btn" id="submitBtn">תשלום והזמנה</button>
   </form>
 
   <div class="final-message" id="finalMessage" style="display:none;">
@@ -120,7 +135,7 @@
       nameLabel: "שם מלא *",
       phoneLabel: "טלפון *",
       emailLabel: "אימייל",
-      submitBtn: "אישור סופי והזמנה",
+      submitBtn: "תשלום והזמנה",
       successTitle: "ההזמנה נשלחה בהצלחה!",
       successText: "תודה רבה! נשלח לך אישור ב-SMS ו/או במייל.",
       successNote: "אין צורך לשלוח שוב – ההזמנה כבר נקלטה במערכת.",
@@ -133,15 +148,19 @@
       oneHour: "שעה אחת",
       twoHours: "שעתיים",
       namePlaceholder: "הכנס שם מלא",
-      phonePlaceholder: "05X-XXXXXXX",
-      emailPlaceholder: "example@email.com"
+      phonePlaceholder: "0501234567",
+      emailPlaceholder: "example@email.com",
+      nameError: "שם מלא הוא שדה חובה",
+      phoneError: "הזן מספר טלפון ישראלי תקין (לדוגמה: 0501234567)",
+      emailError: "הזן כתובת אימייל תקינה",
+      sending: "שולח..."
     },
     en: {
       pageTitle: "Complete Your Booking",
       nameLabel: "Full Name *",
       phoneLabel: "Phone *",
       emailLabel: "Email",
-      submitBtn: "Confirm Booking",
+      submitBtn: "Pay & Book",
       successTitle: "Booking Sent Successfully!",
       successText: "Thank you! A confirmation will be sent via SMS and/or email.",
       successNote: "No need to submit again – your booking is already in the system.",
@@ -154,11 +173,16 @@
       oneHour: "1 Hour",
       twoHours: "2 Hours",
       namePlaceholder: "Enter full name",
-      phonePlaceholder: "05X-XXXXXXX",
-      emailPlaceholder: "example@email.com"
+      phonePlaceholder: "0501234567",
+      emailPlaceholder: "example@email.com",
+      nameError: "Full name is required",
+      phoneError: "Enter a valid Israeli phone number (e.g. 0501234567)",
+      emailError: "Enter a valid email address",
+      sending: "Sending..."
     }
   };
 
+  // === קריאת פרמטרים + שפה ===
   const params = new URLSearchParams(window.location.search);
   const lang = params.get('lang') || 'he';
   const court = params.get('court') || '';
@@ -172,7 +196,7 @@
 
   const t = translations[lang];
 
-  // === עדכון טקסטים ===
+  // === עדכון טקסטים + Placeholders + שגיאות ===
   document.getElementById('pageTitle').textContent = t.pageTitle;
   document.getElementById('nameLabel').textContent = t.nameLabel;
   document.getElementById('phoneLabel').textContent = t.phoneLabel;
@@ -183,12 +207,15 @@
   document.getElementById('successNote').textContent = t.successNote;
   document.getElementById('backLink').textContent = t.backLink;
 
-  // === עדכון Placeholders ===
   document.getElementById('fullName').placeholder = t.namePlaceholder;
   document.getElementById('phone').placeholder = t.phonePlaceholder;
   document.getElementById('email').placeholder = t.emailPlaceholder;
 
-  // === הצגת פרטים ===
+  document.getElementById('nameError').textContent = t.nameError;
+  document.getElementById('phoneError').textContent = t.phoneError;
+  document.getElementById('emailError').textContent = t.emailError;
+
+  // === הצגת פרטי הזמנה ===
   const durationText = duration === '1' ? t.oneHour : t.twoHours;
   document.getElementById('summary').innerHTML = `
     <p><strong>${t.court}:</strong> ${court}</p>
@@ -204,7 +231,24 @@
   document.getElementById('hiddenDuration').value = durationText;
   document.getElementById('hiddenTotal').value = total;
 
-  // === שליחה ל-Formspree ===
+  // === אימות טלפון ישראלי ===
+  function validateIsraeliPhone(phone) {
+    const cleaned = phone.replace(/\D/g, '');
+    return /^05[0-9]{8}$/.test(cleaned) && cleaned.length === 10;
+  }
+
+  // === אימות אימייל ===
+  function validateEmail(email) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  }
+
+  // === איפוס שגיאות ===
+  function clearErrors() {
+    document.querySelectorAll('.error-msg').forEach(el => el.classList.remove('show'));
+    document.querySelectorAll('input').forEach(el => el.classList.remove('error'));
+  }
+
+  // === שליחה ===
   const form = document.getElementById('personalDetailsForm');
   const submitBtn = document.getElementById('submitBtn');
   const finalMessage = document.getElementById('finalMessage');
@@ -214,17 +258,37 @@
     e.preventDefault();
     if (isSubmitted) return;
 
+    clearErrors();
+
     const name = document.getElementById('fullName').value.trim();
     const phone = document.getElementById('phone').value.trim();
+    const email = document.getElementById('email').value.trim();
 
-    if (!name || !phone) {
-      alert(lang === 'he' ? 'אנא מלא שם וטלפון' : 'Please fill name and phone');
-      return;
+    let hasError = false;
+
+    if (!name) {
+      document.getElementById('fullName').classList.add('error');
+      document.getElementById('nameError').classList.add('show');
+      hasError = true;
     }
+
+    if (!phone || !validateIsraeliPhone(phone)) {
+      document.getElementById('phone').classList.add('error');
+      document.getElementById('phoneError').classList.add('show');
+      hasError = true;
+    }
+
+    if (email && !validateEmail(email)) {
+      document.getElementById('email').classList.add('error');
+      document.getElementById('emailError').classList.add('show');
+      hasError = true;
+    }
+
+    if (hasError) return;
 
     isSubmitted = true;
     submitBtn.disabled = true;
-    submitBtn.textContent = lang === 'he' ? 'שולח...' : 'Sending...';
+    submitBtn.textContent = t.sending;
 
     const formData = new FormData(form);
 
@@ -252,6 +316,7 @@
     }
   });
 
+  // === חוסם חזרה ===
   history.pushState(null, null, location.href);
   window.onpopstate = () => history.go(1);
 </script>
