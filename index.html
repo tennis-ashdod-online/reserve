@@ -38,6 +38,7 @@
     .lang-btn{
       display:flex;align-items:center;gap:6px;color:#666;text-decoration:none;
       padding:6px 10px;border-radius:6px;transition:all .2s;font-weight:500;
+      cursor:pointer;
     }
     .lang-btn:hover, .lang-btn.active{
       background:#e3f2fd;color:var(--primary);
@@ -101,7 +102,7 @@
     }
     .back-btn:hover { background: #d32f2f; }
 
-    /* מגרש טניס */
+    /* מפת מגרשים */
     .courts-map{
       display:grid;
       grid-template-columns:1fr 1fr;
@@ -258,9 +259,9 @@
 
 <div class="container">
   <div class="lang-switch">
-    <a href="#" class="lang-btn active" data-lang="he">IL עברית</a>
+    <button class="lang-btn active" data-lang="he">IL עברית</button>
     <span class="lang-separator">|</span>
-    <a href="#" class="lang-btn" data-lang="en">US English</a>
+    <button class="lang-btn" data-lang="en">US English</button>
   </div>
 
   <header>
@@ -271,7 +272,6 @@
   <!-- עטיפת המפה -->
   <div class="courts-wrapper" id="courtsWrapper">
     <div class="courts-map" role="region" aria-label="מפת מגרשים">
-      <!-- מגרשים – כמו קודם -->
       <div class="court-btn" data-court="5"><span>מגרש 5</span><div class="court-lines"><div class="court-surface"></div><div class="court-inner-h top"></div><div class="court-inner-h bottom"></div><div class="court-inner-v left"></div><div class="court-inner-v right"></div></div></div>
       <div class="court-btn" data-court="6"><span>מגרש 6</span><div class="court-lines"><div class="court-surface"></div><div class="court-inner-h top"></div><div class="court-inner-h bottom"></div><div class="court-inner-v left"></div><div class="court-inner-v right"></div></div></div>
       <div class="court-btn" data-court="3"><span>מגרש 3</span><div class="court-lines"><div class="court-surface"></div><div class="court-inner-h top"></div><div class="court-inner-h bottom"></div><div class="court-inner-v left"></div><div class="court-inner-v right"></div></div></div>
@@ -401,11 +401,12 @@
   const bookingsContainer = document.getElementById('bookingsContainer');
   let selectedBtn = null;
   let duration = 1;
+  let currentLang = 'he';
 
-  // פונקציות localStorage
+  // localStorage
   function saveBooking(booking) {
     const bookings = getBookings();
-    booking.id = Date.now(); // מזהה ייחודי
+    booking.id = Date.now();
     booking.timestamp = new Date().toLocaleString('he-IL');
     bookings.push(booking);
     localStorage.setItem('courtBookings', JSON.stringify(bookings));
@@ -439,14 +440,14 @@
           <strong>${booking.court}</strong> • ${booking.day} • ${booking.time} • ${booking.duration} שעה${booking.duration > 1 ? 'ות' : ''} • ${booking.total}
           <br><small>${booking.timestamp}</small>
         </div>
-        <button class="delete-booking" data-id="${booking.id}">${translations[document.documentElement.lang].delete}</button>
+        <button class="delete-booking" data-id="${booking.id}">${translations[currentLang].delete}</button>
       `;
       bookingsContainer.appendChild(item);
     });
     bookingsList.classList.add('visible');
   }
 
-  // פונקציות ניווט
+  // ניווט
   function goBack() {
     if (selectedBtn) selectedBtn.classList.remove('selected');
     selectedBtn = null;
@@ -464,7 +465,7 @@
     document.getElementById('selectedCourt').value = courtBtn.querySelector('span').textContent;
     bookingForm.classList.add('visible');
     courtsWrapper.classList.add('hidden');
-    updateFormLanguage(document.documentElement.lang);
+    updateFormLanguage(currentLang);
     resetForm();
     history.pushState({ page: 'booking' }, '', '#booking');
   }
@@ -479,7 +480,10 @@
   }
 
   // אירועים
-  document.querySelectorAll('.court-btn').forEach(btn => btn.addEventListener('click', () => openBooking(btn)));
+  document.querySelectorAll('.court-btn').forEach(btn => {
+    btn.addEventListener('click', () => openBooking(btn));
+  });
+
   backBtn.addEventListener('click', goBack);
 
   document.querySelectorAll('.duration-btn').forEach(btn => {
@@ -495,7 +499,7 @@
     const day = document.getElementById('daySelect').value;
     const time = document.getElementById('timeSelect').value;
     if (!day || !time) {
-      alert(document.documentElement.lang === 'he' ? 'אנא מלא את כל השדות הנדרשים' : 'Please fill all required fields');
+      alert(currentLang === 'he' ? 'אנא מלא את כל השדות הנדרשים' : 'Please fill all required fields');
       return;
     }
 
@@ -509,23 +513,26 @@
 
     saveBooking(booking);
 
-    const lang = document.documentElement.lang;
-    const t = translations[lang];
+    const t = translations[currentLang];
     alert(`${t.alertTitle}\n\nמגרש: ${booking.court}\nיום: ${day}\nשעה: ${time}\nמשך: ${duration} שעה${duration > 1 ? 'ות' : ''}\nסה״כ: ${booking.total}\n\n${t.alertThanks}`);
 
     goBack();
   });
 
-  // החלפת שפה
+  // החלפת שפה – תוקן!
   document.querySelectorAll('.lang-btn').forEach(btn => {
-    btn.addEventListener('click', e => {
+    btn.addEventListener('click', function(e) {
       e.preventDefault();
-      const lang = btn.dataset.lang;
+      const lang = this.dataset.lang;
+      currentLang = lang;
+
+      // עדכן כפתור פעיל
       document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      document.documentElement.lang = lang;
+      this.classList.add('active');
 
       const t = translations[lang];
+
+      // עדכן תוכן
       document.querySelector('h1').textContent = t.title;
       document.querySelector('header p').textContent = t.subtitle;
       document.querySelectorAll('[data-he]').forEach(el => {
@@ -534,4 +541,5 @@
       document.querySelectorAll('.court-btn span').forEach((span, i) => {
         span.textContent = t.courts[i];
       });
-      b
+      backBtn.textContent = t.back;
+      if (bookingForm.cl
