@@ -22,7 +22,7 @@
     .container{
       max-width:600px;margin:40px auto;background:rgba(255,255,255,.97);color:var(--dark);
       border-radius:15px;padding:30px;box-shadow:0 10px 40px rgba(0,0,0,.3);
-      text-align:center;
+      text-align:center;position:relative;
     }
     h1{
       color:var(--primary);margin-bottom:20px;font-size:1.8rem;
@@ -58,9 +58,15 @@
     }
     .close-btn:hover{background:#d32f2f;}
     .final-message{
-      margin-top:25px;padding:15px;background:var(--success);border-radius:8px;
-      font-weight:600;color:#1b5e20;display:none;
+      margin-top:25px;padding:18px;background:var(--success);border-radius:12px;
+      font-weight:600;color:#1b5e20;line-height:1.6;display:none;
     }
+    .whatsapp-btn{
+      display:inline-block;background:#25D366;color:white;padding:14px 24px;
+      border-radius:10px;text-decoration:none;font-weight:bold;margin-top:15px;
+      font-size:1.1rem;transition:.2s;
+    }
+    .whatsapp-btn:hover{background:#128C7E;}
   </style>
 </head>
 <body>
@@ -91,7 +97,8 @@
   </form>
 
   <div class="final-message" id="finalMessage">
-    תודה! ההזמנה נקלטה במערכת. נשלח לך אישור ב-SMS.
+    תודה רבה! ההזמנה נקלטה במערכת.<br><br>
+    <div id="whatsappLink"></div>
   </div>
 </div>
 
@@ -104,7 +111,7 @@
   const duration = params.get('duration');
   const total = params.get('total');
 
-  // הצגת פרטי ההזמנה
+  // הצגת סיכום ההזמנה
   document.getElementById('summary').innerHTML = `
     <p><strong>מגרש:</strong> ${court}</p>
     <p><strong>יום:</strong> ${day}</p>
@@ -126,12 +133,38 @@
       return;
     }
 
-    // כאן אפשר לשלוח לשרת, WhatsApp, או דוא"ל
-    console.log('הזמנה:', { court, day, time, duration, total, name, phone, email });
+    // מספר ה-WhatsApp של המנהל (שנה כאן!)
+    const adminPhone = '972501234567'; // ← שנה למספר שלך (ללא + או רווחים)
 
-    // הצגת הודעת אישור
+    // הודעה שתישלח
+    const message = `הזמנה חדשה!\n` +
+      `מגרש: ${court}\n` +
+      `יום: ${day}\n` +
+      `שעה: ${time}\n` +
+      `משך: ${duration === '1' ? 'שעה אחת' : 'שעתיים'}\n` +
+      `סה"כ: ${total}\n` +
+      `שם: ${name}\n` +
+      `טלפון: ${phone}\n` +
+      (email ? `אימייל: ${email}` : '');
+
+    // הצגת הודעת סיום + כפתור WhatsApp
     document.getElementById('personalDetailsForm').style.display = 'none';
     document.getElementById('finalMessage').style.display = 'block';
+
+    document.getElementById('whatsappLink').innerHTML = `
+      <a href="https://wa.me/${adminPhone}?text=${encodeURIComponent(message)}" 
+         target="_blank" 
+         class="whatsapp-btn">
+         שלח אישור ב-WhatsApp
+      </a>
+    `;
+
+    // אפשרות: פתיחה אוטומטית של WhatsApp (במובייל בלבד)
+    if (/Android|iPhone/i.test(navigator.userAgent)) {
+      setTimeout(() => {
+        window.open(`https://wa.me/${adminPhone}?text=${encodeURIComponent(message)}`, '_blank');
+      }, 1000);
+    }
   });
 </script>
 
