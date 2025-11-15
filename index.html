@@ -1,9 +1,10 @@
+
 <!DOCTYPE html>
 <html lang="he" dir="rtl">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <meta name="description" content="הזמנת מגרשי טניס וכדורסל במרכז קהילתי עם שלום, רובע יא' אשדוד. מחיר: 40₪ לשעה. פתוח כל יום 08:00–21:00">
+  <meta name="description" content="הזמנת מגרשי טניס וכדורסל במרכז קהילתי עם שלום, רובע יא' אשדוד. מחיר: 40₪ לשעה.">
   <title>רובע יא' - מרכז קהילתי עם שלום</title>
   <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/2991/2991119.png" type="image/png">
   <style>
@@ -16,7 +17,7 @@
       --red: #e53935;
       --green: #4caf50;
     }
-    * {box-sizing:border-box;margin:0;padding:0;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;}
+    * {box-sizing:border-box;margin:0;padding:0;font-family:'Segoe UI',sans-serif;}
     body{
       background:linear-gradient(rgba(0,0,0,.55),rgba(0,0,0,.55)),
                  url('https://images.unsplash.com/photo-1622278494980-874d6f8bf7ed?ixlib=rb-4.0.3&auto=format&fit=crop&w=1950&q=80')
@@ -128,9 +129,67 @@
     }
     .court-btn.taken { background:#ffebee; border-color:var(--red); opacity:0.7; cursor:not-allowed; }
     .court-btn.taken::after { content: "X"; position: absolute; top:8px; right:8px; font-weight:bold; color:var(--red); }
+
+    /* לוח שנה קטן */
+    .calendar-container {
+      margin: 20px 0;
+      background: #fff;
+      border-radius: 12px;
+      padding: 15px;
+      box-shadow: 0 4px 15px rgba(0,0,0,.1);
+      text-align: center;
+    }
+    .calendar-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      font-weight: 600;
+    }
+    .calendar-header button {
+      background: none;
+      border: none;
+      font-size: 1.2rem;
+      cursor: pointer;
+      color: var(--primary);
+    }
+    .calendar-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 6px;
+      font-size: 0.9rem;
+    }
+    .calendar-day {
+      padding: 10px 6px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all .2s;
+    }
+    .calendar-day.header {
+      font-weight: bold;
+      color: var(--primary);
+      cursor: default;
+    }
+    .calendar-day.today {
+      background: #e3f2fd;
+      font-weight: bold;
+    }
+    .calendar-day.selected {
+      background: var(--primary);
+      color: white;
+      font-weight: bold;
+    }
+    .calendar-day.disabled {
+      color: #ccc;
+      cursor: not-allowed;
+    }
+    .calendar-day:hover:not(.disabled):not(.selected) {
+      background: #f0f0f0;
+    }
+
     .form-group{margin-bottom:18px;}
     label{display:block;margin-bottom:8px;font-weight:600;text-align:right;}
-    select, input[type=text], input[type=email], input[type=tel]{
+    select, input[type=text], input[type=tel]{
       width:100%;padding:10px;border:1px solid #ccc;border-radius:6px;font-size:1rem;
       text-align:right;
     }
@@ -156,16 +215,15 @@
       position:absolute;bottom:15px;right:15px;background:#fff3e0;padding:8px 12px;
       border-radius:6px;font-size:.85rem;box-shadow:0 1px 5px rgba(0,0,0,.1);
     }
-    .error-msg { color: var(--red); font-size: 0.85rem; margin-top: 5px; text-align: right; display: none; }
-    .error-msg.show { display: block; }
-    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
-    .admin-link, .mybookings-link {
+    .mybookings-link, .admin-link {
       display: block; margin-top: 15px; font-size: 0.9rem;
     }
-    .admin-link a, .mybookings-link a {
+    .mybookings-link a, .admin-link a {
       color: #1a73e8; font-weight: 600; text-decoration: underline;
     }
     @media (max-width:600px){
+      .calendar-grid { gap: 4px; font-size: 0.8rem; }
+      .calendar-day { padding: 8px 4px; }
       .courts-map{gap:12px;}
       .wall-separator{height:25px;}
       .lang-switch{top:10px;}
@@ -186,67 +244,70 @@
   </div>
   <header>
     <h1 data-he="רובע יא' - מרכז קהילתי עם שלום" data-en="Am-Shalom Community Center">רובע יא' - מרכז קהילתי עם שלום</h1>
-    <p data-he="בחרו את המגרש שבו תרצו לשחק" data-en="Choose the tennis court where you want to play">בחרו את המגרש שבו תרצו לשחק</p>
+    <p data-he="בחרו את המגרש שבו תרצו לשחק" data-en="Choose the tennis court">בחרו את המגרש שבו תרצו לשחק</p>
   </header>
+
   <div class="courts-wrapper" id="courtsWrapper">
-    <div class="courts-map" role="region" aria-labelledby="courtsTitle">
-      <h2 id="courtsTitle" class="sr-only">מפת מגרשים</h2>
-      <div class="court-btn" data-court="5" aria-label="מגרש 5"><span>מגרש 5</span></div>
-      <div class="court-btn" data-court="6" aria-label="מגרש 6"><span>מגרש 6</span></div>
-      <div class="court-btn" data-court="4" aria-label="מגרש 4"><span>מגרש 4</span></div>
-      <div class="court-btn" data-court="3" aria-label="מגרש 3"><span>מגרש 3</span></div>
-      <div class="wall-separator" aria-hidden="true"></div>
-      <div class="court-btn" data-court="2" aria-label="מגרש 2"><span>מגרש 2</span></div>
-      <div class="court-btn" data-court="1" aria-label="מגרש 1"><span>מגרש 1</span></div>
+    <div class="courts-map">
+      <div class="court-btn" data-court="5"><span>מגרש 5</span></div>
+      <div class="court-btn" data-court="6"><span>מגרש 6</span></div>
+      <div class="court-btn" data-court="4"><span>מגרש 4</span></div>
+      <div class="court-btn" data-court="3"><span>מגרש 3</span></div>
+      <div class="wall-separator"></div>
+      <div class="court-btn" data-court="2"><span>מגרש 2</span></div>
+      <div class="court-btn" data-court="1"><span>מגרש 1</span></div>
     </div>
   </div>
-  <div id="bookingForm" role="form" aria-labelledby="formTitle">
+
+  <div id="bookingForm">
     <button class="back-btn" id="backBtn">חזור</button>
-    <h3 id="formTitle" data-he="פרטי הזמנה" data-en="Booking Details">פרטי הזמנה</h3>
+    <h3>פרטי הזמנה</h3>
+
     <div class="form-group">
-      <label data-he="מגרש נבחר:" data-en="Selected Court:">מגרש נבחר:</label>
-      <input type="text" id="selectedCourt" readonly aria-readonly="true" />
+      <label>מגרש נבחר:</label>
+      <input type="text" id="selectedCourt" readonly />
     </div>
+
+    <!-- לוח שנה קטן -->
+    <div class="calendar-container" id="calendarContainer"></div>
+
     <div class="form-group">
-      <label for="daySelect" data-he="בחר תאריך:" data-en="Select Date:">בחר תאריך:</label>
-      <select id="daySelect" required>
-        <option value="">-- בחר תאריך --</option>
-      </select>
-    </div>
-    <div class="form-group">
-      <label for="timeSelect" data-he="בחר שעה:" data-en="Select Time:">בחר שעה:</label>
+      <label for="timeSelect">בחר שעה:</label>
       <select id="timeSelect" required>
         <option value="">-- בחר שעה --</option>
       </select>
     </div>
+
     <div class="form-group">
-      <label data-he="משך זמן:" data-en="Duration:">משך זמן:</label>
+      <label>משך זמן:</label>
       <div class="duration-options">
-        <div class="duration-btn" data-duration="2" aria-label="שעתיים">שעתיים</div>
-        <div class="duration-btn selected" data-duration="1" aria-label="שעה אחת">שעה אחת</div>
+        <div class="duration-btn" data-duration="2">שעתיים</div>
+        <div class="duration-btn selected" data-duration="1">שעה אחת</div>
       </div>
     </div>
+
     <div class="form-group">
-      <label data-he="סה״כ לתשלום:" data-en="Total Amount:">סה״כ לתשלום:</label>
-      <input type="text" id="totalPrice" readonly value="40₪" aria-live="polite" />
+      <label>סה״כ לתשלום:</label>
+      <input type="text" id="totalPrice" readonly value="40₪" />
     </div>
+
     <button class="submit-btn" id="confirmBookingBtn">אישור הזמנה</button>
   </div>
+
   <div class="info-box">
-    <p><strong data-he="כתובת:" data-en="Address:">כתובת:</strong> <span data-he="הרי גולן 6, אשדוד, ישראל" data-en="Harei Golan 6, Ashdod, Israel">הרי גולן 6, אשדוד, ישראל</span></p>
-    <p><strong data-he="טלפון:" data-en="Phone:">טלפון:</strong> <a href="tel:088678400">08-8678400</a></p>
-    <p data-he="שעות פעילות: ראשון-שבת 08:00–21:00" data-en="Hours: Sun-Sat 08:00–21:00">שעות פעילות: ראשון-שבת 08:00–21:00</p>
+    <p><strong>כתובת:</strong> הרי גולן 6, אשדוד</p>
+    <p><strong>טלפון:</strong> <a href="tel:088678400">08-8678400</a></p>
+    <p>שעות פעילות: ראשון-שבת 08:00–21:00</p>
     <div class="mybookings-link"><a href="my-bookings.html">ההזמנות שלי</a></div>
-    <div class="admin-link"><a href="admin.html">ניהול הזמנות (למנהל בלבד)</a></div>
+    <div class="admin-link"><a href="admin.html">ניהול הזמנות (למנהל)</a></div>
   </div>
-  <div class="price-note">
-    <span data-he="תעריף: 40₪ לשעה" data-en="Rate: 40₪ per hour">תעריף: 40₪ לשעה</span>
-  </div>
+
+  <div class="price-note">תעריף: 40₪ לשעה</div>
 </div>
 
-<!-- צ'אט WhatsApp – צריך עזרה? -->
+<!-- WhatsApp -->
 <div id="whatsappHelp" style="position:fixed; bottom:20px; left:20px; z-index:9999;">
-  <a href="https://wa.me/97258678400?text=%D7%A9%D7%9C%D7%95%D7%9D!%20%D7%90%D7%A0%D7%99%20%D7%A6%D7%A8%D7%99%D7%9A%20%D7%A2%D7%96%D7%A8%D7%94%20%D7%91%D7%94%D7%96%D7%9E%D7%A0%D7%AA%20%D7%9E%D7%92%D7%A8%D7%A9%20%D7%91%D7%9E%D7%A8%D7%9B%D7%96%20%D7%A7%D7%94%D7%99%D7%9C%D7%AA%D7%99%20%D7%A2%D7%9D%20%D7%A9%D7%9C%D7%95%D7%9D" 
+  <a href="https://wa.me/97258678400?text=שלום!%20אני%20צריך%20עזרה%20בהזמנת%20מגרש" 
      target="_blank" 
      style="background:#25D366; color:#fff; width:60px; height:60px; border-radius:50%; 
             display:flex; align-items:center; justify-content:center; font-size:28px; 
@@ -257,80 +318,82 @@
 
 <style>
   @keyframes pulse {
-    0% { transform: scale(1); box-shadow: 0 4px 15px rgba(0,0,0,.3); }
-    50% { transform: scale(1.1); box-shadow: 0 8px 25px rgba(37,211,102,.5); }
-    100% { transform: scale(1); box-shadow: 0 4px 15px rgba(0,0,0,.3); }
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
   }
-  #whatsappHelp a:hover {
-    transform: scale(1.15) !important;
-  }
+  #whatsappHelp a:hover { transform: scale(1.15) !important; }
 </style>
 
 <script>
   const hours = [];
   for(let h = 8; h <= 21; h++) hours.push(h.toString().padStart(2, '0') + ':00');
 
-  const translations = {
-    he: {
-      title: "רובע יא' - מרכז קהילתי עם שלום",
-      subtitle: "בחרו את המגרש שבו תרצו לשחק",
-      courts: ["מגרש 5","מגרש 6","מגרש 4","מגרש 3","מגרש 2","מגרש 1"],
-      bookingTitle: "פרטי הזמנה",
-      selectedCourt: "מגרש נבחר:",
-      selectDay: "בחר תאריך:",
-      selectTime: "בחר שעה:",
-      oneHour: "שעה אחת",
-      twoHours: "שעתיים",
-      total: "סה״כ לתשלום:",
-      confirm: "אישור הזמנה",
-      back: "חזור",
-      priceNote: "תעריף: 40₪ לשעה",
-      missing: "אנא מלא את כל השדות הנדרשים",
-      courtTaken: "המגרש תפוס בשעה זו!",
-      hourAfterTaken: "השעה שאחרי תפוסה (בגלל הזמנה של שתיים)"
-    },
-    en: {
-      title: "Am-Shalom Community Center",
-      subtitle: "Choose the tennis court where you want to play",
-      courts: ["Court 5","Court 6","Court 4","Court 3","Court 2","Court 1"],
-      bookingTitle: "Booking Details",
-      selectedCourt: "Selected Court:",
-      selectDay: "Select Date:",
-      selectTime: "Select Time:",
-      oneHour: "1 Hour",
-      twoHours: "2 Hours",
-      total: "Total Amount:",
-      confirm: "Confirm Booking",
-      back: "Back",
-      priceNote: "Rate: 40₪ per hour",
-      missing: "Please fill all required fields",
-      courtTaken: "This court is already booked at this time!",
-      hourAfterTaken: "Next hour is taken (due to 2-hour booking)"
-    }
-  };
+  let selectedBtn = null;
+  let duration = 1;
+  let selectedDate = null;
 
   const courtsWrapper = document.getElementById('courtsWrapper');
   const bookingForm = document.getElementById('bookingForm');
   const backBtn = document.getElementById('backBtn');
-  const daySelect = document.getElementById('daySelect');
   const timeSelect = document.getElementById('timeSelect');
-  let selectedBtn = null;
-  let duration = 1;
+  const calendarContainer = document.getElementById('calendarContainer');
 
-  function generateNextDates(count = 14) {
-    const options = [];
-    const today = new Date('2025-11-15');
-    const heWeekdays = ["ראשון", "שני", "שלישי", "רביעי", "חמישי", "שישי", "שבת"];
-    for (let i = 0; i < count; i++) {
-      const date = new Date(today);
-      date.setDate(today.getDate() + i);
-      const dateStr = date.toISOString().split('T')[0];
-      const dayIndex = date.getDay();
-      const dayName = heWeekdays[dayIndex];
-      const display = `${dayName} ${date.getDate()}/${date.getMonth()+1}`;
-      options.push({ value: dateStr, text: display });
+  function renderCalendar(date) {
+    const year = date.getFullYear();
+    const month = date.getMonth();
+    const today = new Date();
+    today.setHours(0,0,0,0);
+
+    const firstDay = new Date(year, month, 1).getDay();
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+    const heMonths = ["ינואר","פברואר","מרץ","אפריל","מאי","יוני","יולי","אוגוסט","ספטמבר","אוקטובר","נובמבר","דצמבר"];
+    const heDays = ["א'","ב'","ג'","ד'","ה'","ו'","ש'"];
+
+    let html = `
+      <div class="calendar-header">
+        <button id="prevMonth">‹</button>
+        <span>${heMonths[month]} ${year}</span>
+        <button id="nextMonth">›</button>
+      </div>
+      <div class="calendar-grid">
+    `;
+
+    heDays.forEach(d => html += `<div class="calendar-day header">${d}</div>`);
+
+    for (let i = 0; i < firstDay; i++) {
+      html += `<div class="calendar-day disabled"></div>`;
     }
-    return options;
+
+    for (let day = 1; day <= daysInMonth; day++) {
+      const currentDate = new Date(year, month, day);
+      currentDate.setHours(0,0,0,0);
+      const isToday = currentDate.getTime() === today.getTime();
+      const isSelected = selectedDate && selectedDate.getTime() === currentDate.getTime();
+      const isPast = currentDate < today;
+
+      html += `
+        <div class="calendar-day ${isToday ? 'today' : ''} ${isSelected ? 'selected' : ''} ${isPast ? 'disabled' : ''}"
+             data-date="${year}-${(month+1).toString().padStart(2,'0')}-${day.toString().padStart(2,'0')}">
+          ${day}
+        </div>
+      `;
+    }
+
+    html += `</div>`;
+    calendarContainer.innerHTML = html;
+
+    document.getElementById('prevMonth').onclick = () => renderCalendar(new Date(year, month - 1));
+    document.getElementById('nextMonth').onclick = () => renderCalendar(new Date(year, month + 1));
+
+    document.querySelectorAll('.calendar-day:not(.disabled):not(.header)').forEach(day => {
+      day.onclick = () => {
+        selectedDate = new Date(day.dataset.date);
+        renderCalendar(selectedDate);
+        updateTimeOptions();
+      };
+    });
   }
 
   function getBookedSlots() {
@@ -345,28 +408,26 @@
     return bookings.some(b => {
       if (b.court !== court || b.date !== date) return false;
       const [bHour] = b.time.split(':').map(Number);
-      const bEnd = bHour + (b.duration.includes('שעתיים') || b.duration.includes('2 Hours') ? 2 : 1);
+      const bEnd = bHour + (b.duration === 'שעתיים' ? 2 : 1);
       return (hour < bEnd && endHour > bHour);
     });
   }
 
   function updateTimeOptions() {
-    const lang = document.documentElement.lang;
-    const t = translations[lang];
-    const selectedDate = daySelect.value;
-    const court = document.getElementById('selectedCourt').value;
-
-    if (!selectedDate || !court) {
-      timeSelect.innerHTML = `<option value="">-- ${lang === 'he' ? 'בחר שעה' : 'Select Time'} --</option>`;
+    if (!selectedDate) {
+      timeSelect.innerHTML = '<option value="">-- בחר תאריך קודם --</option>';
       return;
     }
 
-    timeSelect.innerHTML = `<option value="">-- ${lang === 'he' ? 'בחר שעה' : 'Select Time'} --</option>`;
+    const dateStr = selectedDate.toISOString().split('T')[0];
+    const court = document.getElementById('selectedCourt').value;
+
+    timeSelect.innerHTML = '<option value="">-- בחר שעה --</option>';
 
     hours.forEach(h => {
       const hour = parseInt(h);
-      const isTaken = isSlotTaken(court, selectedDate, h, duration);
-      const nextHourTaken = duration === 2 && hour < 21 && isSlotTaken(court, selectedDate, `${(hour+1).toString().padStart(2,'0')}:00`, 1);
+      const isTaken = isSlotTaken(court, dateStr, h, duration);
+      const nextHourTaken = duration === 2 && hour < 21 && isSlotTaken(court, dateStr, `${(hour+1).toString().padStart(2,'0')}:00`, 1);
 
       const opt = document.createElement('option');
       opt.value = h;
@@ -374,88 +435,34 @@
 
       if (isTaken) {
         opt.disabled = true;
-        opt.textContent += ` (${t.courtTaken})`;
-        opt.style.color = '#e53935';
-        opt.style.fontStyle = 'italic';
+        opt.textContent += ' (תפוס)';
       } else if (nextHourTaken) {
         opt.disabled = true;
-        opt.textContent += ` (${t.hourAfterTaken})`;
-        opt.style.color = '#fb8c00';
-        opt.style.fontStyle = 'italic';
+        opt.textContent += ' (שעה הבאה תפוסה)';
       }
 
       timeSelect.appendChild(opt);
     });
   }
 
-  function updateCourtAvailability() {
-    const selectedDate = daySelect.value;
-    if (!selectedDate) return;
-    document.querySelectorAll('.court-btn:not(.taken)').forEach(btn => {
-      const court = btn.dataset.court;
-      const taken = hours.some(h => isSlotTaken(court, selectedDate, h, 1));
-      if (taken) {
-        btn.classList.add('taken');
-        btn.setAttribute('aria-label', `מגרש ${court} – תפוס`);
-      }
-    });
+  function openBooking(btn) {
+    if (selectedBtn) selectedBtn.classList.remove('selected');
+    btn.classList.add('selected');
+    selectedBtn = btn;
+    document.getElementById('selectedCourt').value = btn.querySelector('span').textContent;
+    bookingForm.classList.add('visible');
+    courtsWrapper.classList.add('hidden');
+    selectedDate = null;
+    renderCalendar(new Date());
+    updateTimeOptions();
   }
 
   function goBack() {
     if (selectedBtn) selectedBtn.classList.remove('selected');
     selectedBtn = null;
-    document.getElementById('selectedCourt').value = '';
     bookingForm.classList.remove('visible');
     courtsWrapper.classList.remove('hidden');
-    resetForm();
     history.pushState({ page: 'home' }, '', '#home');
-  }
-
-  function openBooking(courtBtn) {
-    if (selectedBtn) selectedBtn.classList.remove('selected');
-    courtBtn.classList.add('selected');
-    selectedBtn = courtBtn;
-    document.getElementById('selectedCourt').value = courtBtn.querySelector('span').textContent;
-    bookingForm.classList.add('visible');
-    courtsWrapper.classList.add('hidden');
-    updateFormLanguage(document.documentElement.lang);
-    resetForm();
-    history.pushState({ page: 'booking' }, '', '#booking');
-  }
-
-  function resetForm() {
-    daySelect.selectedIndex = 0;
-    timeSelect.selectedIndex = 0;
-    document.querySelectorAll('.duration-btn').forEach(b => b.classList.remove('selected'));
-    document.querySelector('.duration-btn[data-duration="1"]').classList.add('selected');
-    duration = 1;
-    document.getElementById('totalPrice').value = '40₪';
-    updateTimeOptions();
-  }
-
-  function updateDayOptions(lang) {
-    const currentValue = daySelect.value;
-    const dates = generateNextDates(14);
-    daySelect.innerHTML = `<option value="">-- ${lang === 'he' ? 'בחר תאריך' : 'Select Date'} --</option>`;
-    dates.forEach(d => {
-      const opt = document.createElement('option');
-      opt.value = d.value;
-      opt.textContent = d.text;
-      if (d.value === currentValue) opt.selected = true;
-      daySelect.appendChild(opt);
-    });
-  }
-
-  function updateFormLanguage(lang) {
-    const t = translations[lang];
-    document.getElementById('formTitle').textContent = t.bookingTitle;
-    document.querySelector('label[for="daySelect"]').textContent = t.selectDay;
-    document.querySelector('label[for="timeSelect"]').textContent = t.selectTime;
-    const durationBtns = document.querySelectorAll('.duration-options .duration-btn');
-    durationBtns[0].textContent = t.twoHours;
-    durationBtns[1].textContent = t.oneHour;
-    document.getElementById('confirmBookingBtn').textContent = t.confirm;
-    document.querySelector('.price-note span').textContent = t.priceNote;
   }
 
   document.querySelectorAll('.court-btn').forEach(btn => btn.addEventListener('click', () => openBooking(btn)));
@@ -471,79 +478,29 @@
     });
   });
 
-  daySelect.addEventListener('change', () => {
-    updateTimeOptions();
-    updateCourtAvailability();
-  });
-
   document.getElementById('confirmBookingBtn').addEventListener('click', () => {
-    const date = daySelect.value;
+    const date = selectedDate ? selectedDate.toISOString().split('T')[0] : '';
     const time = timeSelect.value;
     const court = document.getElementById('selectedCourt').value;
-    const total = 40 * duration;
-    const currentLang = document.documentElement.lang;
-    const t = translations[currentLang];
 
     if (!date || !time || !court) {
-      alert(t.missing);
+      alert('אנא בחר תאריך ושעה');
       return;
     }
 
     if (isSlotTaken(court, date, time, duration)) {
-      alert(t.courtTaken);
+      alert('המגרש תפוס בשעה זו!');
       return;
     }
 
     const params = new URLSearchParams({
-      court: court,
-      date: date,
-      time: time,
-      duration: duration,
-      total: total + '₪',
-      lang: currentLang
+      court, date, time, duration,
+      total: (40 * duration) + '₪'
     });
 
     window.location.href = `booking-details.html?${params.toString()}`;
   });
 
-  document.querySelectorAll('.lang-btn').forEach(btn => {
-    btn.addEventListener('click', e => {
-      e.preventDefault();
-      const lang = btn.dataset.lang;
-      document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      document.documentElement.lang = lang;
-      document.documentElement.dir = lang === 'he' ? 'rtl' : 'ltr';
-
-      const t = translations[lang];
-      document.querySelector('h1').textContent = t.title;
-      document.querySelector('header p').textContent = t.subtitle;
-      document.querySelectorAll('[data-he]').forEach(el => {
-        el.textContent = lang === 'en' ? el.dataset.en : el.dataset.he;
-      });
-
-      document.querySelectorAll('.court-btn span').forEach((span, i) => {
-        span.textContent = t.courts[i];
-      });
-
-      updateDayOptions(lang);
-      updateTimeOptions();
-      backBtn.textContent = t.back;
-      document.getElementById('confirmBookingBtn').textContent = t.confirm;
-
-      if (bookingForm.classList.contains('visible')) {
-        updateFormLanguage(lang);
-      }
-    });
-  });
-
-  window.addEventListener('popstate', e => {
-    if (e.state && e.state.page === 'home') goBack();
-    else if (bookingForm.classList.contains('visible')) goBack();
-  });
-
-  updateDayOptions('he');
-  updateTimeOptions();
   history.replaceState({ page: 'home' }, '', '#home');
 </script>
 </body>
