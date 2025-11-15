@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <meta name="description" content="הזמנת מגרשי טניס וכדורסל במרכז קהילתי עם שלום, רובע יא' אשדוד. מחיר: 40₪ לשעה.">
+  <meta name="description" content="הזמנת מגרשי טניס במרכז קהילתי עם שלום, רובע יא' אשדוד. מחיר: 40₪ לשעה.">
   <title>רובע יא' - מרכז קהילתי עם שלום</title>
   <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/2991/2991119.png" type="image/png">
   <style>
@@ -19,7 +19,7 @@
     * {box-sizing:border-box;margin:0;padding:0;font-family:'Segoe UI',sans-serif;}
     body{
       background:linear-gradient(rgba(0,0,0,.55),rgba(0,0,0,.55)),
-                 url('https://images.unsplash.com/photo-1622278494980-874d6f8bf7ed?ixlib=rb-4.0.3&auto=format&fit=crop&w=1950&q=80')
+                 url('https://unsplash.com/photos/icon-4VhDqJy69vQ')
                  center/cover no-repeat fixed;
       color:#fff;line-height:1.6;min-height:100vh;padding:20px;
     }
@@ -116,12 +116,13 @@
       cursor:pointer;text-align:center;font-weight:bold;transition:all .3s;
       min-height:80px;display:flex;flex-direction:column;align-items:center;justify-content:center;
       position:relative;z-index:2;
+      font-size: 2rem;
     }
     .court-btn::before {
-      content: "";
-      width: 32px; height: 32px;
-      background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%231a73e8"><path d="M15 2H9c-1.1 0-2 .9-2 2v2H5c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2h-2V4c0-1.1-.9-2-2-2zm-4 2h2v2h-2V4zm8 16H5V8h14v10z"/></svg>') center/contain no-repeat;
+      content: "Tennis";
       margin-bottom: 6px;
+      font-size: 1.2rem;
+      font-weight: normal;
     }
     .court-btn:hover{
       border-color:var(--primary);background:#e3f2fd;transform:translateY(-3px);
@@ -388,9 +389,9 @@
 
     let html = `
       <div class="calendar-header">
-        <button id="prevMonth">Previous</button>
+        <button type="button" id="prevMonth">Previous</button>
         <span>${t.months[month]} ${year}</span>
-        <button id="nextMonth">Next</button>
+        <button type="button" id="nextMonth">Next</button>
       </div>
       <div class="calendar-grid">
     `;
@@ -408,10 +409,10 @@
       const isSelected = selectedDate && selectedDate.getTime() === currentDate.getTime();
       const isPast = currentDate < today;
 
-      const dateStr = `${year}-${(month+1).toString().padStart(2,'0')}-${day.toString().padStart(2,'0')}`;
+      const dateStr = `${year}-${String(month+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
       html += `
         <div class="calendar-day ${isToday ? 'today' : ''} ${isSelected ? 'selected' : ''} ${isPast ? 'disabled' : ''}"
-             data-date="${dateStr}">
+             data-date="${dateStr}" ${isPast ? '' : 'role="button" tabindex="0"'}>
           ${day}
         </div>
       `;
@@ -420,16 +421,27 @@
     html += `</div>`;
     calendarContainer.innerHTML = html;
 
-    document.getElementById('prevMonth').onclick = () => renderCalendar(new Date(year, month - 1));
-    document.getElementById('nextMonth').onclick = () => renderCalendar(new Date(year, month + 1));
+    // חיבור אירועים אחרי עדכון ה-DOM
+    setTimeout(() => {
+      document.getElementById('prevMonth')?.addEventListener('click', () => renderCalendar(new Date(year, month - 1)));
+      document.getElementById('nextMonth')?.addEventListener('click', () => renderCalendar(new Date(year, month + 1)));
 
-    document.querySelectorAll('.calendar-day:not(.disabled):not(.header)').forEach(day => {
-      day.onclick = () => {
-        selectedDate = new Date(day.dataset.date);
-        renderCalendar(selectedDate);
-        updateTimeOptions();
-      };
-    });
+      document.querySelectorAll('.calendar-day[role="button"]').forEach(day => {
+        day.addEventListener('click', () => {
+          selectedDate = new Date(day.dataset.date);
+          renderCalendar(selectedDate);
+          updateTimeOptions();
+        });
+        day.addEventListener('keydown', e => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            selectedDate = new Date(day.dataset.date);
+            renderCalendar(selectedDate);
+            updateTimeOptions();
+          }
+        });
+      });
+    }, 0);
   }
 
   function getBookedSlots() {
@@ -466,7 +478,7 @@
     hours.forEach(h => {
       const hour = parseInt(h);
       const isTaken = isSlotTaken(court, dateStr, h, duration);
-      const nextHourTaken = duration === 2 && hour < 21 && isSlotTaken(court, dateStr, `${(hour+1).toString().padStart(2,'0')}:00`, 1);
+      const nextHourTaken = duration === 2 && hour < 21 && isSlotTaken(court, dateStr, `${String(hour+1).padStart(2,'0')}:00`, 1);
 
       const opt = document.createElement('option');
       opt.value = h;
@@ -509,25 +521,20 @@
     const lang = document.documentElement.lang;
     const t = translations[lang];
 
-    // עדכון כפתור חזור
     backBtn.textContent = t.back;
 
-    // עדכון טקסטים
     document.querySelectorAll('[data-he]').forEach(el => {
       el.textContent = lang === 'en' ? el.dataset.en : el.dataset.he;
     });
 
-    // עדכון שמות מגרשים
     document.querySelectorAll('.court-btn span').forEach(span => {
       span.textContent = lang === 'en' ? span.dataset.en : span.dataset.he;
     });
 
-    // עדכון כפתורי משך
     document.querySelectorAll('.duration-btn').forEach(btn => {
       btn.textContent = lang === 'en' ? btn.dataset.en : btn.dataset.he;
     });
 
-    // עדכון כפתור אישור
     document.getElementById('confirmBookingBtn').textContent = lang === 'en' ? 
       document.getElementById('confirmBookingBtn').dataset.en : 
       document.getElementById('confirmBookingBtn').dataset.he;
