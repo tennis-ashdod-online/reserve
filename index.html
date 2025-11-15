@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="he" dir="rtl">
 <head>
@@ -90,7 +89,7 @@
       gap: 6px;
     }
     .back-btn:hover { background: #d32f2f; }
-    .back-btn::before { content: "←"; }
+    .back-btn::before { content: "Back"; }
     .courts-map{
       display:grid;
       grid-template-columns:1fr 1fr;
@@ -118,7 +117,15 @@
       min-height:80px;display:flex;flex-direction:column;align-items:center;justify-content:center;
       position:relative;z-index:2;
     }
-    .court-btn::before { content: "Tennis"; font-size: 1.6rem; margin-bottom: 6px; display: block; }
+    .court-btn::before {
+      content: "";
+      font-size: 1.6rem;
+      margin-bottom: 6px;
+      display: block;
+      width: 32px;
+      height: 32px;
+      background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%231a73e8"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm1-13h-2v2H9v2h2v2h2v-2h2v-2h-2V7z"/></svg>') center/contain no-repeat;
+    }
     .court-btn:hover{
       border-color:var(--primary);background:#e3f2fd;transform:translateY(-3px);
       box-shadow:0 6px 15px rgba(0,0,0,.15);
@@ -261,10 +268,10 @@
 
   <div id="bookingForm">
     <button class="back-btn" id="backBtn">חזור</button>
-    <h3>פרטי הזמנה</h3>
+    <h3 data-he="פרטי הזמנה" data-en="Booking Details">פרטי הזמנה</h3>
 
     <div class="form-group">
-      <label>מגרש נבחר:</label>
+      <label data-he="מגרש נבחר:" data-en="Selected Court:">מגרש נבחר:</label>
       <input type="text" id="selectedCourt" readonly />
     </div>
 
@@ -272,40 +279,42 @@
     <div class="calendar-container" id="calendarContainer"></div>
 
     <div class="form-group">
-      <label for="timeSelect">בחר שעה:</label>
+      <label for="timeSelect" data-he="בחר שעה:" data-en="Select Time:">בחר שעה:</label>
       <select id="timeSelect" required>
         <option value="">-- בחר שעה --</option>
       </select>
     </div>
 
     <div class="form-group">
-      <label>משך זמן:</label>
+      <label data-he="משך זמן:" data-en="Duration:">משך זמן:</label>
       <div class="duration-options">
-        <div class="duration-btn" data-duration="2">שעתיים</div>
-        <div class="duration-btn selected" data-duration="1">שעה אחת</div>
+        <div class="duration-btn" data-duration="2" data-he="שעתיים" data-en="2 Hours">שעתיים</div>
+        <div class="duration-btn selected" data-duration="1" data-he="שעה אחת" data-en="1 Hour">שעה אחת</div>
       </div>
     </div>
 
     <div class="form-group">
-      <label>סה״כ לתשלום:</label>
+      <label data-he="סה״כ לתשלום:" data-en="Total Amount:">סה״כ לתשלום:</label>
       <input type="text" id="totalPrice" readonly value="40₪" />
     </div>
 
-    <button class="submit-btn" id="confirmBookingBtn">אישור הזמנה</button>
+    <button class="submit-btn" id="confirmBookingBtn" data-he="אישור הזמנה" data-en="Confirm Booking">אישור הזמנה</button>
   </div>
 
   <div class="info-box">
-    <p><strong>כתובת:</strong> הרי גולן 6, אשדוד</p>
-    <p><strong>טלפון:</strong> <a href="tel:088678400">08-8678400</a></p>
-    <p>שעות פעילות: ראשון-שבת 08:00–21:00</p>
-    <div class="mybookings-link"><a href="my-bookings.html">ההזמנות שלי</a></div>
-    <div class="admin-link"><a href="admin.html">ניהול הזמנות (למנהל)</a></div>
+    <p><strong data-he="כתובת:" data-en="Address:">כתובת:</strong> <span data-he="הרי גולן 6, אשדוד" data-en="Harei Golan 6, Ashdod">הרי גולן 6, אשדוד</span></p>
+    <p><strong data-he="טלפון:" data-en="Phone:">טלפון:</strong> <a href="tel:088678400">08-8678400</a></p>
+    <p data-he="שעות פעילות: ראשון-שבת 08:00–21:00" data-en="Hours: Sun-Sat 08:00–21:00">שעות פעילות: ראשון-שבת 08:00–21:00</p>
+    <div class="mybookings-link"><a href="my-bookings.html" data-he="ההזמנות שלי" data-en="My Bookings">ההזמנות שלי</a></div>
+    <div class="admin-link"><a href="admin.html" data-he="ניהול הזמנות (למנהל)" data-en="Admin Panel">ניהול הזמנות (למנהל)</a></div>
   </div>
 
-  <div class="price-note">תעריף: 40₪ לשעה</div>
+  <div class="price-note">
+    <span data-he="תעריף: 40₪ לשעה" data-en="Rate: 40₪ per hour">תעריף: 40₪ לשעה</span>
+  </div>
 </div>
 
-<!-- WhatsApp -->
+<!-- WhatsApp – שנה כאן את המספר שלך -->
 <div id="whatsappHelp" style="position:fixed; bottom:20px; left:20px; z-index:9999;">
   <a href="https://wa.me/972524864380?text=שלום!%20אני%20צריך%20עזרה%20בהזמנת%20מגרש" 
      target="_blank" 
@@ -339,7 +348,34 @@
   const timeSelect = document.getElementById('timeSelect');
   const calendarContainer = document.getElementById('calendarContainer');
 
+  const translations = {
+    he: {
+      back: "חזור",
+      months: ["ינואר","פברואר","מרץ","אפריל","מאי","יוני","יולי","אוגוסט","ספטמבר","אוקטובר","נובמבר","דצמבר"],
+      days: ["א'","ב'","ג'","ד'","ה'","ו'","ש'"],
+      courtTaken: "תפוס",
+      nextHourTaken: "שעה הבאה תפוסה",
+      selectDate: "-- בחר תאריך קודם --",
+      selectTime: "-- בחר שעה --",
+      missing: "אנא בחר תאריך ושעה",
+      courtTakenAlert: "המגרש תפוס בשעה זו!"
+    },
+    en: {
+      back: "Back",
+      months: ["January","February","March","April","May","June","July","August","September","October","November","December"],
+      days: ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"],
+      courtTaken: "Taken",
+      nextHourTaken: "Next hour taken",
+      selectDate: "-- Select date first --",
+      selectTime: "-- Select time --",
+      missing: "Please select date and time",
+      courtTakenAlert: "This court is already booked!"
+    }
+  };
+
   function renderCalendar(date) {
+    const lang = document.documentElement.lang;
+    const t = translations[lang];
     const year = date.getFullYear();
     const month = date.getMonth();
     const today = new Date();
@@ -348,19 +384,16 @@
     const firstDay = new Date(year, month, 1).getDay();
     const daysInMonth = new Date(year, month + 1, 0).getDate();
 
-    const heMonths = ["ינואר","פברואר","מרץ","אפריל","מאי","יוני","יולי","אוגוסט","ספטמבר","אוקטובר","נובמבר","דצמבר"];
-    const heDays = ["א'","ב'","ג'","ד'","ה'","ו'","ש'"];
-
     let html = `
       <div class="calendar-header">
-        <button id="prevMonth">‹</button>
-        <span>${heMonths[month]} ${year}</span>
-        <button id="nextMonth">›</button>
+        <button id="prevMonth">Previous</button>
+        <span>${t.months[month]} ${year}</span>
+        <button id="nextMonth">Next</button>
       </div>
       <div class="calendar-grid">
     `;
 
-    heDays.forEach(d => html += `<div class="calendar-day header">${d}</div>`);
+    t.days.forEach(d => html += `<div class="calendar-day header">${d}</div>`);
 
     for (let i = 0; i < firstDay; i++) {
       html += `<div class="calendar-day disabled"></div>`;
@@ -373,9 +406,10 @@
       const isSelected = selectedDate && selectedDate.getTime() === currentDate.getTime();
       const isPast = currentDate < today;
 
+      const dateStr = `${year}-${(month+1).toString().padStart(2,'0')}-${day.toString().padStart(2,'0')}`;
       html += `
         <div class="calendar-day ${isToday ? 'today' : ''} ${isSelected ? 'selected' : ''} ${isPast ? 'disabled' : ''}"
-             data-date="${year}-${(month+1).toString().padStart(2,'0')}-${day.toString().padStart(2,'0')}">
+             data-date="${dateStr}">
           ${day}
         </div>
       `;
@@ -408,21 +442,24 @@
     return bookings.some(b => {
       if (b.court !== court || b.date !== date) return false;
       const [bHour] = b.time.split(':').map(Number);
-      const bEnd = bHour + (b.duration === 'שעתיים' ? 2 : 1);
+      const bEnd = bHour + (b.duration === 'שעתיים' || b.duration === '2 Hours' ? 2 : 1);
       return (hour < bEnd && endHour > bHour);
     });
   }
 
   function updateTimeOptions() {
+    const lang = document.documentElement.lang;
+    const t = translations[lang];
+
     if (!selectedDate) {
-      timeSelect.innerHTML = '<option value="">-- בחר תאריך קודם --</option>';
+      timeSelect.innerHTML = `<option value="">${t.selectDate}</option>`;
       return;
     }
 
     const dateStr = selectedDate.toISOString().split('T')[0];
     const court = document.getElementById('selectedCourt').value;
 
-    timeSelect.innerHTML = '<option value="">-- בחר שעה --</option>';
+    timeSelect.innerHTML = `<option value="">${t.selectTime}</option>`;
 
     hours.forEach(h => {
       const hour = parseInt(h);
@@ -435,10 +472,10 @@
 
       if (isTaken) {
         opt.disabled = true;
-        opt.textContent += ' (תפוס)';
+        opt.textContent += ` (${t.courtTaken})`;
       } else if (nextHourTaken) {
         opt.disabled = true;
-        opt.textContent += ' (שעה הבאה תפוסה)';
+        opt.textContent += ` (${t.nextHourTaken})`;
       }
 
       timeSelect.appendChild(opt);
@@ -455,6 +492,7 @@
     selectedDate = null;
     renderCalendar(new Date());
     updateTimeOptions();
+    updateFormLanguage();
   }
 
   function goBack() {
@@ -463,6 +501,19 @@
     bookingForm.classList.remove('visible');
     courtsWrapper.classList.remove('hidden');
     history.pushState({ page: 'home' }, '', '#home');
+  }
+
+  function updateFormLanguage() {
+    const lang = document.documentElement.lang;
+    const t = translations[lang];
+    backBtn.textContent = t.back;
+    document.querySelectorAll('[data-he]').forEach(el => {
+      el.textContent = lang === 'en' ? el.dataset.en : el.dataset.he;
+    });
+    document.querySelectorAll('.duration-btn').forEach(btn => {
+      btn.textContent = lang === 'en' ? btn.dataset.en : btn.dataset.he;
+    });
+    document.getElementById('confirmBookingBtn').textContent = lang === 'en' ? btn.dataset.en : btn.dataset.he;
   }
 
   document.querySelectorAll('.court-btn').forEach(btn => btn.addEventListener('click', () => openBooking(btn)));
@@ -479,17 +530,19 @@
   });
 
   document.getElementById('confirmBookingBtn').addEventListener('click', () => {
+    const lang = document.documentElement.lang;
+    const t = translations[lang];
     const date = selectedDate ? selectedDate.toISOString().split('T')[0] : '';
     const time = timeSelect.value;
     const court = document.getElementById('selectedCourt').value;
 
     if (!date || !time || !court) {
-      alert('אנא בחר תאריך ושעה');
+      alert(t.missing);
       return;
     }
 
     if (isSlotTaken(court, date, time, duration)) {
-      alert('המגרש תפוס בשעה זו!');
+      alert(t.courtTakenAlert);
       return;
     }
 
@@ -499,6 +552,31 @@
     });
 
     window.location.href = `booking-details.html?${params.toString()}`;
+  });
+
+  // שינוי שפה
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.addEventListener('click', e => {
+      e.preventDefault();
+      const lang = btn.dataset.lang;
+      document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      document.documentElement.lang = lang;
+      document.documentElement.dir = lang === 'he' ? 'rtl' : 'ltr';
+
+      // עדכון טקסטים
+      document.querySelector('h1').textContent = lang === 'en' ? document.querySelector('h1').dataset.en : document.querySelector('h1').dataset.he;
+      document.querySelector('header p').textContent = lang === 'en' ? document.querySelector('header p').dataset.en : document.querySelector('header p').dataset.he;
+      document.querySelectorAll('[data-he]').forEach(el => {
+        el.textContent = lang === 'en' ? el.dataset.en : el.dataset.he;
+      });
+
+      if (bookingForm.classList.contains('visible')) {
+        updateFormLanguage();
+        renderCalendar(selectedDate || new Date());
+        updateTimeOptions();
+      }
+    });
   });
 
   history.replaceState({ page: 'home' }, '', '#home');
