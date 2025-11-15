@@ -70,7 +70,8 @@
 </div>
 
 <script>
-  const ADMIN_PASS = 'Em123';
+  const PASS_HASH = 'RW0xMjM='; // base64 של "Em123"
+
   const loginBox = document.getElementById('loginBox');
   const adminPanel = document.getElementById('adminPanel');
   const loginBtn = document.getElementById('loginBtn');
@@ -82,7 +83,7 @@
   const exportCsv = document.getElementById('exportCsv');
 
   loginBtn.addEventListener('click', () => {
-    if (document.getElementById('adminPass').value === ADMIN_PASS) {
+    if (btoa(document.getElementById('adminPass').value) === PASS_HASH) {
       loginBox.classList.remove('active');
       adminPanel.classList.add('active');
       loadBookings();
