@@ -159,6 +159,12 @@
     .error-msg { color: var(--red); font-size: 0.85rem; margin-top: 5px; text-align: right; display: none; }
     .error-msg.show { display: block; }
     .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+    .admin-link, .mybookings-link, .weekly-link {
+      display: block; margin-top: 15px; font-size: 0.9rem;
+    }
+    .admin-link a, .mybookings-link a, .weekly-link a {
+      color: #1a73e8; font-weight: 600; text-decoration: underline;
+    }
     @media (max-width:600px){
       .courts-map{gap:12px;}
       .wall-separator{height:25px;}
@@ -230,23 +236,15 @@
     <p><strong data-he="כתובת:" data-en="Address:">כתובת:</strong> <span data-he="הרי גולן 6, אשדוד, ישראל" data-en="Harei Golan 6, Ashdod, Israel">הרי גולן 6, אשדוד, ישראל</span></p>
     <p><strong data-he="טלפון:" data-en="Phone:">טלפון:</strong> <a href="tel:088678400">08-8678400</a></p>
     <p data-he="שעות פעילות: ראשון-שבת 08:00–21:00" data-en="Hours: Sun-Sat 08:00–21:00">שעות פעילות: ראשון-שבת 08:00–21:00</p>
+    <div class="mybookings-link"><a href="my-bookings.html">ההזמנות שלי</a></div>
+    <div class="weekly-link"><a href="weekly-availability.html">זמינות שבועית</a></div>
+    <div class="admin-link"><a href="admin.html">ניהול הזמנות (למנהל בלבד)</a></div>
   </div>
   <div class="price-note">
     <span data-he="תעריף: 40₪ לשעה" data-en="Rate: 40₪ per hour">תעריף: 40₪ לשעה</span>
   </div>
 </div>
-<div class="info-box">
-  <p><strong>כתובת:</strong> הרי גולן 6, אשדוד, ישראל</p>
-  <p><strong>טלפון:</strong> <a href="tel:088678400">08-8678400</a></p>
-  <p>שעות פעילות: ראשון-שבת 08:00–21:00</p>
-  
-  <!-- ← הוסף כאן -->
-  <p style="margin-top:15px; font-size:0.9rem;">
-    <a href="admin.html" style="color:#1a73e8; font-weight:600; text-decoration:underline;">
-      ניהול הזמנות (למנהל בלבד)
-    </a>
-  </p>
-</div>
+
 <script>
   const hours = [];
   for(let h = 8; h <= 21; h++) hours.push(h.toString().padStart(2, '0') + ':00');
@@ -268,7 +266,7 @@
       priceNote: "תעריף: 40₪ לשעה",
       missing: "אנא מלא את כל השדות הנדרשים",
       courtTaken: "המגרש תפוס בשעה זו!",
-      hourAfterTaken: "השעה שאחרי תפוסה (בגלל הזמנה של שעתיים)"
+      hourAfterTaken: "השעה שאחרי תפוסה (בגלל הזמנה של שתיים)"
     },
     en: {
       title: "Am-Shalom Community Center",
@@ -298,10 +296,9 @@
   let selectedBtn = null;
   let duration = 1;
 
-  // פונקציה ליצירת תאריכים (מבוסס על תאריך נוכחי)
   function generateNextDates(count = 14) {
     const options = [];
-    const today = new Date('2025-11-15'); // התאריך הנוכחי
+    const today = new Date('2025-11-15');
     const heWeekdays = ["ראשון", "שני", "שלישי", "רביעי", "חמישי", "שישי", "שבת"];
     for (let i = 0; i < count; i++) {
       const date = new Date(today);
@@ -315,7 +312,6 @@
     return options;
   }
 
-  // === פונקציית בדיקת תפוסה ===
   function getBookedSlots() {
     return JSON.parse(localStorage.getItem('bookings') || '[]');
   }
@@ -328,9 +324,7 @@
     return bookings.some(b => {
       if (b.court !== court || b.date !== date) return false;
       const [bHour] = b.time.split(':').map(Number);
-      const bEnd = bHour + (b.duration === 'שעתיים' || b.duration === '2 Hours' ? 2 : 1);
-
-      // חפיפה?
+      const bEnd = bHour + (b.duration.includes('שעתיים') || b.duration.includes('2 Hours') ? 2 : 1);
       return (hour < bEnd && endHour > bHour);
     });
   }
@@ -386,7 +380,6 @@
     });
   }
 
-  // === פונקציות קיימות ===
   function goBack() {
     if (selectedBtn) selectedBtn.classList.remove('selected');
     selectedBtn = null;
@@ -444,7 +437,6 @@
     document.querySelector('.price-note span').textContent = t.priceNote;
   }
 
-  // === אירועים ===
   document.querySelectorAll('.court-btn').forEach(btn => btn.addEventListener('click', () => openBooking(btn)));
   backBtn.addEventListener('click', goBack);
 
@@ -463,7 +455,6 @@
     updateCourtAvailability();
   });
 
-  // === אישור הזמנה ===
   document.getElementById('confirmBookingBtn').addEventListener('click', () => {
     const date = daySelect.value;
     const time = timeSelect.value;
@@ -494,7 +485,6 @@
     window.location.href = `booking-details.html?${params.toString()}`;
   });
 
-  // === החלפת שפה ===
   document.querySelectorAll('.lang-btn').forEach(btn => {
     btn.addEventListener('click', e => {
       e.preventDefault();
@@ -531,7 +521,6 @@
     else if (bookingForm.classList.contains('visible')) goBack();
   });
 
-  // === אתחול ===
   updateDayOptions('he');
   updateTimeOptions();
   history.replaceState({ page: 'home' }, '', '#home');
