@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ההזמנות שלי - מרכז קהילתי עם שלום</title>
+  <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/2991/2991119.png" type="image/png">
+  <link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+<div class="container">
+  <h1>ההזמנות שלי</h1>
+  <div class="form-group" style="max-width:300px; margin:0 auto;">
+    <label for="phoneSearch">הזן טלפון:</label>
+    <input type="tel" id="phoneSearch" placeholder="0501234567" />
+    <button class="submit-btn" id="searchBtn" style="margin-top:10px; width:100%;">חפש הזמנות</button>
+  </div>
+  <div id="bookingsList" style="margin-top:20px; text-align:right;"></div>
+  <a href="index.html" class="back-link">חזרה לדף הבית</a>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+<script src="assets/firebase-config.js"></script>
+<script src="assets/script.js" defer></script>
+</body>
+</html>
