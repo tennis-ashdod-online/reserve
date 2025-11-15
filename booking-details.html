@@ -78,7 +78,6 @@
       background: #f44336; color: white; margin-top: 10px;
     }
     .cancel-btn:hover { background: #d32f2f; }
-    /* === אפקט הצלחה מרהיב === */
     .success-animation {
       position: fixed;
       top: 0; left: 0; width: 100%; height: 100%;
@@ -97,8 +96,6 @@
     @keyframes fall {
       to { transform: translateY(100vh) rotate(720deg); opacity: 0; }
     }
-
-    /* === אפקט טעינה === */
     .loader-overlay {
       position: fixed;
       top: 0; left: 0; width: 100%; height: 100%;
@@ -128,7 +125,6 @@
       0% { transform: rotate(0deg); }
       100% { transform: rotate(360deg); }
     }
-
     .final-message{
       margin-top:25px;padding:20px;background:var(--success);border-radius:12px;
       font-weight:600;color:#1b5e20;font-size:1.2rem;
@@ -151,10 +147,8 @@
 </head>
 <body>
 
-<!-- אפקט הצלחה -->
 <div class="success-animation" id="successAnimation"></div>
 
-<!-- אפקט טעינה -->
 <div class="loader-overlay" id="loader">
   <div class="loader"></div>
   <div class="loader-text" id="loaderText">מעבד את ההזמנה...</div>
@@ -259,7 +253,6 @@
     }
   };
 
-  // === קריאת פרמטרים + שפה ===
   const params = new URLSearchParams(window.location.search);
   const lang = params.get('lang') || 'he';
   const court = params.get('court') || '';
@@ -273,7 +266,6 @@
 
   const t = translations[lang];
 
-  // === עדכון טקסטים ===
   document.getElementById('pageTitle').textContent = t.pageTitle;
   document.getElementById('nameLabel').innerHTML = `${t.nameLabel} <span class="required">*</span>`;
   document.getElementById('phoneLabel').innerHTML = `${t.phoneLabel} <span class="required">*</span>`;
@@ -294,7 +286,6 @@
   document.getElementById('phoneError').textContent = t.phoneError;
   document.getElementById('emailError').textContent = t.emailError;
 
-  // === הצגת פרטים ===
   const durationText = duration === '1' ? t.oneHour : t.twoHours;
   const formattedDate = new Date(date).toLocaleDateString('he-IL', { weekday: 'long', day: 'numeric', month: 'numeric' });
   document.getElementById('summary').innerHTML = `
@@ -311,7 +302,6 @@
   document.getElementById('hiddenDuration').value = durationText;
   document.getElementById('hiddenTotal').value = total;
 
-  // === אימות ===
   function validateIsraeliPhone(phone) {
     const cleaned = phone.replace(/\D/g, '');
     return /^05[0-9]{8}$/.test(cleaned) && cleaned.length === 10;
@@ -333,7 +323,6 @@
     document.querySelectorAll('input').forEach(el => el.classList.remove('error'));
   }
 
-  // === אפקט קונפטי ===
   function createConfetti() {
     const animation = document.getElementById('successAnimation');
     for (let i = 0; i < 50; i++) {
@@ -347,7 +336,6 @@
     }
   }
 
-  // === שליחה + 2 שניות + שמירה + אפקט ===
   const form = document.getElementById('personalDetailsForm');
   const submitBtn = document.getElementById('submitBtn');
   const finalMessage = document.getElementById('finalMessage');
@@ -391,13 +379,11 @@
       return;
     }
 
-    // === שמור ב-localStorage ===
     const booking = { name, phone, email, court, date, time, duration: durationText, total, created: new Date().toISOString() };
     const bookings = JSON.parse(localStorage.getItem('bookings') || '[]');
     bookings.push(booking);
     localStorage.setItem('bookings', JSON.stringify(bookings));
 
-    // === הפעל loader ===
     loader.style.display = 'flex';
     submitBtn.disabled = true;
     isSubmitted = true;
@@ -414,14 +400,12 @@
 
     const result = await Promise.race([sendPromise, timeoutPromise]);
 
-    // === אחרי 2 שניות – תמיד יוצא ===
     setTimeout(() => {
       loader.style.opacity = '0';
       setTimeout(() => {
         loader.style.display = 'none';
         loader.style.opacity = '1';
 
-        // === הצלחה! ===
         createConfetti();
         form.style.display = 'none';
         document.getElementById('cancelBtn').style.display = 'none';
@@ -434,14 +418,12 @@
     }, 2000);
   });
 
-  // === ביטול ===
   document.getElementById('cancelBtn').addEventListener('click', () => {
     if (confirm(lang === 'he' ? 'בטוח שברצונך לבטל את ההזמנה?' : 'Are you sure you want to cancel?')) {
       window.location.href = 'index.html';
     }
   });
 
-  // === חוסם חזרה ===
   history.pushState(null, null, location.href);
   window.onpopstate = () => history.go(1);
 </script>
