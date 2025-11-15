@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ניהול הזמנות - עם שלום</title>
+  <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/2991/2991119.png" type="image/png">
+  <style>
+    :root { --primary: #1a73e8; --red: #e53935; --green: #4caf50; }
+    * {box-sizing:border-box;margin:0;padding:0;font-family:'Segoe UI',sans-serif;}
+    body{background:#f4f6f9;color:#333;padding:20px;}
+    .container{max-width:1000px;margin:0 auto;background:#fff;padding:30px;border-radius:15px;box-shadow:0 10px 30px rgba(0,0,0,.1);}
+    h1{color:var(--primary);text-align:center;margin-bottom:20px;}
+    .login-box, .admin-panel{display:none;}
+    .login-box.active, .admin-panel.active{display:block;}
+    input[type=password]{width:100%;padding:12px;border:1px solid #ccc;border-radius:6px;font-size:1rem;margin-bottom:15px;}
+    button{background:var(--primary);color:#fff;border:none;padding:12px 24px;border-radius:6px;cursor:pointer;font-size:1rem;}
+    button:hover{background:#0d47a1;}
+    .filters{margin:20px 0;display:flex;gap:10px;flex-wrap:wrap;}
+    .filters select, .filters input{padding:8px;border-radius:6px;border:1px solid #ccc;}
+    table{width:100%;border-collapse:collapse;margin-top:20px;}
+    th{background:var(--primary);color:#fff;padding:12px;text-align:center;}
+    td{padding:10px;border-bottom:1px solid #eee;text-align:center;}
+    tr:hover{background:#f8f9fa;}
+    .cancel-btn{background:var(--red);color:#fff;padding:6px 12px;border-radius:6px;font-size:0.85rem;}
+    .export-btn{background:var(--green);margin:15px 0;display:inline-block;padding:10px 20px;color:#fff;text-decoration:none;border-radius:6px;}
+    .stats{margin:20px 0;padding:15px;background:#e3f2fd;border-radius:8px;text-align:center;font-weight:600;color:var(--primary);}
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1>ניהול הזמנות – מרכז קהילתי עם שלום</h1>
+
+  <div class="login-box active" id="loginBox">
+    <label>סיסמה:</label>
+    <input type="password" id="adminPass" placeholder="הזן סיסמה" />
+    <button id="loginBtn">כניסה</button>
+    <p style="margin-top:10px;font-size:0.9rem;color:#666;">סיסמה ברירת מחדל: <strong>admin123</strong></p>
+  </div>
+
+  <div class="admin-panel" id="adminPanel">
+    <div class="stats" id="stats">טוען נתונים...</div>
+    <div class="filters">
+      <select id="courtFilter"><option value="">כל המגרשים</option></select>
+      <input type="date" id="dateFilter" />
+      <button id="clearFilters">נקה</button>
+      <a href="#" class="export-btn" id="exportCsv">ייצא ל-CSV</a>
+    </div>
+    <table id="bookingsTable">
+      <thead>
+        <tr>
+          <th>מגרש</th>
+          <th>תאריך</th>
+          <th>שעה</th>
+          <th>משך</th>
+          <th>שם</th>
+          <th>טלפון</th>
+          <th>הוזמן ב</th>
+          <th>פעולה</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+    <button id="logoutBtn">יציאה</button>
+  </div>
+</div>
+
+<script>
+  const ADMIN_PASS = 'admin123';
+  const loginBox = document.getElementById('loginBox');
+  const adminPanel = document.getElementById('adminPanel');
+  const loginBtn = document.getElementById('loginBtn');
+  const logoutBtn = document.getElementById('logoutBtn');
+  const tbody = document.querySelector('#bookingsTable tbody');
+  const statsDiv = document.getElementById('stats');
+  const courtFilter = document.getElementById('courtFilter');
+  const dateFilter = document.getElementById('dateFilter');
+  const exportCsv = document.getElementById('exportCsv');
+
+  loginBtn.addEventListener('click', () => {
+    if (document.getElementById('adminPass').value === ADMIN_PASS) {
+      loginBox.classList.remove('active');
+      adminPanel.classList.add('active');
+      loadBookings();
+    } else {
+      alert('סיסמה שגויה');
+    }
+  });
+
+  logoutBtn.addEventListener('click', () => {
+    adminPanel.classList.remove('active');
+    loginBox.classList.add('active');
+    document.getElementById('adminPass').value = '';
+  });
+
+  function loadBookings() {
+    const bookings = JSON.parse(localStorage.getItem('bookings') || '[]');
+    const courts = [...new Set(bookings.map(b => b.court))].sort();
+    courtFilter.innerHTML = '<option value="">כל המגרשים</option>' + courts.map(c => `<option value="${c}">${c}</option>`).join('');
+
+    updateTable(bookings);
+    updateStats(bookings);
+  }
+
+  function updateTable(data) {
+    tbody.innerHTML = '';
+    data.forEach((b, i) => {
+      const row = document.createElement('tr');
+      const date = new Date(b.date).toLocaleDateString('he-IL');
+      const created = new Date(b.created).toLocaleString('he-IL');
+      row.innerHTML = `
+        <td><strong>${b.court}</strong></td>
+        <td>${date}</td>
+        <td>${b.time}</td>
+        <td>${b.duration}</td>
+        <td>${b.name}</td>
+        <td><a href="tel:${b.phone}">${b.phone}</a></td>
+        <td>${created}</td>
+        <td><button class="cancel-btn" onclick="cancelAdmin(${i})">בטל</button></td>
+      `;
+      tbody.appendChild(row);
+    });
+  }
+
+  window.cancelAdmin = (i) => {
+    if (confirm('לבטל הזמנה זו?')) {
+      const bookings = JSON.parse(localStorage.getItem('bookings') || '[]');
+      bookings.splice(i, 1);
+      localStorage.setItem('bookings', JSON.stringify(bookings));
+      loadBookings();
+    }
+  };
+
+  function updateStats(data) {
+    const today = new Date().toISOString().split('T')[0];
+    const todayBookings = data.filter(b => b.date === today).length;
+    statsDiv.textContent = `היום: ${todayBookings} הזמנות | סה"כ: ${data.length} הזמנות`;
+  }
+
+  // סינון
+  courtFilter.addEventListener('change', filter);
+  dateFilter.addEventListener('change', filter);
+  document.getElementById('clearFilters').addEventListener('click', () => {
+    courtFilter.value = '';
+    dateFilter.value = '';
+    loadBookings();
+  });
+
+  function filter() {
+    const bookings = JSON.parse(localStorage.getItem('bookings') || '[]');
+    let filtered = bookings;
+    if (courtFilter.value) filtered = filtered.filter(b => b.court === courtFilter.value);
+    if (dateFilter.value) filtered = filtered.filter(b => b.date === dateFilter.value);
+    updateTable(filtered);
+  }
+
+  // ייצוא CSV
+  exportCsv.addEventListener('click', (e) => {
+    e.preventDefault();
+    const bookings = JSON.parse(localStorage.getItem('bookings') || '[]');
+    const csv = [
+      ['מגרש','תאריך','שעה','משך','שם','טלפון','הוזמן ב'],
+      ...bookings.map(b => [b.court, b.date, b.time, b.duration, b.name, b.phone, b.created])
+    ].map(row => row.join(',')).join('\n');
+
+    const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `הזמנות_${new Date().toISOString().split('T')[0]}.csv`;
+    link.click();
+  });
+</script>
+</body>
+</html>
