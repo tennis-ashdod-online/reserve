@@ -119,12 +119,9 @@
     }
     .court-btn::before {
       content: "";
-      font-size: 1.6rem;
+      width: 32px; height: 32px;
+      background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%231a73e8"><path d="M15 2H9c-1.1 0-2 .9-2 2v2H5c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2h-2V4c0-1.1-.9-2-2-2zm-4 2h2v2h-2V4zm8 16H5V8h14v10z"/></svg>') center/contain no-repeat;
       margin-bottom: 6px;
-      display: block;
-      width: 32px;
-      height: 32px;
-      background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%231a73e8"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm1-13h-2v2H9v2h2v2h2v-2h2v-2h-2V7z"/></svg>') center/contain no-repeat;
     }
     .court-btn:hover{
       border-color:var(--primary);background:#e3f2fd;transform:translateY(-3px);
@@ -256,13 +253,13 @@
 
   <div class="courts-wrapper" id="courtsWrapper">
     <div class="courts-map">
-      <div class="court-btn" data-court="5"><span>מגרש 5</span></div>
-      <div class="court-btn" data-court="6"><span>מגרש 6</span></div>
-      <div class="court-btn" data-court="4"><span>מגרש 4</span></div>
-      <div class="court-btn" data-court="3"><span>מגרש 3</span></div>
+      <div class="court-btn" data-court="5"><span data-he="מגרש 5" data-en="Court 5">מגרש 5</span></div>
+      <div class="court-btn" data-court="6"><span data-he="מגרש 6" data-en="Court 6">מגרש 6</span></div>
+      <div class="court-btn" data-court="4"><span data-he="מגרש 4" data-en="Court 4">מגרש 4</span></div>
+      <div class="court-btn" data-court="3"><span data-he="מגרש 3" data-en="Court 3">מגרש 3</span></div>
       <div class="wall-separator"></div>
-      <div class="court-btn" data-court="2"><span>מגרש 2</span></div>
-      <div class="court-btn" data-court="1"><span>מגרש 1</span></div>
+      <div class="court-btn" data-court="2"><span data-he="מגרש 2" data-en="Court 2">מגרש 2</span></div>
+      <div class="court-btn" data-court="1"><span data-he="מגרש 1" data-en="Court 1">מגרש 1</span></div>
     </div>
   </div>
 
@@ -314,24 +311,29 @@
   </div>
 </div>
 
-<!-- WhatsApp – שנה כאן את המספר שלך -->
+<!-- WhatsApp – עם אייקון רשמי -->
 <div id="whatsappHelp" style="position:fixed; bottom:20px; left:20px; z-index:9999;">
-  <a href="https://wa.me/972524864380?text=שלום!%20אני%20צריך%20עזרה%20בהזמנת%20מגרש" 
+  <a href="https://wa.me/972524864380?text=%D7%A9%D7%9C%D7%95%D7%9D!%20%D7%90%D7%A0%D7%99%20%D7%A6%D7%A8%D7%99%D7%9A%20%D7%A2%D7%96%D7%A8%D7%94%20%D7%91%D7%94%D7%96%D7%9E%D7%A0%D7%AA%20%D7%9E%D7%92%D7%A8%D7%A9" 
      target="_blank" 
      style="background:#25D366; color:#fff; width:60px; height:60px; border-radius:50%; 
-            display:flex; align-items:center; justify-content:center; font-size:28px; 
-            box-shadow:0 4px 15px rgba(0,0,0,.3); text-decoration:none; animation: pulse 2s infinite;">
-    ?
+            display:flex; align-items:center; justify-content:center; 
+            box-shadow:0 4px 15px rgba(0,0,0,.3); text-decoration:none; 
+            animation: pulse 2s infinite;">
+    <svg viewBox="0 0 24 24" width="36" height="36" fill="white">
+      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.198-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.52.149-.174.198-.298.297-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 5.44h-.004c-1.614-.003-3.198-.685-4.593-1.9l-.33-.198-3.432.901.911-3.32-.214-.338c-1.256-1.988-1.915-4.293-1.913-6.682.002-6.903 5.623-12.523 12.526-12.523 3.333.002 6.467 1.264 8.57 3.58 2.103 2.316 3.365 5.45 3.363 8.783-.003 6.903-5.624 12.523-12.526 12.523m5.522-18.963c-2.667-2.415-6.174-3.746-9.924-3.747-8.175 0-14.834 6.66-14.834 14.834 0 2.622.682 5.174 1.98 7.448l-2.105 7.672 7.84-2.056c2.16 1.178 4.587 1.803 7.043 1.803 8.175 0 14.834-6.66 14.834-14.834 0-3.973-1.577-7.773-4.384-10.58"/>
+    </svg>
   </a>
 </div>
 
 <style>
   @keyframes pulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.1); }
-    100% { transform: scale(1); }
+    0% { transform: scale(1); box-shadow: 0 4px 15px rgba(0,0,0,.3); }
+    50% { transform: scale(1.1); box-shadow: 0 8px 25px rgba(37,211,102,.5); }
+    100% { transform: scale(1); box-shadow: 0 4px 15px rgba(0,0,0,.3); }
   }
-  #whatsappHelp a:hover { transform: scale(1.15) !important; }
+  #whatsappHelp a:hover {
+    transform: scale(1.15) !important;
+  }
 </style>
 
 <script>
@@ -492,7 +494,7 @@
     selectedDate = null;
     renderCalendar(new Date());
     updateTimeOptions();
-    updateFormLanguage();
+    updateLanguage();
   }
 
   function goBack() {
@@ -503,17 +505,32 @@
     history.pushState({ page: 'home' }, '', '#home');
   }
 
-  function updateFormLanguage() {
+  function updateLanguage() {
     const lang = document.documentElement.lang;
     const t = translations[lang];
+
+    // עדכון כפתור חזור
     backBtn.textContent = t.back;
+
+    // עדכון טקסטים
     document.querySelectorAll('[data-he]').forEach(el => {
       el.textContent = lang === 'en' ? el.dataset.en : el.dataset.he;
     });
+
+    // עדכון שמות מגרשים
+    document.querySelectorAll('.court-btn span').forEach(span => {
+      span.textContent = lang === 'en' ? span.dataset.en : span.dataset.he;
+    });
+
+    // עדכון כפתורי משך
     document.querySelectorAll('.duration-btn').forEach(btn => {
       btn.textContent = lang === 'en' ? btn.dataset.en : btn.dataset.he;
     });
-    document.getElementById('confirmBookingBtn').textContent = lang === 'en' ? btn.dataset.en : btn.dataset.he;
+
+    // עדכון כפתור אישור
+    document.getElementById('confirmBookingBtn').textContent = lang === 'en' ? 
+      document.getElementById('confirmBookingBtn').dataset.en : 
+      document.getElementById('confirmBookingBtn').dataset.he;
   }
 
   document.querySelectorAll('.court-btn').forEach(btn => btn.addEventListener('click', () => openBooking(btn)));
@@ -564,15 +581,9 @@
       document.documentElement.lang = lang;
       document.documentElement.dir = lang === 'he' ? 'rtl' : 'ltr';
 
-      // עדכון טקסטים
-      document.querySelector('h1').textContent = lang === 'en' ? document.querySelector('h1').dataset.en : document.querySelector('h1').dataset.he;
-      document.querySelector('header p').textContent = lang === 'en' ? document.querySelector('header p').dataset.en : document.querySelector('header p').dataset.he;
-      document.querySelectorAll('[data-he]').forEach(el => {
-        el.textContent = lang === 'en' ? el.dataset.en : el.dataset.he;
-      });
+      updateLanguage();
 
       if (bookingForm.classList.contains('visible')) {
-        updateFormLanguage();
         renderCalendar(selectedDate || new Date());
         updateTimeOptions();
       }
