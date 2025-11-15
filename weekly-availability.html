@@ -132,7 +132,8 @@
 
   function generateNext7Days() {
     const days = [];
-    const today = new Date('2025-11-15');
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
     const heWeekdays = ['ראשון', 'שני', 'שלישי', 'רביעי', 'חמישי', 'שישי', 'שבת'];
     for (let i = 0; i < 7; i++) {
       const date = new Date(today);
@@ -216,7 +217,7 @@
             <td class="${cellClass}" 
                 onclick="bookSlot('${court}', '${day.value}', '${hour}')"
                 title="${title}">
-              ${isTaken ? '✖' : (canBookTwo ? '✓✓' : '✓')}
+              ${isTaken ? 'X' : (canBookTwo ? '✓✓' : '✓')}
             </td>
           `;
         });
