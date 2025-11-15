@@ -22,9 +22,13 @@
     th{background:var(--primary);color:#fff;padding:12px;text-align:center;}
     td{padding:10px;border-bottom:1px solid #eee;text-align:center;}
     tr:hover{background:#f8f9fa;}
-    .cancel-btn{background:var(--red);color:#fff;padding:6px 12px;border-radius:6px;font-size:0.85rem;}
+    .cancel-btn{background:var(--red);color:#fff;padding:6px 12px;border-radius:6px;font-size:0.85rem;cursor:pointer;}
+    .cancel-btn:hover{background:#c62828;}
     .export-btn{background:var(--green);margin:15px 0;display:inline-block;padding:10px 20px;color:#fff;text-decoration:none;border-radius:6px;}
+    .export-btn:hover{background:#388e3c;}
     .stats{margin:20px 0;padding:15px;background:#e3f2fd;border-radius:8px;text-align:center;font-weight:600;color:var(--primary);}
+    .back-link{display:block;text-align:center;margin-top:25px;color:var(--primary);text-decoration:none;font-weight:600;}
+    .back-link:hover{text-decoration:underline;}
   </style>
 </head>
 <body>
@@ -32,7 +36,7 @@
   <h1>ניהול הזמנות – מרכז קהילתי עם שלום</h1>
 
   <div class="login-box active" id="loginBox">
-    <label>סיסמה:</label>
+    <label for="adminPass">סיסמה:</label>
     <input type="password" id="adminPass" placeholder="הזן סיסמה" />
     <button id="loginBtn">כניסה</button>
     <p style="margin-top:10px;font-size:0.9rem;color:#666;">סיסמה ברירת מחדל: <strong>admin123</strong></p>
@@ -43,7 +47,7 @@
     <div class="filters">
       <select id="courtFilter"><option value="">כל המגרשים</option></select>
       <input type="date" id="dateFilter" />
-      <button id="clearFilters">נקה</button>
+      <button id="clearFilters">נקה מסננים</button>
       <a href="#" class="export-btn" id="exportCsv">ייצא ל-CSV</a>
     </div>
     <table id="bookingsTable">
@@ -62,6 +66,7 @@
       <tbody></tbody>
     </table>
     <button id="logoutBtn">יציאה</button>
+    <a href="index.html" class="back-link">חזרה לאתר</a>
   </div>
 </div>
 
@@ -137,7 +142,6 @@
     statsDiv.textContent = `היום: ${todayBookings} הזמנות | סה"כ: ${data.length} הזמנות`;
   }
 
-  // סינון
   courtFilter.addEventListener('change', filter);
   dateFilter.addEventListener('change', filter);
   document.getElementById('clearFilters').addEventListener('click', () => {
@@ -154,7 +158,6 @@
     updateTable(filtered);
   }
 
-  // ייצוא CSV
   exportCsv.addEventListener('click', (e) => {
     e.preventDefault();
     const bookings = JSON.parse(localStorage.getItem('bookings') || '[]');
