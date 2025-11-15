@@ -249,7 +249,9 @@
       confirm: "אישור הזמנה",
       back: "חזור",
       priceNote: "תעריף: 40₪ לשעה",
-      missing: "אנא מלא את כל השדות הנדרשים"
+      missing: "אנא מלא את כל השדות הנדרשים",
+      courtTaken: "המגרש תפוס בשעה זו!",
+      hourAfterTaken: "השעה שאחרי תפוסה (בגלל הזמנה של שעתיים)"
     },
     en: {
       title: "Am-Shalom Community Center",
@@ -265,7 +267,9 @@
       confirm: "Confirm Booking",
       back: "Back",
       priceNote: "Rate: 40₪ per hour",
-      missing: "Please fill all required fields"
+      missing: "Please fill all required fields",
+      courtTaken: "This court is already booked at this time!",
+      hourAfterTaken: "Next hour is taken (due to 2-hour booking)"
     }
   };
 
@@ -277,6 +281,65 @@
   let selectedBtn = null;
   let duration = 1;
 
+  // === פונקציית בדיקת תפוסה ===
+  function getBookedSlots() {
+    return JSON.parse(localStorage.getItem('bookings') || '[]');
+  }
+
+  function isSlotTaken(court, day, time, duration = 1) {
+    const bookings = getBookedSlots();
+    const [hour] = time.split(':').map(Number);
+    const endHour = hour + duration;
+
+    return bookings.some(b => {
+      if (b.court !== court || b.day !== day) return false;
+      const [bHour] = b.time.split(':').map(Number);
+      const bEnd = bHour + (b.duration === 'שעתיים' || b.duration === '2 Hours' ? 2 : 1);
+
+      // חפיפה?
+      return (hour < bEnd && endHour > bHour);
+    });
+  }
+
+  function updateTimeOptions() {
+    const lang = document.documentElement.lang;
+    const t = translations[lang];
+    const selectedDay = daySelect.value;
+    const court = document.getElementById('selectedCourt').value;
+
+    if (!selectedDay || !court) {
+      timeSelect.innerHTML = `<option value="">-- ${lang === 'he' ? 'בחר שעה' : 'Select Time'} --</option>`;
+      return;
+    }
+
+    timeSelect.innerHTML = `<option value="">-- ${lang === 'he' ? 'בחר שעה' : 'Select Time'} --</option>`;
+
+    hours.forEach(h => {
+      const hour = parseInt(h);
+      const isTaken = isSlotTaken(court, selectedDay, h, duration);
+      const nextHourTaken = duration === 2 && hour < 21 && isSlotTaken(court, selectedDay, `${(hour+1).toString().padStart(2,'0')}:00`, 1);
+
+      const opt = document.createElement('option');
+      opt.value = h;
+      opt.textContent = h;
+
+      if (isTaken) {
+        opt.disabled = true;
+        opt.textContent += ` (${t.courtTaken})`;
+        opt.style.color = '#e53935';
+        opt.style.fontStyle = 'italic';
+      } else if (nextHourTaken) {
+        opt.disabled = true;
+        opt.textContent += ` (${t.hourAfterTaken})`;
+        opt.style.color = '#fb8c00';
+        opt.style.fontStyle = 'italic';
+      }
+
+      timeSelect.appendChild(opt);
+    });
+  }
+
+  // === פונקציות קיימות (עם עדכונים) ===
   function goBack() {
     if (selectedBtn) selectedBtn.classList.remove('selected');
     selectedBtn = null;
@@ -306,6 +369,7 @@
     document.querySelector('.duration-btn[data-duration="1"]').classList.add('selected');
     duration = 1;
     document.getElementById('totalPrice').value = '40₪';
+    updateTimeOptions(); // עדכון שעות פנויות
   }
 
   function updateDayOptions(lang) {
@@ -317,16 +381,6 @@
       opt.textContent = day;
       if (day === currentValue) opt.selected = true;
       daySelect.appendChild(opt);
-    });
-  }
-
-  function updateTimeOptions() {
-    const lang = document.documentElement.lang;
-    timeSelect.innerHTML = `<option value="">-- ${lang === 'he' ? 'בחר שעה' : 'Select Time'} --</option>`;
-    hours.forEach(h => {
-      const opt = document.createElement('option');
-      opt.value = opt.textContent = h;
-      timeSelect.appendChild(opt);
     });
   }
 
@@ -342,6 +396,7 @@
     document.querySelector('.price-note span').textContent = t.priceNote;
   }
 
+  // === אירועים ===
   document.querySelectorAll('.court-btn').forEach(btn => btn.addEventListener('click', () => openBooking(btn)));
   backBtn.addEventListener('click', goBack);
 
@@ -351,19 +406,28 @@
       btn.classList.add('selected');
       duration = +btn.dataset.duration;
       document.getElementById('totalPrice').value = (40 * duration) + '₪';
+      updateTimeOptions(); // עדכון לפי משך
     });
   });
 
-  // === אישור הזמנה – מעביר שפה לדף הבא ===
+  daySelect.addEventListener('change', updateTimeOptions);
+
+  // === אישור הזמנה ===
   document.getElementById('confirmBookingBtn').addEventListener('click', () => {
     const day = daySelect.value;
     const time = timeSelect.value;
     const court = document.getElementById('selectedCourt').value;
     const total = 40 * duration;
     const currentLang = document.documentElement.lang;
+    const t = translations[currentLang];
 
     if (!day || !time || !court) {
-      alert(translations[currentLang].missing);
+      alert(t.missing);
+      return;
+    }
+
+    if (isSlotTaken(court, day, time, duration)) {
+      alert(t.courtTaken);
       return;
     }
 
@@ -402,7 +466,6 @@
 
       updateDayOptions(lang);
       updateTimeOptions();
-
       backBtn.textContent = t.back;
       document.getElementById('confirmBookingBtn').textContent = t.confirm;
 
@@ -417,6 +480,7 @@
     else if (bookingForm.classList.contains('visible')) goBack();
   });
 
+  // === אתחול ===
   updateDayOptions('he');
   updateTimeOptions();
   history.replaceState({ page: 'home' }, '', '#home');
