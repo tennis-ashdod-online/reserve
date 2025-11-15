@@ -15,16 +15,16 @@
     }
     * {box-sizing:border-box;margin:0;padding:0;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;}
     body{
-      background:linear-gradient(rgba(0,0,0,.55),rgba(0,0,0,.55)),
+      background:linear-gradient(rgba(0,0,0,.65),rgba(0,0,0,.65)),
                  url('https://images.unsplash.com/photo-1622278494980-874d6f8bf7ed?ixlib=rb-4.0.3&auto=format&fit=crop&w=1950&q=80')
                  center/cover no-repeat fixed;
       color:#fff;line-height:1.6;min-height:100vh;padding:20px;
+      backdrop-filter: blur(2px);
     }
     .container{
       max-width:900px;margin:0 auto;background:rgba(255,255,255,.95);color:var(--dark);
       border-radius:15px;padding:30px;box-shadow:0 10px 40px rgba(0,0,0,.3);backdrop-filter:blur(8px);
-      position:relative;
-      text-align: center;
+      position:relative;text-align: center;
     }
     .lang-switch{
       position:absolute;top:15px;left:50%;transform:translateX(-50%);
@@ -32,7 +32,7 @@
     }
     .lang-btn{
       display:flex;align-items:center;gap:6px;color:#666;text-decoration:none;
-      padding:6px 10px;border-radius:6px;transition:all .2s;font-weight:500;
+      padding:6px 10px; border-radius:6px;transition:all .2s;font-weight:500;
     }
     .lang-btn:hover, .lang-btn.active{
       background:#e3f2fd;color:var(--primary);
@@ -43,6 +43,17 @@
     }
     h1{
       color:var(--primary);margin-bottom:8px;font-size:1.8rem;
+      animation: breathe 3s ease-in-out infinite;
+    }
+    @keyframes breathe {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.02); }
+    }
+    header p {
+      font-size: 1.1rem;
+      font-weight: 500;
+      text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+      color: #e3f2fd;
     }
     .courts-wrapper {
       max-width:700px;margin:0 auto;
@@ -64,17 +75,17 @@
       background: #f9f9f9;
       border-radius: 12px;
       box-shadow: 0 6px 20px rgba(0,0,0,.15);
-      animation: slideDown 0.4s ease-out;
+      animation: fadeInUp 0.5s ease-out;
     }
     #bookingForm.visible {
       display: block;
     }
-    @keyframes slideDown {
-      from { opacity: 0; transform: translateY(-20px); }
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
       to { opacity: 1; transform: translateY(0); }
     }
     .back-btn {
-      background: #f44336;
+      background: linear-gradient(135deg, #e53935, #c62828);
       color: white;
       border: none;
       padding: 10px 16px;
@@ -85,8 +96,14 @@
       display: inline-flex;
       align-items: center;
       gap: 6px;
+      box-shadow: 0 4px 12px rgba(229,57,53,0.3);
+      font-weight: 600;
+      transition: all .25s;
     }
-    .back-btn:hover { background: #d32f2f; }
+    .back-btn:hover { 
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(229,57,53,0.4);
+    }
     .courts-map{
       display:grid;
       grid-template-columns:1fr 1fr;
@@ -97,10 +114,27 @@
     }
     .wall-separator {
       grid-row: 3/4;grid-column:1/-1;height:30px;
-      background:linear-gradient(135deg,#A0522D 0%,#8B4513 50%,#A0522D 100%);
-      border-top:3px solid #D2691E;border-bottom:3px solid #5D2E0D;
-      box-shadow:0 8px 15px rgba(0,0,0,0.4),inset 0 2px 4px rgba(255,255,255,0.2);
+      background: linear-gradient(135deg, #8B7355 0%, #A0522D 30%, #8B4513 70%, #A0522D 100%);
+      border: 3px solid #654321;
+      box-shadow: 
+        0 8px 20px rgba(0,0,0,0.4),
+        inset 0 3px 6px rgba(255,255,255,0.3),
+        0 0 15px rgba(139,69,19,0.3);
       border-radius:4px;z-index:10;
+      position: relative;
+      overflow: hidden;
+    }
+    .wall-separator::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: repeating-linear-gradient(
+        90deg,
+        transparent,
+        transparent 8px,
+        rgba(255,255,255,0.1) 8px,
+        rgba(255,255,255,0.1) 10px
+      );
     }
     .court-btn:nth-child(1){grid-area:1/1;}
     .court-btn:nth-child(2){grid-area:1/2;}
@@ -109,18 +143,35 @@
     .court-btn:nth-child(5){grid-area:4/1;}
     .court-btn:nth-child(6){grid-area:4/2;}
     .court-btn{
-      padding:20px;background:var(--light);border:2px solid #ddd;border-radius:12px;
+      padding:20px;background:#ffffff;border:2px solid #ddd;border-radius:12px;
       cursor:pointer;text-align:center;font-weight:bold;transition:all .3s;
       min-height:80px;display:flex;flex-direction:column;align-items:center;justify-content:center;
       position:relative;z-index:2;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
     }
     .court-btn:hover{
-      border-color:var(--primary);background:#e3f2fd;transform:translateY(-3px);
-      box-shadow:0 6px 15px rgba(0,0,0,.15);
+      border-color:var(--primary);background:#e3f2fd;transform:translateY(-6px);
+      box-shadow:0 12px 25px rgba(0,0,0,0.22);
     }
     .court-btn.selected{
-      background:var(--primary);color:#fff;border-color:var(--primary);
-      transform:translateY(-5px);box-shadow:0 8px 20px rgba(26,115,232,.3);
+      background: linear-gradient(135deg, #1a73e8, #0d47a1);
+      color:#fff;border-color:var(--primary);
+      transform:translateY(-8px);box-shadow:0 16px 30px rgba(26,115,232,0.4);
+      position: relative;
+      overflow: hidden;
+    }
+    .court-btn.selected::after {
+      content: '';
+      position: absolute;
+      top: -50%; left: -50%;
+      width: 200%; height: 200%;
+      background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 70%);
+      animation: shine 2s infinite;
+      pointer-events: none;
+    }
+    @keyframes shine {
+      0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+      100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
     }
     .form-group{margin-bottom:18px;}
     label{display:block;margin-bottom:8px;font-weight:600;text-align:right;}
@@ -130,11 +181,23 @@
     }
     .duration-options{display:flex;gap:15px;margin-top:10px;}
     .duration-btn{
-      flex:1;padding:12px;text-align:center;border:2px solid #ddd;border-radius:8px;
-      cursor:pointer;transition:all .2s;
+      flex:1;padding:12px;text-align:center;border:2px solid #e0e0e0;border-radius:10px;
+      cursor:pointer;transition:all .25s;font-weight:600;
+      background:#f8f9fa;position:relative;overflow:hidden;
     }
+    .duration-btn::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: linear-gradient(135deg, transparent, rgba(255,255,255,0.4));
+      opacity: 0;
+      transition: opacity .25s;
+    }
+    .duration-btn:hover::before { opacity: 1; }
     .duration-btn.selected{
-      background:var(--primary);color:#fff;border-color:var(--primary);
+      background: linear-gradient(135deg, #1a73e8, #0d47a1);
+      color:#fff;border-color:var(--primary);
+      box-shadow:0 6px 15px rgba(26,115,232,0.3);
     }
     .submit-btn{
       background:var(--primary);color:#fff;border:none;padding:12px 24px;font-size:1rem;
@@ -146,8 +209,14 @@
       font-size:.95rem;line-height:1.5;text-align:right;
     }
     .price-note{
-      position:absolute;bottom:15px;right:15px;background:#fff3e0;padding:8px 12px;
-      border-radius:6px;font-size:.85rem;box-shadow:0 1px 5px rgba(0,0,0,.1);
+      position:absolute;bottom:15px;right:15px;background:linear-gradient(135deg,#fff8e1,#fff3e0);
+      color:#e65100;padding:8px 12px;border-radius:6px;font-size:.85rem;
+      box-shadow:0 4px 12px rgba(255,152,0,0.2);font-weight:bold;
+      border:2px dashed #ffcc80;animation:pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
     }
     @media (max-width:600px){
       .courts-map{gap:12px;}
@@ -281,7 +350,6 @@
   let selectedBtn = null;
   let duration = 1;
 
-  // === פונקציית בדיקת תפוסה ===
   function getBookedSlots() {
     return JSON.parse(localStorage.getItem('bookings') || '[]');
   }
@@ -295,8 +363,6 @@
       if (b.court !== court || b.day !== day) return false;
       const [bHour] = b.time.split(':').map(Number);
       const bEnd = bHour + (b.duration === 'שעתיים' || b.duration === '2 Hours' ? 2 : 1);
-
-      // חפיפה?
       return (hour < bEnd && endHour > bHour);
     });
   }
@@ -339,7 +405,6 @@
     });
   }
 
-  // === פונקציות קיימות (עם עדכונים) ===
   function goBack() {
     if (selectedBtn) selectedBtn.classList.remove('selected');
     selectedBtn = null;
@@ -369,7 +434,7 @@
     document.querySelector('.duration-btn[data-duration="1"]').classList.add('selected');
     duration = 1;
     document.getElementById('totalPrice').value = '40₪';
-    updateTimeOptions(); // עדכון שעות פנויות
+    updateTimeOptions();
   }
 
   function updateDayOptions(lang) {
@@ -396,7 +461,6 @@
     document.querySelector('.price-note span').textContent = t.priceNote;
   }
 
-  // === אירועים ===
   document.querySelectorAll('.court-btn').forEach(btn => btn.addEventListener('click', () => openBooking(btn)));
   backBtn.addEventListener('click', goBack);
 
@@ -406,13 +470,12 @@
       btn.classList.add('selected');
       duration = +btn.dataset.duration;
       document.getElementById('totalPrice').value = (40 * duration) + '₪';
-      updateTimeOptions(); // עדכון לפי משך
+      updateTimeOptions();
     });
   });
 
   daySelect.addEventListener('change', updateTimeOptions);
 
-  // === אישור הזמנה ===
   document.getElementById('confirmBookingBtn').addEventListener('click', () => {
     const day = daySelect.value;
     const time = timeSelect.value;
@@ -443,7 +506,6 @@
     window.location.href = `booking-details.html?${params.toString()}`;
   });
 
-  // === החלפת שפה ===
   document.querySelectorAll('.lang-btn').forEach(btn => {
     btn.addEventListener('click', e => {
       e.preventDefault();
@@ -464,26 +526,4 @@
         span.textContent = t.courts[i];
       });
 
-      updateDayOptions(lang);
-      updateTimeOptions();
-      backBtn.textContent = t.back;
-      document.getElementById('confirmBookingBtn').textContent = t.confirm;
-
-      if (bookingForm.classList.contains('visible')) {
-        updateFormLanguage(lang);
-      }
-    });
-  });
-
-  window.addEventListener('popstate', e => {
-    if (e.state && e.state.page === 'home') goBack();
-    else if (bookingForm.classList.contains('visible')) goBack();
-  });
-
-  // === אתחול ===
-  updateDayOptions('he');
-  updateTimeOptions();
-  history.replaceState({ page: 'home' }, '', '#home');
-</script>
-</body>
-</html>
+      updateDayOptions(
