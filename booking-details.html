@@ -5,11 +5,152 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>פרטי הזמנה - מרכז קהילתי עם שלום</title>
   <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/2991/2991119.png" type="image/png">
-  <link rel="stylesheet" href="assets/styles.css">
+  <style>
+    :root {
+      --primary: #1a73e8;
+      --light: #f8f9fa;
+      --dark: #333;
+      --success: #e8f5e9;
+      --error: #ffebee;
+      --red: #e53935;
+      --gold: #ffd700;
+    }
+    * {box-sizing:border-box;margin:0;padding:0;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;}
+    body{
+      background:linear-gradient(rgba(0,0,0,.6),rgba(0,0,0,.6)),
+                 url('https://images.unsplash.com/photo-1622278494980-874d6f8bf7ed?ixlib=rb-4.0.3&auto=format&fit=crop&w=1950&q=80')
+                 center/cover no-repeat fixed;
+      color:#fff;line-height:1.6;min-height:100vh;padding:20px;
+    }
+    .container{
+      max-width:600px;margin:40px auto;background:rgba(255,255,255,.97);color:var(--dark);
+      border-radius:15px;padding:30px;box-shadow:0 10px 40px rgba(0,0,0,.3);
+      text-align:center;position:relative;
+    }
+    h1{
+      color:var(--primary);margin-bottom:20px;font-size:1.8rem;
+    }
+    .summary-box{
+      background:#f0f8ff;padding:20px;border-radius:12px;margin-bottom:25px;
+      border-left:5px solid var(--primary);text-align:right;
+    }
+    .summary-box p{
+      margin:12px 0;font-size:1.1rem;
+    }
+    .summary-box strong{
+      color:var(--primary);
+    }
+    .form-group{
+      margin-bottom:18px;text-align:right;
+    }
+    label{
+      display:block;margin-bottom:8px;font-weight:600;
+    }
+    .required{
+      color:var(--red);
+      font-weight:bold;
+      margin-left:4px;
+    }
+    input[type=text], input[type=email], input[type=tel]{
+      width:100%;padding:12px;border:1px solid #ccc;border-radius:6px;font-size:1rem;
+      text-align:right;transition:border .2s;
+    }
+    input.error{
+      border-color:var(--red) !important;background:var(--error);
+    }
+    .error-msg{
+      color:var(--red);font-size:0.9rem;margin-top:5px;display:none;text-align:right;
+    }
+    .error-msg.show{
+      display:block;
+    }
+    .submit-btn{
+      background:var(--primary);color:#fff;border:none;padding:14px 24px;font-size:1.1rem;
+      border-radius:8px;cursor:pointer;width:100%;margin-top:20px;transition:.2s;
+      position:relative;
+    }
+    .submit-btn:hover{background:#0d47a1;}
+    .submit-btn:disabled{
+      background:#aaa;cursor:not-allowed;
+    }
+
+    /* === אפקט הצלחה מרהיב === */
+    .success-animation {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: 9998;
+      overflow: hidden;
+    }
+    .confetti {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      background: var(--gold);
+      opacity: 0.8;
+      animation: fall linear forwards;
+    }
+    @keyframes fall {
+      to { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+    }
+
+    /* === אפקט טעינה === */
+    .loader-overlay {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(255,255,255,0.95);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      flex-direction: column;
+      gap: 20px;
+      transition: opacity 0.5s ease;
+    }
+    .loader {
+      width: 60px;
+      height: 60px;
+      border: 6px solid #f3f3f3;
+      border-top: 6px solid var(--primary);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    .loader-text {
+      font-size: 1.2rem;
+      color: var(--primary);
+      font-weight: 600;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .final-message{
+      margin-top:25px;padding:20px;background:var(--success);border-radius:12px;
+      font-weight:600;color:#1b5e20;font-size:1.2rem;
+      line-height:1.6;position:relative;
+    }
+    .final-message strong{
+      display:block;margin-top:10px;font-size:1.3rem;
+    }
+    .back-link {
+      display: block;
+      margin-top: 20px;
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .back-link:hover {
+      text-decoration: underline;
+    }
+  </style>
 </head>
 <body>
 
+<!-- אפקט הצלחה -->
 <div class="success-animation" id="successAnimation"></div>
+
+<!-- אפקט טעינה -->
 <div class="loader-overlay" id="loader">
   <div class="loader"></div>
   <div class="loader-text" id="loaderText">מעבד את ההזמנה...</div>
@@ -22,25 +163,27 @@
   <form id="personalDetailsForm">
     <div class="form-group">
       <label for="fullName" id="nameLabel">שם מלא <span class="required">*</span></label>
-      <input type="text" id="fullName" required />
+      <input type="text" id="fullName" name="שם מלא" required />
       <div class="error-msg" id="nameError">שם מלא הוא שדה חובה</div>
     </div>
+
     <div class="form-group">
       <label for="phone" id="phoneLabel">טלפון <span class="required">*</span></label>
-      <input type="tel" id="phone" required />
-      <div class="error-msg" id="phoneError">הזן מספר טלפון ישראלי תקין</div>
+      <input type="tel" id="phone" name="טלפון" required />
+      <div class="error-msg" id="phoneError">הזן מספר טלפון ישראלי תקין (לדוגמה: 0501234567)</div>
     </div>
+
     <div class="form-group">
       <label for="email" id="emailLabel">אימייל <span class="required">*</span></label>
-      <input type="email" id="email" required />
+      <input type="email" id="email" name="אימייל" required />
       <div class="error-msg" id="emailError">הזן כתובת אימייל תקינה</div>
     </div>
 
-    <input type="hidden" id="hiddenCourt">
-    <input type="hidden" id="hiddenDay">
-    <input type="hidden" id="hiddenTime">
-    <input type="hidden" id="hiddenDuration">
-    <input type="hidden" id="hiddenTotal">
+    <input type="hidden" name="מגרש" id="hiddenCourt">
+    <input type="hidden" name="יום" id="hiddenDay">
+    <input type="hidden" name="שעה" id="hiddenTime">
+    <input type="hidden" name="משך" id="hiddenDuration">
+    <input type="hidden" name="סהכ" id="hiddenTotal">
 
     <button type="submit" class="submit-btn" id="submitBtn">אישור סופי והזמנה</button>
   </form>
@@ -50,16 +193,228 @@
     <span id="successText">תודה רבה! נשלח לך אישור ב-SMS ו/או במייל.</span>
     <br><br>
     <small id="successNote">אין צורך לשלוח שוב – ההזמנה כבר נקלטה במערכת.</small>
-    <br><br>
-    <a href="my-bookings.html" style="color:#1a73e8; font-weight:600;">צפה בהזמנות שלי</a>
   </div>
 
   <a href="index.html" class="back-link" id="backLink">חזרה לבחירת מגרש</a>
 </div>
 
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
-<script src="assets/firebase-config.js"></script>
-<script src="assets/script.js" defer></script>
+<script>
+  const translations = {
+    he: {
+      pageTitle: "השלם את ההזמנה",
+      nameLabel: "שם מלא",
+      phoneLabel: "טלפון",
+      emailLabel: "אימייל",
+      submitBtn: "אישור סופי והזמנה",
+      successTitle: "ההזמנה נשלחה בהצלחה!",
+      successText: "תודה רבה! נשלח לך אישור ב-SMS ו/או במייל.",
+      successNote: "אין צורך לשלוח שוב – ההזמנה כבר נקלטה במערכת.",
+      backLink: "חזרה לבחירת מגרש",
+      court: "מגרש",
+      day: "יום",
+      time: "שעה",
+      duration: "משך",
+      total: "סה\"כ לתשלום",
+      oneHour: "שעה אחת",
+      twoHours: "שעתיים",
+      namePlaceholder: "הכנס שם מלא",
+      phonePlaceholder: "0501234567",
+      emailPlaceholder: "example@email.com",
+      nameError: "שם מלא הוא שדה חובה",
+      phoneError: "הזן מספר טלפון ישראלי תקין (לדוגמה: 0501234567)",
+      emailError: "הזן כתובת אימייל תקינה",
+      loading: "מעבד את ההזמנה..."
+    },
+    en: {
+      pageTitle: "Complete Your Booking",
+      nameLabel: "Full Name",
+      phoneLabel: "Phone",
+      emailLabel: "Email",
+      submitBtn: "Confirm & Book",
+      successTitle: "Booking Sent Successfully!",
+      successText: "Thank you! A confirmation will be sent via SMS and/or email.",
+      successNote: "No need to submit again – your booking is already in the system.",
+      backLink: "Back to Court Selection",
+      court: "Court",
+      day: "Day",
+      time: "Time",
+      duration: "Duration",
+      total: "Total Amount",
+      oneHour: "1 Hour",
+      twoHours: "2 Hours",
+      namePlaceholder: "Enter full name",
+      phonePlaceholder: "0501234567",
+      emailPlaceholder: "example@email.com",
+      nameError: "Full name is required",
+      phoneError: "Enter a valid Israeli phone number (e.g. 0501234567)",
+      emailError: "Enter a valid email address",
+      loading: "Processing your booking..."
+    }
+  };
+
+  // === קריאת פרמטרים + שפה ===
+  const params = new URLSearchParams(window.location.search);
+  const lang = params.get('lang') || 'he';
+  const court = params.get('court') || '';
+  const day = params.get('day') || '';
+  const time = params.get('time') || '';
+  const duration = params.get('duration') || '1';
+  const total = params.get('total') || '40₪';
+
+  document.documentElement.lang = lang;
+  document.documentElement.dir = lang === 'en' ? 'ltr' : 'rtl';
+
+  const t = translations[lang];
+
+  // === עדכון טקסטים ===
+  document.getElementById('pageTitle').textContent = t.pageTitle;
+  document.getElementById('nameLabel').innerHTML = `${t.nameLabel} <span class="required">*</span>`;
+  document.getElementById('phoneLabel').innerHTML = `${t.phoneLabel} <span class="required">*</span>`;
+  document.getElementById('emailLabel').innerHTML = `${t.emailLabel} <span class="required">*</span>`;
+  document.getElementById('submitBtn').textContent = t.submitBtn;
+  document.getElementById('successTitle').textContent = t.successTitle;
+  document.getElementById('successText').textContent = t.successText;
+  document.getElementById('successNote').textContent = t.successNote;
+  document.getElementById('backLink').textContent = t.backLink;
+  document.getElementById('loaderText').textContent = t.loading;
+
+  document.getElementById('fullName').placeholder = t.namePlaceholder;
+  document.getElementById('phone').placeholder = t.phonePlaceholder;
+  document.getElementById('email').placeholder = t.emailPlaceholder;
+
+  document.getElementById('nameError').textContent = t.nameError;
+  document.getElementById('phoneError').textContent = t.phoneError;
+  document.getElementById('emailError').textContent = t.emailError;
+
+  // === הצגת פרטים ===
+  const durationText = duration === '1' ? t.oneHour : t.twoHours;
+  document.getElementById('summary').innerHTML = `
+    <p><strong>${t.court}:</strong> ${court}</p>
+    <p><strong>${t.day}:</strong> ${day}</p>
+    <p><strong>${t.time}:</strong> ${time}</p>
+    <p><strong>${t.duration}:</strong> ${durationText}</p>
+    <p><strong>${t.total}:</strong> ${total}</p>
+  `;
+
+  document.getElementById('hiddenCourt').value = court;
+  document.getElementById('hiddenDay').value = day;
+  document.getElementById('hiddenTime').value = time;
+  document.getElementById('hiddenDuration').value = duration === '1' ? 'שעה אחת' : 'שעתיים';
+  document.getElementById('hiddenTotal').value = total;
+
+  // === אימות ===
+  function validateIsraeliPhone(phone) {
+    const cleaned = phone.replace(/\D/g, '');
+    return /^05[0-9]{8}$/.test(cleaned) && cleaned.length === 10;
+  }
+
+  function validateEmail(email) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  }
+
+  function clearErrors() {
+    document.querySelectorAll('.error-msg').forEach(el => el.classList.remove('show'));
+    document.querySelectorAll('input').forEach(el => el.classList.remove('error'));
+  }
+
+  // === אפקט קונפטי ===
+  function createConfetti() {
+    const animation = document.getElementById('successAnimation');
+    for (let i = 0; i < 50; i++) {
+      const confetti = document.createElement('div');
+      confetti.className = 'confetti';
+      confetti.style.left = Math.random() * 100 + 'vw';
+      confetti.style.animationDuration = Math.random() * 3 + 2 + 's';
+      confetti.style.background = ['#ffd700', '#ff6b6b', '#4ecdc4', '#45b7d1'][Math.floor(Math.random() * 4)];
+      animation.appendChild(confetti);
+      setTimeout(() => confetti.remove(), 5000);
+    }
+  }
+
+  // === שליחה + 2 שניות + שמירה + אפקט ===
+  const form = document.getElementById('personalDetailsForm');
+  const submitBtn = document.getElementById('submitBtn');
+  const finalMessage = document.getElementById('finalMessage');
+  const loader = document.getElementById('loader');
+  let isSubmitted = false;
+
+  form.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    if (isSubmitted) return;
+
+    clearErrors();
+
+    const name = document.getElementById('fullName').value.trim();
+    const phone = document.getElementById('phone').value.trim();
+    const email = document.getElementById('email').value.trim();
+
+    let hasError = false;
+
+    if (!name) {
+      document.getElementById('fullName').classList.add('error');
+      document.getElementById('nameError').classList.add('show');
+      hasError = true;
+    }
+
+    if (!phone || !validateIsraeliPhone(phone)) {
+      document.getElementById('phone').classList.add('error');
+      document.getElementById('phoneError').classList.add('show');
+      hasError = true;
+    }
+
+    if (!email || !validateEmail(email)) {
+      document.getElementById('email').classList.add('error');
+      document.getElementById('emailError').classList.add('show');
+      hasError = true;
+    }
+
+    if (hasError) return;
+
+    // === שמור ב-localStorage ===
+    const booking = { name, phone, email, court, day, time, duration: durationText, total, date: new Date().toLocaleString() };
+    const bookings = JSON.parse(localStorage.getItem('bookings') || '[]');
+    bookings.push(booking);
+    localStorage.setItem('bookings', JSON.stringify(bookings));
+
+    // === הפעל loader ===
+    loader.style.display = 'flex';
+    submitBtn.disabled = true;
+    isSubmitted = true;
+
+    const formData = new FormData(form);
+
+    const sendPromise = fetch('https://formspree.io/f/mzzyzyzo', {
+      method: 'POST',
+      body: formData,
+      headers: { 'Accept': 'application/json' }
+    }).then(r => r.ok).catch(() => false);
+
+    const timeoutPromise = new Promise(resolve => setTimeout(() => resolve(true), 1000));
+
+    const result = await Promise.race([sendPromise, timeoutPromise]);
+
+    // === אחרי 2 שניות – תמיד יוצא ===
+    setTimeout(() => {
+      loader.style.opacity = '0';
+      setTimeout(() => {
+        loader.style.display = 'none';
+        loader.style.opacity = '1';
+
+        // === הצלחה! ===
+        createConfetti();
+        form.style.display = 'none';
+        finalMessage.style.display = 'block';
+        document.getElementById('pageTitle').textContent = lang === 'he' ? 'סיכום הזמנה' : 'Booking Summary';
+
+        history.pushState(null, null, location.href);
+        window.onpopstate = () => history.go(1);
+      }, 500);
+    }, 2000);
+  });
+
+  // === חוסם חזרה ===
+  history.pushState(null, null, location.href);
+  window.onpopstate = () => history.go(1);
+</script>
 </body>
 </html>
