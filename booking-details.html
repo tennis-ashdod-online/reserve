@@ -302,6 +302,33 @@
   document.getElementById('hiddenDuration').value = durationText;
   document.getElementById('hiddenTotal').value = total;
 
+  function getMonday(date) {
+    const d = new Date(date);
+    const day = d.getDay();
+    const diff = d.getDate() - day + (day === 0 ? -6 : 1);
+    return new Date(d.setDate(diff));
+  }
+
+  function canBookMore(phone) {
+    const bookings = JSON.parse(localStorage.getItem('bookings') || '[]');
+    const thisMonday = getMonday(new Date());
+    const userBookings = bookings.filter(b => b.phone === phone && new Date(b.date) >= thisMonday);
+    return userBookings.length < 3;
+  }
+
+  function isSlotTaken(court, date, time, duration = 1) {
+    const bookings = JSON.parse(localStorage.getItem('bookings') || '[]');
+    const [hour] = time.split(':').map(Number);
+    const endHour = hour + duration;
+
+    return bookings.some(b => {
+      if (b.court !== court || b.date !== date) return false;
+      const [bHour] = b.time.split(':').map(Number);
+      const bEnd = bHour + (b.duration.includes('שעתיים') || b.duration.includes('2 Hours') ? 2 : 1);
+      return (hour < bEnd && endHour > bHour);
+    });
+  }
+
   function validateIsraeliPhone(phone) {
     const cleaned = phone.replace(/\D/g, '');
     return /^05[0-9]{8}$/.test(cleaned) && cleaned.length === 10;
@@ -309,13 +336,6 @@
 
   function validateEmail(email) {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-  }
-
-  function canBookMore(phone) {
-    const bookings = JSON.parse(localStorage.getItem('bookings') || '[]');
-    const weekAgo = new Date(Date.now() - 7*24*60*60*1000);
-    const userBookings = bookings.filter(b => b.phone === phone && new Date(b.date) > weekAgo);
-    return userBookings.length < 3;
   }
 
   function clearErrors() {
@@ -376,6 +396,12 @@
 
     if (!canBookMore(phone)) {
       alert(t.tooManyBookings);
+      return;
+    }
+
+    if (isSlotTaken(court, date, time, duration)) {
+      alert('המגרש נתפס זה עתה על ידי משתמש אחר!');
+      window.location.href = 'index.html';
       return;
     }
 
