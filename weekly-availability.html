@@ -132,7 +132,7 @@
 
   function generateNext7Days() {
     const days = [];
-    const today = new Date('2025-11-15'); // תאריך נוכחי
+    const today = new Date('2025-11-15');
     const heWeekdays = ['ראשון', 'שני', 'שלישי', 'רביעי', 'חמישי', 'שישי', 'שבת'];
     for (let i = 0; i < 7; i++) {
       const date = new Date(today);
@@ -232,7 +232,6 @@
   window.bookSlot = (court, date, time) => {
     if (isSlotTaken(court, date, time, 1)) return;
 
-    // בדוק אם אפשר שעתיים
     const duration = (time < '21:00' && !isSlotTaken(court, date, `${(parseInt(time)+1).toString().padStart(2,'0')}:00`, 1)) ? 2 : 1;
 
     const params = new URLSearchParams({
@@ -247,12 +246,10 @@
     window.location.href = `booking-details.html?${params.toString()}`;
   };
 
-  // טעינה
   window.addEventListener('load', () => {
-    setTimeout(buildTable, 100); // לתת ל-localStorage להיטען
+    setTimeout(buildTable, 100);
   });
 
-  // עדכון כל 30 שניות
   setInterval(buildTable, 30000);
 </script>
 </body>
