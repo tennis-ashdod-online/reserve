@@ -267,7 +267,6 @@
       <input type="text" id="selectedCourt" readonly />
     </div>
 
-    <!-- לוח שנה קטן -->
     <div class="calendar-container" id="calendarContainer"></div>
 
     <div class="form-group">
@@ -304,7 +303,6 @@
   <div class="price-note">תעריף: 40₪ לשעה</div>
 </div>
 
-<!-- WhatsApp -->
 <div id="whatsappHelp" style="position:fixed; bottom:20px; left:20px; z-index:9999;">
   <a href="https://wa.me/97258678400?text=שלום!%20אני%20צריך%20עזרה%20בהזמנת%20מגרש" 
      target="_blank" 
@@ -386,7 +384,6 @@
     document.getElementById('prevMonth').onclick = () => renderCalendar(new Date(year, month - 1));
     document.getElementById('nextMonth').onclick = () => renderCalendar(new Date(year, month + 1));
 
-    // אירועי לחיצה – חייבים להיות כאן!
     document.querySelectorAll('.calendar-day:not(.disabled):not(.header)').forEach(day => {
       day.onclick = () => {
         selectedDate = new Date(day.dataset.date);
