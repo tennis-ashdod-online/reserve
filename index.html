@@ -194,7 +194,7 @@
       bookings.push(data);
       localStorage.setItem('tennis_bookings', JSON.stringify(bookings));
 
-      // שליחה ללקוח – תבנית קצרה
+      // שליחה ללקוח
       emailjs.send("service_ma6h7ym", "template_k2oqbr7", {
         to_email: data.email,
         customer_name: data.name,
@@ -205,8 +205,8 @@
         price: data.price
       }).catch(() => {});
 
-      // שליחה אליך – תבנית מלאה
-      emailjs.send("template_4eh09k2", "template_admin_full", {  // ← החלף ב-ID של התבנית החדשה שלך
+      // שליחה אליך – החלף ב-ID של התבנית החדשה שלך
+      emailjs.send("service_ma6h7ym", "template_4eh09k2", {
         to_email: "eitan.morgunov@gmail.com",
         customer_name: data.name,
         phone: data.phone,
@@ -227,14 +227,12 @@
           successMsg.classList.add('d-none');
         }, 3000);
 
-        // איפוס הטופס
+        // איפוס מלא של הטופס
         this.reset();
-        setTimeout(() => {
-          dateInput.value = minDate;
-          durationSelect.value = "1";
-          updateTimeOptions();
-          updatePrice();
-        }, 100);
+        dateInput.value = minDate;
+        durationSelect.value = "1";
+        updateTimeOptions();
+        updatePrice();
       }).catch(err => {
         console.error(err);
         alert("ההזמנה נרשמה, אך לא נשלח אישור. נסה שוב מאוחר יותר.");
