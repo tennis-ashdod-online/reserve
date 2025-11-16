@@ -6,7 +6,6 @@
   <title>מרכז קהילתי עם שלום י"א - הזמנת מגרש טניס</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
   <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&display=swap" rel="stylesheet">
-  <!-- EmailJS -->
   <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
   <style>
     :root { --primary: #1a5d1a; --light: #f8f9fa; --shadow: 0 8px 25px rgba(0,0,0,0.08); }
@@ -82,7 +81,7 @@
 
         <div class="mb-3">
           <label class="form-label">הערות (לא חובה)</label>
-          <textarea class="form-control" id="notes" rows="2" placeholder="למשל: צריך תאורה, רוצה ציוד..."></textarea>
+          <textarea class="form-control" id="notes" rows="2" placeholder="למשל: צריך תאורה..."></textarea>
         </div>
 
         <div class="mb-3 form-check">
@@ -105,35 +104,28 @@
       <h5>פרטי המרכז</h5>
       <p><strong>כתובת:</strong> 
         <a href="https://maps.google.com/?q=31.783165,34.631096" target="_blank" class="map-link">
-          הרי גולן 5, אשדוד, ישראל
+          הרי גולן 5, אשדוד
         </a>
       </p>
       <p><strong>טלפון:</strong> 08-8678400</p>
-      <p><strong>שעות פעילות:</strong> ראשון-חמישי: 08:00–21:00 | שישי: 08:00–14:00 | שבת: 08:00–21:00</p>
-      <a href="tel:088678400" class="btn btn-call">התקשר עכשיו</a>
+      <p><strong>שעות:</strong> א'-ה': 08:00–21:00 | ו': 08:00–14:00 | שבת: 08:00–21:00</p>
+      <a href="tel:088678400" class="btn btn-call">התקשר</a>
     </div>
 
     <div class="map-container">
-      <iframe 
-        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d600!2d34.6309!3d31.7832!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzEuNzgzMTY1LDM0LjYzMTA5Ng!5e0!3m2!1siw!2sil!4v1731780000000!5m2!1siw!2sil" 
-        allowfullscreen="" loading="lazy"></iframe>
+      <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d600!2d34.6309!3d31.7832!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzEuNzgzMTY1LDM0LjYzMTA5Ng!5e0!3m2!1siw!2sil!4v1731780000000!5m2!1siw!2sil" allowfullscreen="" loading="lazy"></iframe>
     </div>
 
-    <!-- הודעה נעלמת אוטומטית -->
     <div id="successMessage" class="alert alert-success mt-4 d-none text-center">
-      הזמנתך נשלחה בהצלחה! אישור נשלח למייל שלך.
+      הזמנתך נשלחה! אישור במייל.
     </div>
   </div>
 
-  <!-- EmailJS Init -->
   <script>
-    (function(){
-      emailjs.init("z1P-O8ROFHiXihsLH");
-    })();
+    (function(){ emailjs.init("z1P-O8ROFHiXihsLH"); })();
   </script>
 
   <script>
-    // תאריך
     const today = new Date();
     const yyyy = today.getFullYear();
     const mm = String(today.getMonth() + 1).padStart(2, '0');
@@ -145,7 +137,6 @@
     const dateInput = document.getElementById('date');
     dateInput.setAttribute('min', minDate); dateInput.setAttribute('max', maxDate); dateInput.value = minDate;
 
-    // שעות
     const timeSelect = document.getElementById('time');
     const regularHours = ["08:00","09:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00","20:00","21:00"];
     const fridayHours = ["08:00","09:00","10:00","11:00","12:00","13:00","14:00"];
@@ -160,16 +151,13 @@
     }
     dateInput.addEventListener('change', updateTimeOptions); updateTimeOptions();
 
-    // מחיר
     const durationSelect = document.getElementById('duration');
     const totalPriceEl = document.getElementById('totalPrice');
     function updatePrice() { totalPriceEl.textContent = durationSelect.value === "1" ? "40₪" : "80₪"; }
     durationSelect.addEventListener('change', updatePrice); updatePrice();
 
-    // הזמנות קודמות
     let bookings = JSON.parse(localStorage.getItem('tennis_bookings') || '[]');
 
-    // שליחה
     document.getElementById('bookingForm').addEventListener('submit', function(e) {
       e.preventDefault();
       const data = {
@@ -184,30 +172,26 @@
         price: totalPriceEl.textContent
       };
 
-      // בדיקת זמינות
       if (bookings.some(b => b.date === data.date && b.time === data.time && b.court === data.court)) {
-        alert("המגרש תפוס בתאריך ושעה זו. בחר מגרש או שעה אחרים.");
+        alert("המגרש תפוס. בחר מגרש/שעה אחרים.");
         return;
       }
 
-      // שמירה
       bookings.push(data);
       localStorage.setItem('tennis_bookings', JSON.stringify(bookings));
 
-      // הצגת הודעה מוקדמת
       const successMsg = document.getElementById('successMessage');
       successMsg.classList.remove('d-none');
       setTimeout(() => successMsg.classList.add('d-none'), 3000);
 
-      // איפוס מוקדם
       this.reset();
       dateInput.value = minDate;
       durationSelect.value = "1";
       updateTimeOptions();
       updatePrice();
 
-      // שליחה ללקוח – תמיד נשלחת
-      emailjs.send("service_ma6h7ym", "template_4eh09k2", {
+      // שליחה ללקוח – תמיד
+      emailjs.send("service_ma6h7ym", "template_4eh09k2", {  // ← החלף ב-ID של התבנית החדשה
         to_email: data.email,
         customer_name: data.name,
         date: data.date,
@@ -215,14 +199,10 @@
         court: data.court,
         duration: data.duration === "1" ? "שעה אחת" : "שעתיים",
         price: data.price
-      }).then(() => {
-        console.log("מייל ללקוח נשלח בהצלחה!");
-      }).catch(err => {
-        console.error("שגיאה בשליחת מייל ללקוח:", err);
-        alert("ההזמנה נרשמה, אך לא נשלח אישור למייל של הלקוח. נסה שוב.");
-      });
+      }).then(() => console.log("מייל ללקוח: OK"))
+        .catch(err => { console.error("לקוח:", err); alert("לא נשלח אישור ללקוח."); });
 
-      // שליחה אליך – תמיד נשלחת
+      // שליחה אליך
       emailjs.send("service_ma6h7ym", "template_admin_full", {  // ← החלף ב-ID שלך
         to_email: "eitan.morgunov@gmail.com",
         customer_name: data.name,
@@ -234,11 +214,8 @@
         duration: data.duration === "1" ? "שעה אחת" : "שעתיים",
         price: data.price,
         notes: data.notes
-      }).then(() => {
-        console.log("מייל אליך נשלח בהצלחה!");
-      }).catch(err => {
-        console.error("שגיאה בשליחת מייל אליך:", err);
-      });
+      }).then(() => console.log("מייל אליך: OK"))
+        .catch(err => console.error("אליך:", err));
     });
   </script>
 </body>
