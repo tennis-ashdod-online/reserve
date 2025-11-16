@@ -119,8 +119,9 @@
         allowfullscreen="" loading="lazy"></iframe>
     </div>
 
+    <!-- הודעה נעלמת אוטומטית -->
     <div id="successMessage" class="alert alert-success mt-4 d-none text-center">
-      הזמנתך נשלחה בהצלחה! אישור נשלח למייל שלך.
+      הזמנתך נשלחה בהצלחה!
     </div>
   </div>
 
@@ -132,6 +133,7 @@
   </script>
 
   <script>
+    // תאריך
     const today = new Date();
     const yyyy = today.getFullYear();
     const mm = String(today.getMonth() + 1).padStart(2, '0');
@@ -143,6 +145,7 @@
     const dateInput = document.getElementById('date');
     dateInput.setAttribute('min', minDate); dateInput.setAttribute('max', maxDate); dateInput.value = minDate;
 
+    // שעות
     const timeSelect = document.getElementById('time');
     const regularHours = ["08:00","09:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00","20:00","21:00"];
     const fridayHours = ["08:00","09:00","10:00","11:00","12:00","13:00","14:00"];
@@ -157,13 +160,16 @@
     }
     dateInput.addEventListener('change', updateTimeOptions); updateTimeOptions();
 
+    // מחיר
     const durationSelect = document.getElementById('duration');
     const totalPriceEl = document.getElementById('totalPrice');
     function updatePrice() { totalPriceEl.textContent = durationSelect.value === "1" ? "40₪" : "80₪"; }
     durationSelect.addEventListener('change', updatePrice); updatePrice();
 
+    // הזמנות קודמות
     let bookings = JSON.parse(localStorage.getItem('tennis_bookings') || '[]');
 
+    // שליחה
     document.getElementById('bookingForm').addEventListener('submit', function(e) {
       e.preventDefault();
       const data = {
@@ -178,15 +184,17 @@
         price: totalPriceEl.textContent
       };
 
+      // בדיקת זמינות
       if (bookings.some(b => b.date === data.date && b.time === data.time && b.court === data.court)) {
         alert("המגרש תפוס בתאריך ושעה זו. בחר מגרש או שעה אחרים.");
         return;
       }
 
+      // שמירה
       bookings.push(data);
       localStorage.setItem('tennis_bookings', JSON.stringify(bookings));
 
-      // שליחה ללקוח
+      // שליחה ללקוח – תבנית קצרה
       emailjs.send("service_ma6h7ym", "template_k2oqbr7", {
         to_email: data.email,
         customer_name: data.name,
@@ -198,7 +206,7 @@
       }).catch(() => {});
 
       // שליחה אליך – תבנית מלאה
-      emailjs.send("service_ma6h7ym", "template_admin_full", {
+      emailjs.send("service_ma6h7ym", "template_admin_full", {  // ← החלף ב-ID של התבנית החדשה שלך
         to_email: "eitan.morgunov@gmail.com",
         customer_name: data.name,
         phone: data.phone,
@@ -210,12 +218,22 @@
         price: data.price,
         notes: data.notes
       }).then(() => {
-        document.getElementById('successMessage').classList.remove('d-none');
+        // הצגת הודעה
+        const successMsg = document.getElementById('successMessage');
+        successMsg.classList.remove('d-none');
+
+        // הסתרה אוטומטית אחרי 3 שניות
+        setTimeout(() => {
+          successMsg.classList.add('d-none');
+        }, 3000);
+
+        // איפוס הטופס
         this.reset();
         setTimeout(() => {
           dateInput.value = minDate;
           durationSelect.value = "1";
-          updateTimeOptions(); updatePrice();
+          updateTimeOptions();
+          updatePrice();
         }, 100);
       }).catch(err => {
         console.error(err);
