@@ -23,7 +23,7 @@
     }
     .main-title { 
       font-size: 2rem; font-weight: 700; color: var(--primary); text-align: center; 
-      margin: 1.5rem 0 0.5rem; /* ריווח קטן יותר */
+      margin: 1.5rem 0 0.5rem;
     }
     .hero-container {
       position: relative; 
@@ -31,7 +31,7 @@
     }
     .hero-img { 
       width: 100%; 
-      height: 400px; /* בדיוק לפי הסימון */
+      height: 400px; 
       object-fit: cover; 
       border-radius: 24px; 
       box-shadow: var(--shadow); 
@@ -101,9 +101,9 @@
     .whatsapp-icon:hover { transform: scale(1.1); }
     @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
 
-    /* תפריט נגישות – על התמונה */
+    /* תפריט נגישות – קבוע (מזוז איתך) */
     #accessibilityToggle {
-      position: absolute; 
+      position: fixed; 
       left: 20px; 
       top: 20px; 
       z-index: 9999;
@@ -116,7 +116,7 @@
     #accessibilityToggle:hover { transform: scale(1.1); }
 
     .accessibility-menu {
-      position: absolute; 
+      position: fixed; 
       left: 20px; 
       top: 90px; /* מתחת לכפתור */
       z-index: 9998;
@@ -148,7 +148,7 @@
     /* אפור */
     .grayscale { filter: grayscale(100%); }
 
-    /* כותרת "הזמנת מגרש טניס" – קרובה לתמונה */
+    /* כותרת "הזמנת מגרש טניס" */
     .section-title {
       font-size: 1.8rem; font-weight: 600; color: var(--primary); 
       text-align: center; margin: 0.5rem 0 1.5rem;
@@ -195,33 +195,32 @@
     <i class="fab fa-whatsapp whatsapp-icon"></i>
   </a>
 
+  <!-- תפריט נגישות – קבוע -->
+  <button id="accessibilityToggle" title="פתח תפריט נגישות">
+    <i class="fas fa-universal-access"></i>
+  </button>
+  <div id="accessibilityMenu" class="accessibility-menu">
+    <button class="accessibility-btn" onclick="increaseFont()" title="הגדל טקסט"><i class="fas fa-plus"></i></button>
+    <button class="accessibility-btn" onclick="decreaseFont()" title="הקטן טקסט"><i class="fas fa-minus"></i></button>
+    <button class="accessibility-btn" onclick="toggleContrast()" title="ניגודיות גבוהה"><i class="fas fa-adjust"></i></button>
+    <button class="accessibility-btn" onclick="toggleLinks()" title="הדגש קישורים"><i class="fas fa-link"></i></button>
+    <button class="accessibility-btn" onclick="toggleGrayscale()" title="מצב אפור"><i class="fas fa-eye-slash"></i></button>
+    <button id="speakBtn" class="accessibility-btn" onclick="toggleSpeak()" title="הפעל/עצור קריאה">
+      <i class="fas fa-volume-up"></i>
+    </button>
+  </div>
+
   <div class="container">
     <h1 class="main-title">מרכז קהילתי עם שלום י"א</h1>
 
-    <!-- תמונה גדולה + תפריט נגישות עליה -->
+    <!-- תמונה גדולה -->
     <div class="hero-container">
       <img src="https://i.ibb.co/Z61VPjns/image.jpg" alt="מגרשי טניס" class="hero-img">
-      
-      <!-- תפריט נגישות – על התמונה -->
-      <button id="accessibilityToggle" title="פתח תפריט נגישות">
-        <i class="fas fa-universal-access"></i>
-      </button>
-      <div id="accessibilityMenu" class="accessibility-menu">
-        <button class="accessibility-btn" onclick="increaseFont()" title="הגדל טקסט"><i class="fas fa-plus"></i></button>
-        <button class="accessibility-btn" onclick="decreaseFont()" title="הקטן טקסט"><i class="fas fa-minus"></i></button>
-        <button class="accessibility-btn" onclick="toggleContrast()" title="ניגודיות גבוהה"><i class="fas fa-adjust"></i></button>
-        <button class="accessibility-btn" onclick="toggleLinks()" title="הדגש קישורים"><i class="fas fa-link"></i></button>
-        <button class="accessibility-btn" onclick="toggleGrayscale()" title="מצב אפור"><i class="fas fa-eye-slash"></i></button>
-        <button id="speakBtn" class="accessibility-btn" onclick="toggleSpeak()" title="הפעל/עצור קריאה">
-          <i class="fas fa-volume-up"></i>
-        </button>
-      </div>
     </div>
 
-    <!-- כותרת קרובה לתמונה -->
     <h2 class="section-title">הזמנת מגרש טניס</h2>
 
-    <!-- שאר הטופס -->
+    <!-- טופס -->
     <div class="form-card">
       <form id="bookingForm">
         <div class="mb-3">
