@@ -21,9 +21,9 @@
       font-family: 'Rubik', sans-serif; background: var(--light); color: #333; line-height: 1.7; 
       font-size: var(--font-size); transition: all 0.3s ease;
     }
-    .main-title { 
-      font-size: 2rem; font-weight: 700; color: var(--primary); text-align: center; 
-      margin: 1.5rem 0 0.5rem;
+    .main-subtitle { 
+      font-size: 1.6rem; font-weight: 600; color: var(--primary); text-align: center; 
+      margin: 1rem 0 0.5rem;
     }
     .hero-container {
       position: relative; 
@@ -96,17 +96,18 @@
     .whatsapp-icon {
       font-size: 36px; color: white; background-color: #25D366;
       width: 60px; height: 60px; border-radius: 50%; display: flex;
-      align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+      align-items: center; justify-content: center;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
       transition: all 0.3s ease; text-decoration: none !important; outline: none !important;
     }
     .whatsapp-icon:hover { transform: scale(1.1); }
     @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
 
-    /* תפריט נגישות – קבוע */
+    /* תפריט נגישות – קבוע, יורד למטה */
     #accessibilityToggle {
       position: fixed; 
       left: 20px; 
-      top: 20px; 
+      top: 90px; /* ירד למטה – לא דורס כותרת */
       z-index: 9999;
       background: var(--primary); color: white; width: 56px; height: 56px;
       border-radius: 50%; border: none; font-size: 1.8rem;
@@ -119,7 +120,7 @@
     .accessibility-menu {
       position: fixed; 
       left: 20px; 
-      top: 90px;
+      top: 160px; /* מתחת לכפתור */
       z-index: 9998;
       background: white; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.15);
       padding: 1rem; width: 60px; display: flex; flex-direction: column; gap: 0.8rem;
@@ -170,30 +171,22 @@
     details[open] summary::before { content: "▲"; }
     details p { margin-top: 0.5rem; color: #555; font-size: 0.95rem; }
 
-    /* מזג אוויר */
-    .weather-widget {
-      text-align: center; margin: 1.5rem 0; padding: 1rem;
-      background: white; border-radius: 16px; box-shadow: var(--shadow);
-    }
-    .weather-widget img { max-height: 70px; border-radius: 8px; }
-
     @media (min-width: 576px) {
       .hero-img { height: 600px; border-radius: 28px; }
-      #accessibilityToggle { left: 30px; top: 30px; width: 60px; height: 60px; font-size: 2rem; }
-      .accessibility-menu { left: 30px; top: 100px; width: 65px; }
+      #accessibilityToggle { left: 30px; top: 100px; width: 60px; height: 60px; font-size: 2rem; }
+      .accessibility-menu { left: 30px; top: 170px; width: 65px; }
       .accessibility-btn { width: 52px; height: 52px; font-size: 1.4rem; }
     }
 
     @media (max-width: 576px) {
-      #accessibilityToggle { left: 15px; top: 15px; width: 50px; height: 50px; font-size: 1.5rem; }
-      .accessibility-menu { left: 15px; top: 75px; width: 50px; }
+      #accessibilityToggle { left: 15px; top: 80px; width: 50px; height: 50px; font-size: 1.5rem; }
+      .accessibility-menu { left: 15px; top: 140px; width: 50px; }
       .accessibility-btn { width: 42px; height: 42px; font-size: 1.1rem; }
       #backToTop { right: 15px; bottom: 15px; width: 48px; height: 48px; font-size: 1.3rem; }
       .whatsapp-float-left { left: 15px; bottom: 20px; }
       .whatsapp-icon { width: 52px; height: 52px; font-size: 32px; }
-      .main-title { font-size: 1.8rem; margin: 1rem 0 0.5rem; }
+      .main-subtitle { font-size: 1.4rem; margin: 0.8rem 0 0.4rem; }
       .section-title { font-size: 1.6rem; margin: 0.5rem 0 1rem; }
-      .weather-widget img { max-height: 60px; }
     }
   </style>
 </head>
@@ -219,7 +212,7 @@
     <i class="fab fa-whatsapp whatsapp-icon"></i>
   </a>
 
-  <!-- תפריט נגישות – קבוע -->
+  <!-- תפריט נגישות – קבוע, ירד למטה -->
   <button id="accessibilityToggle" title="פתח תפריט נגישות">
     <i class="fas fa-universal-access"></i>
   </button>
@@ -235,7 +228,7 @@
   </div>
 
   <div class="container">
-    <h1 class="main-title">מרכז קהילתי עם שלום י"א</h1>
+    <h1 class="main-subtitle">מרכז קהילתי עם שלום י"א</h1>
 
     <!-- תמונה גדולה -->
     <div class="hero-container">
@@ -283,7 +276,7 @@
             <option>מגרש 4</option><option>מגרש 5</option><option>מגרש 6</option>
           </select>
         </div>
-        <div class="mb-3">
+        <div class="mb-3 Through">
           <label class="form-label">הערות (לא חובה)</label>
           <textarea class="form-control" id="notes" rows="2" placeholder="למשל: צריך תאורה..."></textarea>
         </div>
@@ -301,13 +294,7 @@
       </form>
     </div>
 
-    <!-- 10. מזג אוויר -->
-    <div class="weather-widget">
-      <p class="mb-2 fw-bold text-primary">מזג האוויר באשדוד</p>
-      <img src="https://wttr.in/Ashdod.png?0" alt="מזג אוויר באשדוד" loading="lazy">
-    </div>
-
-    <!-- 8. שאלות נפוצות -->
+    <!-- שאלות נפוצות -->
     <div class="mt-4">
       <h5 class="text-primary text-center mb-3">שאלות נפוצות</h5>
       <details>
@@ -383,7 +370,7 @@
     let bookings = JSON.parse(localStorage.getItem('tennis_bookings') || '[]');
 
     // חזור למעלה
-   -window.addEventListener('scroll', () => {
+    window.addEventListener('scroll', () => {
       document.getElementById('backToTop').classList.toggle('d-none', window.scrollY < 300);
     });
     document.getElementById('backToTop').addEventListener('click', () => {
