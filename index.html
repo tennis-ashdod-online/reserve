@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>הזמנת מגרש טניס</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+  <div class="container mt-4">
+    <h1 class="text-center mb-4">🎾 הזמנת מגרש טניס</h1>
+    
+    <div class="card">
+      <div class="card-body">
+        <form id="bookingForm">
+          <div class="mb-3">
+            <label>שם מלא</label>
+            <input type="text" class="form-control" id="name" required>
+          </div>
+          <div class="mb-3">
+            <label>טלפון</label>
+            <input type="tel" class="form-control" id="phone" required>
+          </div>
+          <div class="mb-3">
+            <label>תאריך</label>
+            <input type="date" class="form-control" id="date" required>
+          </div>
+          <div class="mb-3">
+            <label>שעה</label>
+            <select class="form-select" id="time" required>
+              <option value="">בחר שעה</option>
+              <option>08:00</option>
+              <option>09:00</option>
+              <option>10:00</option>
+              <option>11:00</option>
+              <option>12:00</option>
+              <option>13:00</option>
+              <option>14:00</option>
+              <option>15:00</option>
+              <option>16:00</option>
+              <option>17:00</option>
+              <option>18:00</option>
+              <option>19:00</option>
+              <option>20:00</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label>מגרש</label>
+            <select class="form-select" id="court" required>
+              <option value="">בחר מגרש</option>
+              <option>מגרש 1</option>
+              <option>מגרש 2</option>
+              <option>מגרש 3</option>
+            </select>
+          </div>
+          <button type="submit" class="btn btn-success w-100">שלח הזמנה</button>
+        </form>
+      </div>
+    </div>
+
+    <div id="successMessage" class="alert alert-success mt-3 d-none">
+      הזמנתך נשלחה בהצלחה! נחזור אליך בקרוב.
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
