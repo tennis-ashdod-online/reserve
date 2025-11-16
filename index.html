@@ -77,7 +77,7 @@
       background: #145214;
       transform: translateY(-2px);
     }
-    .info-card, .price-card {
+    .info-card {
       border-radius: 12px;
       font-weight: 500;
       margin-top: 1.5rem;
@@ -86,7 +86,7 @@
       background: #e8f5e8;
       border: 2px solid var(--primary);
     }
-    .info-card h5, .price-card h5 {
+    .info-card h5 {
       color: var(--primary);
       margin-bottom: 0.75rem;
       font-weight: 700;
@@ -132,7 +132,7 @@
     }
     @media (max-width: 576px) {
       .main-title { font-size: 1.6rem; }
-      .form-card, .info-card, .price-card { padding: 1rem; }
+      .form-card, .info-card { padding: 1rem; }
       .map-container iframe { height: 250px; }
     }
   </style>
@@ -179,7 +179,6 @@
           <label class="form-label"><span class="required-star">*</span> שעה</label>
           <select class="form-select" id="time" required>
             <option value="">בחר שעה</option>
-            <!-- יתעדכן דינמית -->
           </select>
         </div>
         <div class="mb-3">
@@ -211,7 +210,7 @@
       </form>
     </div>
 
-    <!-- פרטי מרכז -->
+    <!-- פרטי מרכז – שעות מתוקנות -->
     <div class="info-card">
       <h5>פרטי המרכז</h5>
       <p><strong>כתובת:</strong> 
@@ -219,16 +218,15 @@
           הרי גולן 5, אשדוד, ישראל
         </a>
       </p>
-      <p><strong>ט
-לפון:</strong> 08-8678400</p>
-      <p><strong>שעות פעילות:</strong> ראשון–חמישי, שבת: 08:00–21:00 | שישי: 08:00–14:00</p>
+      <p><strong>טלפון:</strong> 08-8678400</p>
+      <p><strong>שעות פעילות:</strong> ראשון-חמישי: 08:00–21:00 | שישי: 08:00–14:00 | שבת: 08:00–21:00</p>
       
       <a href="tel:088678400" class="btn btn-call">
         התקשר עכשיו
       </a>
     </div>
 
-    <!-- איך מגיעים – מפה מדויקת לפי קואורדינטות -->
+    <!-- איך מגיעים – מפה מדויקת -->
     <div class="map-container">
       <iframe 
         src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d600!2d34.6309!3d31.7832!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzEuNzgzMTY1LDM0LjYzMTA5Ng!5e0!3m2!1siw!2sil!4v1731780000000!5m2!1siw!2sil" 
@@ -237,20 +235,13 @@
       </iframe>
     </div>
 
-    <!-- מחירון -->
-    <div class="price-card">
-      <h5>מחירון</h5>
-      <p class="mb-1"><strong>40₪</strong> לשעה</p>
-      <p class="mb-0"><strong>80₪</strong> לשעתיים</p>
-    </div>
-
     <!-- הודעת הצלחה -->
     <div id="successMessage" class="alert alert-success mt-4 d-none text-center">
       הזמנתך נשלחה בהצלחה! נחזור אליך בקרוב.
     </div>
   </div>
 
-  <!-- JavaScript – שעות דינמיות + מפה מדויקת -->
+  <!-- JavaScript – שעות דינמיות + מחיר -->
   <script>
     // תאריך
     const today = new Date();
@@ -273,15 +264,15 @@
 
     // שעות
     const timeSelect = document.getElementById('time');
-    const allHours = ["08:00","09:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00","20:00","21:00"];
+    const regularHours = ["08:00","09:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00","20:00","21:00"];
     const fridayHours = ["08:00","09:00","10:00","11:00","12:00","13:00","14:00"];
 
     function updateTimeOptions() {
       const selectedDate = new Date(dateInput.value);
-      const dayOfWeek = selectedDate.getDay(); // 0=ראשון, 5=שישי
+      const dayOfWeek = selectedDate.getDay(); // 0=ראשון, 5=שישי, 6=שבת
       timeSelect.innerHTML = '<option value="">בחר שעה</option>';
 
-      const hours = (dayOfWeek === 5) ? fridayHours : allHours;
+      const hours = (dayOfWeek === 5) ? fridayHours : regularHours;
       hours.forEach(h => {
         const opt = document.createElement('option');
         opt.value = h;
@@ -291,7 +282,7 @@
     }
 
     dateInput.addEventListener('change', updateTimeOptions);
-    updateTimeOptions(); // ברירת מחדל
+    updateTimeOptions();
 
     // חישוב מחיר
     const durationSelect = document.getElementById('duration');
