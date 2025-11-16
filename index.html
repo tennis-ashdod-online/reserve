@@ -81,6 +81,10 @@
       border-radius: 12px;
       font-weight: 500;
     }
+    /* סגנון ללוח השנה */
+    input[type="date"]::-webkit-calendar-picker-indicator {
+      cursor: pointer;
+    }
     @media (max-width: 576px) {
       .main-title { font-size: 1.6rem; }
       .form-card { padding: 1rem; }
@@ -106,7 +110,7 @@
       הזמנת מגרש טניס
     </h2>
 
-    <!-- טופס עם כוכביות אדומות + אימייל -->
+    <!-- טופס עם לוח שנה מעודכן -->
     <div class="form-card">
       <form id="bookingForm">
         <div class="mb-3">
@@ -142,6 +146,9 @@
             <option>מגרש 1 (חימר)</option>
             <option>מגרש 2 (דשא)</option>
             <option>מגרש 3 (קשה)</option>
+            <option>מגרש 4</option>
+            <option>מגרש 5</option>
+            <option>מגרש 6</option>
           </select>
         </div>
         <button type="submit" class="btn btn-submit w-100">שלח הזמנה</button>
@@ -154,8 +161,13 @@
     </div>
   </div>
 
-  <!-- JavaScript – כולל אימייל בהודעה -->
+  <!-- JavaScript – לוח שנה מתחיל מהיום + שליחה -->
   <script>
+    // קובע את התאריך המינימלי להיום
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('date').setAttribute('min', today);
+    document.getElementById('date').value = today; // מציג את היום כברירת מחדל
+
     document.getElementById('bookingForm').addEventListener('submit', function(e) {
       e.preventDefault();
       const name = document.getElementById('name').value;
@@ -171,6 +183,10 @@
       window.open(whatsappUrl, '_blank');
       document.getElementById('successMessage').classList.remove('d-none');
       this.reset();
+      // שומר את היום כברירת מחדל אחרי איפוס
+      setTimeout(() => {
+        document.getElementById('date').value = today;
+      }, 100);
     });
   </script>
 </body>
