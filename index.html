@@ -190,9 +190,9 @@
       updateTimeOptions();
       updatePrice();
 
-      // שליחה ללקוח – תמיד
-      emailjs.send("service_ma6h7ym", "template_4eh09k2", {  // ← החלף ב-ID של התבנית החדשה
-        to_email: data.email,
+      // === שליחה ללקוח – תבנית קצרה ===
+      emailjs.send("service_ma6h7ym", "template_4eh09k2", {  // ← ID של תבנית הלקוח
+        to_email: data.email,  // ← למייל של הלקוח
         customer_name: data.name,
         date: data.date,
         time: data.time,
@@ -202,9 +202,9 @@
       }).then(() => console.log("מייל ללקוח: OK"))
         .catch(err => { console.error("לקוח:", err); alert("לא נשלח אישור ללקוח."); });
 
-      // שליחה אליך
-      emailjs.send("service_ma6h7ym", "template_admin_full", {  // ← החלף ב-ID שלך
-        to_email: "eitan.morgunov@gmail.com",
+      // === שליחה אליך – תבנית מלאה ===
+      emailjs.send("service_ma6h7ym", "template_admin_full", {  // ← ID של התבנית שלך
+        to_email: "eitan.morgunov@gmail.com",  // ← אליך
         customer_name: data.name,
         phone: data.phone,
         email: data.email,
