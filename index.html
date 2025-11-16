@@ -81,7 +81,7 @@
       border-radius: 12px;
       font-weight: 500;
     }
-    /* סגנון ללוח השנה */
+    /* חסימת חודשים קודמים */
     input[type="date"]::-webkit-calendar-picker-indicator {
       cursor: pointer;
     }
@@ -110,7 +110,7 @@
       הזמנת מגרש טניס
     </h2>
 
-    <!-- טופס עם לוח שנה מעודכן -->
+    <!-- טופס עם לוח שנה מוגבל -->
     <div class="form-card">
       <form id="bookingForm">
         <div class="mb-3">
@@ -161,12 +161,27 @@
     </div>
   </div>
 
-  <!-- JavaScript – לוח שנה מתחיל מהיום + שליחה -->
+  <!-- JavaScript – חוסם חודשים קודמים + מתחיל מהיום -->
   <script>
-    // קובע את התאריך המינימלי להיום
-    const today = new Date().toISOString().split('T')[0];
-    document.getElementById('date').setAttribute('min', today);
-    document.getElementById('date').value = today; // מציג את היום כברירת מחדל
+    // קובע תאריך מינימלי להיום
+    const today = new Date();
+    const yyyy = today.getFullYear();
+    const mm = String(today.getMonth() + 1).padStart(2, '0'); // חודש מתחיל ב-0
+    const dd = String(today.getDate()).padStart(2, '0');
+    const minDate = `${yyyy}-${mm}-${dd}`;
+
+    const dateInput = document.getElementById('date');
+    dateInput.setAttribute('min', minDate);
+    dateInput.value = minDate; // היום כברירת מחדל
+
+    // חוסם גלילה לחודשים קודמים (בדפדפנים תומכים)
+    dateInput.addEventListener('input', function() {
+      const selected = new Date(this.value);
+      const now = new Date();
+      if (selected < new Date(now.getFullYear(), now.getMonth(), now.getDate())) {
+        this.value = minDate;
+      }
+    });
 
     document.getElementById('bookingForm').addEventListener('submit', function(e) {
       e.preventDefault();
@@ -183,9 +198,9 @@
       window.open(whatsappUrl, '_blank');
       document.getElementById('successMessage').classList.remove('d-none');
       this.reset();
-      // שומר את היום כברירת מחדל אחרי איפוס
+      // מחזיר להיום אחרי איפוס
       setTimeout(() => {
-        document.getElementById('date').value = today;
+        dateInput.value = minDate;
       }, 100);
     });
   </script>
