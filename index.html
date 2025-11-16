@@ -22,7 +22,10 @@
       font-size: var(--font-size); transition: all 0.3s ease;
     }
     .main-title { font-size: 2rem; font-weight: 700; color: var(--primary); text-align: center; margin: 2rem 0 1.5rem; }
-    .hero-img { max-width: 100%; height: auto; border-radius: 20px; box-shadow: var(--shadow); margin-bottom: 2rem; }
+    .hero-img { 
+      max-width: 100%; height: auto; border-radius: 20px; box-shadow: var(--shadow); margin-bottom: 2rem; 
+      /* גובה התמונה המשוער – 180px במובייל, יותר בדסקטופ */
+    }
     .form-card { border: none; border-radius: 20px; box-shadow: var(--shadow); padding: 1.5rem; background: white; }
     .form-label { font-weight: 500; color: #1a5d1a; }
     .required-star { color: #d32f2f; font-weight: bold; margin-right: 4px; }
@@ -88,7 +91,7 @@
     @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
     .whatsapp-float-left, .whatsapp-float-left * { text-decoration: none !important; outline: none !important; }
 
-    /* תפריט נגישות – צד שמאל למעלה */
+    /* תפריט נגישות – צמוד שמאל, בגובה עליון של התמונה */
     #accessibilityToggle {
       position: fixed; left: 20px; top: 20px; z-index: 9999;
       background: var(--primary); color: white; width: 56px; height: 56px;
@@ -100,7 +103,11 @@
     #accessibilityToggle:hover { transform: scale(1.1); }
 
     .accessibility-menu {
-      position: fixed; left: 20px; top: 90px; z-index: 9998;
+      position: fixed; 
+      left: 20px; 
+      /* 20px מרווח מלמעלה + גובה התמונה (כ-180px במובייל, יותר בדסקטופ) */
+      top: calc(20px + 180px + 2rem); 
+      z-index: 9998;
       background: white; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.15);
       padding: 1rem; width: 60px; display: flex; flex-direction: column; gap: 0.8rem;
       transition: all 0.3s ease; opacity: 0; visibility: hidden; transform: translateY(-10px);
@@ -131,11 +138,16 @@
 
     @media (max-width: 576px) {
       #accessibilityToggle { left: 15px; top: 15px; width: 50px; height: 50px; font-size: 1.5rem; }
-      .accessibility-menu { left: 15px; top: 80px; width: 50px; }
+      .accessibility-menu { 
+        left: 15px; 
+        top: calc(15px + 140px + 1.5rem); /* התאמה לגובה תמונה קטן יותר */
+        width: 50px; 
+      }
       .accessibility-btn { width: 42px; height: 42px; font-size: 1.1rem; }
       #backToTop { right: 15px; bottom: 15px; width: 48px; height: 48px; font-size: 1.3rem; }
       .whatsapp-float-left { left: 15px; bottom: 20px; }
       .whatsapp-icon { width: 52px; height: 52px; font-size: 32px; }
+      .hero-img { margin-bottom: 1.5rem; }
     }
   </style>
 </head>
@@ -161,7 +173,7 @@
     <i class="fab fa-whatsapp whatsapp-icon"></i>
   </a>
 
-  <!-- תפריט נגישות – צד שמאל למעלה -->
+  <!-- תפריט נגישות – צמוד שמאל, בגובה עליון של התמונה -->
   <button id="accessibilityToggle" title="פתח תפריט נגישות">
     <i class="fas fa-universal-access"></i>
   </button>
@@ -186,6 +198,7 @@
       הזמנת מגרש טניס
     </h2>
 
+    <!-- שאר הטופס... (זהה לקוד הקודם) -->
     <div class="form-card">
       <form id="bookingForm">
         <div class="mb-3">
@@ -262,7 +275,7 @@
   <script>
     (function(){ emailjs.init("z1P-O8ROFHiXihsLH"); })();
 
-    // תאריך
+    // תאריך, שעות, מחיר, הזמנות – זהה לקוד הקודם
     const today = new Date();
     const yyyy = today.getFullYear();
     const mm = String(today.getMonth() + 1).padStart(2, '0');
@@ -273,7 +286,6 @@
     const dateInput = document.getElementById('date');
     dateInput.setAttribute('min', minDate); dateInput.setAttribute('max', maxDate); dateInput.value = minDate;
 
-    // שעות
     const timeSelect = document.getElementById('time');
     const regularHours = ["08:00","09:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00","20:00","21:00"];
     const fridayHours = ["08:00","09:00","10:00","11:00","12:00","13:00","14:00"];
@@ -287,16 +299,13 @@
     }
     dateInput.addEventListener('change', updateTimeOptions); updateTimeOptions();
 
-    // מחיר
     const durationSelect = document.getElementById('duration');
     const totalPriceEl = document.getElementById('totalPrice');
     function updatePrice() { totalPriceEl.textContent = durationSelect.value === "1" ? "40₪" : "80₪"; }
     durationSelect.addEventListener('change', updatePrice); updatePrice();
 
-    // הזמנות
     let bookings = JSON.parse(localStorage.getItem('tennis_bookings') || '[]');
 
-    // חזור למעלה
     window.addEventListener('scroll', () => {
       document.getElementById('backToTop').classList.toggle('d-none', window.scrollY < 300);
     });
@@ -304,7 +313,7 @@
       window.scrollTo({top: 0, behavior: 'smooth'});
     });
 
-    // טופס
+    // טופס – זהה
     document.getElementById('bookingForm').addEventListener('submit', function(e) {
       e.preventDefault();
       const submitBtn = document.getElementById('submitBtn');
