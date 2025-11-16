@@ -24,7 +24,7 @@
     .main-title { font-size: 2rem; font-weight: 700; color: var(--primary); text-align: center; margin: 2rem 0 1.5rem; }
     .hero-img { 
       max-width: 100%; height: auto; border-radius: 20px; box-shadow: var(--shadow); margin-bottom: 2rem; 
-      display: block;
+      /* גובה התמונה המשוער – 180px במובייל, יותר בדסקטופ */
     }
     .form-card { border: none; border-radius: 20px; box-shadow: var(--shadow); padding: 1.5rem; background: white; }
     .form-label { font-weight: 500; color: #1a5d1a; }
@@ -91,28 +91,28 @@
     @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
     .whatsapp-float-left, .whatsapp-float-left * { text-decoration: none !important; outline: none !important; }
 
-    /* תפריט נגישות – יתעדכן דינמית לפי גובה התמונה */
-    #accessibilityToggle, #accessibilityMenu {
-      position: fixed;
-      left: 20px;
-      z-index: 9999;
-      transition: all 0.3s ease;
-    }
+    /* תפריט נגישות – צמוד שמאל, בגובה עליון של התמונה */
     #accessibilityToggle {
+      position: fixed; left: 20px; top: 20px; z-index: 9999;
       background: var(--primary); color: white; width: 56px; height: 56px;
       border-radius: 50%; border: none; font-size: 1.8rem;
       display: flex; align-items: center; justify-content: center;
       box-shadow: 0 6px 20px rgba(0,0,0,0.2); cursor: pointer;
+      transition: all 0.3s ease;
     }
     #accessibilityToggle:hover { transform: scale(1.1); }
 
-    #accessibilityMenu {
+    .accessibility-menu {
+      position: fixed; 
+      left: 20px; 
+      /* 20px מרווח מלמעלה + גובה התמונה (כ-180px במובייל, יותר בדסקטופ) */
+      top: calc(20px + 180px + 2rem); 
+      z-index: 9998;
       background: white; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.15);
       padding: 1rem; width: 60px; display: flex; flex-direction: column; gap: 0.8rem;
-      opacity: 0; visibility: hidden; transform: translateY(-10px);
-      z-index: 9998;
+      transition: all 0.3s ease; opacity: 0; visibility: hidden; transform: translateY(-10px);
     }
-    #accessibilityMenu.open { opacity: 1; visibility: visible; transform: translateY(0); }
+    .accessibility-menu.open { opacity: 1; visibility: visible; transform: translateY(0); }
 
     .accessibility-btn {
       background: #f1f1f1; border: none; width: 48px; height: 48px; border-radius: 50%;
@@ -122,27 +122,38 @@
     .accessibility-btn:hover { background: var(--primary); color: white; transform: scale(1.1); }
     .accessibility-btn.active { background: var(--primary); color: white; }
 
-    /* ניגודיות, קישורים, אפור */
-    .high-contrast { --light: #000 !important; --primary: #fff !important; background: #000 !important; color: #fff !important; }
+    /* ניגודיות */
+    .high-contrast { 
+      --light: #000 !important; --primary: #fff !important; 
+      background: #000 !important; color: #fff !important; 
+    }
     .high-contrast * { color: #fff !important; background: #000 !important; border-color: #fff !important; }
     .high-contrast .form-card, .high-contrast .info-card { background: #111 !important; }
+
+    /* קישורים */
     .highlight-links a { outline: 3px solid yellow !important; background: rgba(255,255,0,0.3) !important; }
+
+    /* אפור */
     .grayscale { filter: grayscale(100%); }
 
     @media (max-width: 576px) {
-      #accessibilityToggle, #accessibilityMenu { left: 15px; }
-      #accessibilityToggle { width: 50px; height: 50px; font-size: 1.5rem; }
-      #accessibilityMenu { width: 50px; }
+      #accessibilityToggle { left: 15px; top: 15px; width: 50px; height: 50px; font-size: 1.5rem; }
+      .accessibility-menu { 
+        left: 15px; 
+        top: calc(15px + 140px + 1.5rem); /* התאמה לגובה תמונה קטן יותר */
+        width: 50px; 
+      }
       .accessibility-btn { width: 42px; height: 42px; font-size: 1.1rem; }
       #backToTop { right: 15px; bottom: 15px; width: 48px; height: 48px; font-size: 1.3rem; }
       .whatsapp-float-left { left: 15px; bottom: 20px; }
       .whatsapp-icon { width: 52px; height: 52px; font-size: 32px; }
+      .hero-img { margin-bottom: 1.5rem; }
     }
   </style>
 </head>
 <body>
 
-  <!-- כפתור חזור למעלה -->
+  <!-- כפתור חזור למעלה – רק חץ -->
   <button id="backToTop" class="d-none">
     <i class="fas fa-arrow-up"></i>
   </button>
@@ -162,7 +173,7 @@
     <i class="fab fa-whatsapp whatsapp-icon"></i>
   </a>
 
-  <!-- תפריט נגישות – יתעדכן לפי גובה התמונה -->
+  <!-- תפריט נגישות – צמוד שמאל, בגובה עליון של התמונה -->
   <button id="accessibilityToggle" title="פתח תפריט נגישות">
     <i class="fas fa-universal-access"></i>
   </button>
@@ -180,11 +191,14 @@
   <div class="container">
     <h1 class="main-title">מרכז קהילתי עם שלום י"א</h1>
     <div class="text-center">
-      <img id="heroImage" src="https://i.ibb.co/Z61VPjns/image.jpg" alt="מגרשי טניס" class="hero-img">
+      <img src="https://i.ibb.co/Z61VPjns/image.jpg" alt="מגרשי טניס" class="hero-img">
     </div>
 
-    <!-- שאר הטופס – זהה -->
-    <h2 class="text-center mt-4 mb-4" style="color: var(--primary); font-weight: 600;">הזמנת מגרש טניס</h2>
+    <h2 class="text-center mt-4 mb-4" style="color: var(--primary); font-weight: 600;">
+      הזמנת מגרש טניס
+    </h2>
+
+    <!-- שאר הטופס... (זהה לקוד הקודם) -->
     <div class="form-card">
       <form id="bookingForm">
         <div class="mb-3">
@@ -261,34 +275,7 @@
   <script>
     (function(){ emailjs.init("z1P-O8ROFHiXihsLH"); })();
 
-    // === מיקום דינמי של תפריט נגישות לפי גובה התמונה ===
-    const heroImg = document.getElementById('heroImage');
-    const toggleBtn = document.getElementById('accessibilityToggle');
-    const menu = document.getElementById('accessibilityMenu');
-
-    function updateAccessibilityPosition() {
-      const imgRect = hero TennImg.getBoundingClientRect();
-      const imgTop = imgRect.top + window.scrollY;
-      const imgHeight = imgRect.height;
-
-      // מיקום הכפתור: מעל התמונה (למעלה שלה)
-      toggleBtn.style.top = `${imgTop}px`;
-
-      // מיקום התפריט: מתחת לכפתור, בגובה התמונה
-      menu.style.top = `${imgTop + 70}px`; // 70px = גובה כפתור + מרווח
-    }
-
-    // עדכון בטעינה + שינוי גודל
-    window.addEventListener('load', updateAccessibilityPosition);
-    window.addEventListener('resize', updateAccessibilityPosition);
-    heroImg.addEventListener('load', updateAccessibilityPosition);
-
-    // פתיחת התפריט
-    toggleBtn.addEventListener('click', () => {
-      menu.classList.toggle('open');
-    });
-
-    // === שאר הקוד (תאריך, שעות, טופס, נגישות, קריאה) ===
+    // תאריך, שעות, מחיר, הזמנות – זהה לקוד הקודם
     const today = new Date();
     const yyyy = today.getFullYear();
     const mm = String(today.getMonth() + 1).padStart(2, '0');
@@ -326,6 +313,7 @@
       window.scrollTo({top: 0, behavior: 'smooth'});
     });
 
+    // טופס – זהה
     document.getElementById('bookingForm').addEventListener('submit', function(e) {
       e.preventDefault();
       const submitBtn = document.getElementById('submitBtn');
@@ -376,6 +364,10 @@
     });
 
     // נגישות
+    const menu = document.getElementById('accessibilityMenu');
+    const toggle = document.getElementById('accessibilityToggle');
+    toggle.addEventListener('click', () => menu.classList.toggle('open'));
+
     function increaseFont() { 
       let size = parseFloat(getComputedStyle(document.body).fontSize); 
       document.body.style.fontSize = (size + 1) + 'px'; 
@@ -388,10 +380,11 @@
     function toggleLinks() { document.body.classList.toggle('highlight-links'); }
     function toggleGrayscale() { document.body.classList.toggle('grayscale'); }
 
-    // קריאה בקול
+    // קריאה בקול – עם עצירה
     let utterance = null;
     const speakBtn = document.getElementById('speakBtn');
     const speakIcon = speakBtn.querySelector('i');
+
     function toggleSpeak() {
       if (speechSynthesis.speaking) {
         speechSynthesis.cancel();
