@@ -63,13 +63,15 @@
       z-index: 999; border-radius: 50%; width: 50px; height: 50px; box-shadow: var(--shadow);
     }
 
-    /* כפתור וואטסאפ מרחף - צד שמאל (עם Font Awesome) */
+    /* כפתור וואטסאפ מרחף - צד שמאל (ללא פס כחול!) */
     .whatsapp-float-left {
       position: fixed;
       left: 20px;
       bottom: 25px;
       z-index: 1000;
       animation: pulse 2s infinite;
+      text-decoration: none !important;
+      outline: none !important;
     }
     .whatsapp-icon {
       font-size: 36px;
@@ -83,6 +85,8 @@
       justify-content: center;
       box-shadow: 0 4px 15px rgba(0,0,0,0.3);
       transition: all 0.3s ease;
+      text-decoration: none !important;
+      outline: none !important;
     }
     .whatsapp-icon:hover {
       transform: scale(1.1);
@@ -92,6 +96,16 @@
       0% { transform: scale(1); }
       50% { transform: scale(1.05); }
       100% { transform: scale(1); }
+    }
+    /* מסיר כל קו תחתון או קו כחול – בכל מצב */
+    .whatsapp-float-left,
+    .whatsapp-float-left *,
+    .whatsapp-float-left:hover,
+    .whatsapp-float-left:focus,
+    .whatsapp-float-left:active {
+      text-decoration: none !important;
+      outline: none !important;
+      box-shadow: none !important;
     }
 
     @media (max-width: 576px) { 
@@ -117,12 +131,13 @@
   <!-- הודעת הצלחה -->
   <div id="successPopup" class="d-none"></div>
 
-  <!-- כפתור וואטסאפ מרחף - צד שמאל (עם Font Awesome) -->
+  <!-- כפתור וואטסאפ מרחף - צד שמאל (ללא פס כחול!) -->
   <a href="https://wa.me/972524864380?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%A6%D7%A8%D7%99%D7%9A%20%D7%A2%D7%96%D7%A8%D7%94%20%D7%91%D7%94%D7%96%D7%9E%D7%A0%D7%AA%20%D7%9E%D7%92%D7%A8%D7%A9%20%D7%98%D7%A0%D7%99%D7%A1" 
      class="whatsapp-float-left" 
      target="_blank" 
-     title="צריך עזרה? שלח הודעה בוואטסאפ">
-    <i class="fab fa-whatsapp whatsapp-icon"></i>
+     title="צריך עזרה? שלח הודעה בוואטסאפ"
+     style="text-decoration: none; outline: none;">
+    <i class="fab fa-whatsapp whatsapp-icon" style="text-decoration: none; outline: none;"></i>
   </a>
 
   <div class="container">
@@ -154,7 +169,7 @@
           <label class="form-label"><span class="required-star">*</span> תאריך</label>
           <input type="date" class="form-control" id="date" required>
         </div>
-        <div class="mb-3">
+        <div class="mb-3 |
           <label class="form-label"><span class="required-star">*</span> שעה</label>
           <select class="form-select" id="time" required></select>
         </div>
