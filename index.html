@@ -81,7 +81,6 @@
       border-radius: 12px;
       font-weight: 500;
     }
-    /* חסימת חודשים קודמים */
     input[type="date"]::-webkit-calendar-picker-indicator {
       cursor: pointer;
     }
@@ -110,7 +109,7 @@
       הזמנת מגרש טניס
     </h2>
 
-    <!-- טופס עם לוח שנה מוגבל -->
+    <!-- טופס עם מגרשים פשוטים -->
     <div class="form-card">
       <form id="bookingForm">
         <div class="mb-3">
@@ -143,9 +142,9 @@
           <label class="form-label"><span class="required-star">*</span> מגרש</label>
           <select class="form-select" id="court" required>
             <option value="">בחר מגרש</option>
-            <option>מגרש 1 (חימר)</option>
-            <option>מגרש 2 (דשא)</option>
-            <option>מגרש 3 (קשה)</option>
+            <option>מגרש 1</option>
+            <option>מגרש 2</option>
+            <option>מגרש 3</option>
             <option>מגרש 4</option>
             <option>מגרש 5</option>
             <option>מגרש 6</option>
@@ -161,20 +160,20 @@
     </div>
   </div>
 
-  <!-- JavaScript – חוסם חודשים קודמים + מתחיל מהיום -->
+  <!-- JavaScript – לוח שנה + שליחה -->
   <script>
     // קובע תאריך מינימלי להיום
     const today = new Date();
     const yyyy = today.getFullYear();
-    const mm = String(today.getMonth() + 1).padStart(2, '0'); // חודש מתחיל ב-0
+    const mm = String(today.getMonth() + 1).padStart(2, '0');
     const dd = String(today.getDate()).padStart(2, '0');
     const minDate = `${yyyy}-${mm}-${dd}`;
 
     const dateInput = document.getElementById('date');
     dateInput.setAttribute('min', minDate);
-    dateInput.value = minDate; // היום כברירת מחדל
+    dateInput.value = minDate;
 
-    // חוסם גלילה לחודשים קודמים (בדפדפנים תומכים)
+    // חוסם תאריכים עבר
     dateInput.addEventListener('input', function() {
       const selected = new Date(this.value);
       const now = new Date();
@@ -198,7 +197,6 @@
       window.open(whatsappUrl, '_blank');
       document.getElementById('successMessage').classList.remove('d-none');
       this.reset();
-      // מחזיר להיום אחרי איפוס
       setTimeout(() => {
         dateInput.value = minDate;
       }, 100);
