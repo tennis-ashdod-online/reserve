@@ -6,157 +6,42 @@
   <title>מרכז קהילתי עם שלום י"א - הזמנת מגרש טניס</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
   <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&display=swap" rel="stylesheet">
+  <!-- EmailJS -->
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
   <style>
-    :root {
-      --primary: #1a5d1a;
-      --light: #f8f9fa;
-      --shadow: 0 8px 25px rgba(0,0,0,0.08);
-    }
-    body {
-      font-family: 'Rubik', sans-serif;
-      background: var(--light);
-      color: #333;
-      line-height: 1.7;
-    }
-    .main-title {
-      font-size: 2rem;
-      font-weight: 700;
-      color: var(--primary);
-      text-align: center;
-      margin: 2rem 0 1.5rem;
-      letter-spacing: 0.5px;
-    }
-    .hero-img {
-      max-width: 100%;
-      height: auto;
-      border-radius: 20px;
-      box-shadow: var(--shadow);
-      margin-bottom: 2rem;
-      transition: transform 0.3s ease;
-    }
-    .hero-img:hover {
-      transform: translateY(-5px);
-    }
-    .form-card {
-      border: none;
-      border-radius: 20px;
-      box-shadow: var(--shadow);
-      padding: 1.5rem;
-      background: white;
-    }
-    .form-label {
-      font-weight: 500;
-      color: #1a5d1a;
-      position: relative;
-    }
-    .required-star {
-      color: #d32f2f;
-      font-weight: bold;
-      margin-right: 4px;
-    }
-    .form-control, .form-select {
-      border-radius: 12px;
-      border: 1.5px solid #a8d5a8;
-      padding: 0.75rem;
-      font-size: 1rem;
-    }
-    .form-control:focus, .form-select:focus {
-      border-color: var(--primary);
-      box-shadow: 0 0 0 0.2rem rgba(26, 93, 26, 0.15);
-    }
-    .btn-submit, .btn-call {
-      background: var(--primary);
-      border: none;
-      border-radius: 12px;
-      padding: 0.9rem;
-      font-weight: 600;
-      font-size: 1.1rem;
-      transition: all 0.3s ease;
-    }
-    .btn-submit:hover, .btn-call:hover {
-      background: #145214;
-      transform: translateY(-2px);
-    }
-    .info-card {
-      border-radius: 12px;
-      font-weight: 500;
-      margin-top: 1.5rem;
-      padding: 1rem;
-      text-align: center;
-      background: #e8f5e8;
-      border: 2px solid var(--primary);
-    }
-    .info-card h5 {
-      color: var(--primary);
-      margin-bottom: 0.75rem;
-      font-weight: 700;
-    }
-    .info-card p {
-      margin: 0.5rem 0;
-      font-size: 1rem;
-    }
-    .btn-call {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      margin-top: 0.75rem;
-      text-decoration: none;
-      color: white;
-    }
-    .map-link {
-      color: var(--primary);
-      text-decoration: underline;
-      font-weight: 500;
-    }
-    .map-link:hover {
-      color: #145214;
-    }
-    .price-display {
-      font-size: 1.4rem;
-      font-weight: 700;
-      color: #1a5d1a;
-    }
-    .map-container {
-      margin-top: 1.5rem;
-      border-radius: 12px;
-      overflow: hidden;
-      box-shadow: var(--shadow);
-    }
-    .map-container iframe {
-      width: 100%;
-      height: 300px;
-      border: 0;
-    }
-    input[type="date"]::-webkit-calendar-picker-indicator {
-      cursor: pointer;
-    }
-    @media (max-width: 576px) {
-      .main-title { font-size: 1.6rem; }
-      .form-card, .info-card { padding: 1rem; }
-      .map-container iframe { height: 250px; }
-    }
+    :root { --primary: #1a5d1a; --light: #f8f9fa; --shadow: 0 8px 25px rgba(0,0,0,0.08); }
+    body { font-family: 'Rubik', sans-serif; background: var(--light); color: #333; line-height: 1.7; }
+    .main-title { font-size: 2rem; font-weight: 700; color: var(--primary); text-align: center; margin: 2rem 0 1.5rem; }
+    .hero-img { max-width: 100%; height: auto; border-radius: 20px; box-shadow: var(--shadow); margin-bottom: 2rem; }
+    .form-card { border: none; border-radius: 20px; box-shadow: var(--shadow); padding: 1.5rem; background: white; }
+    .form-label { font-weight: 500; color: #1a5d1a; }
+    .required-star { color: #d32f2f; font-weight: bold; margin-right: 4px; }
+    .form-control, .form-select, textarea { border-radius: 12px; border: 1.5px solid #a8d5a8; padding: 0.75rem; font-size: 1rem; }
+    .form-control:focus, .form-select:focus, textarea:focus { border-color: var(--primary); box-shadow: 0 0 0 0.2rem rgba(26, 93, 26, 0.15); }
+    .btn-submit, .btn-call { background: var(--primary); border: none; border-radius: 12px; padding: 0.9rem; font-weight: 600; font-size: 1.1rem; }
+    .btn-submit:hover, .btn-call:hover { background: #145214; }
+    .info-card { border-radius: 12px; margin-top: 1.5rem; padding: 1rem; text-align: center; background: #e8f5e8; border: 2px solid var(--primary); }
+    .info-card h5 { color: var(--primary); margin-bottom: 0.75rem; font-weight: 700; }
+    .map-link, .terms-link { color: var(--primary); text-decoration: underline; }
+    .price-display { font-size: 1.4rem; font-weight: 700; color: #1a5d1a; }
+    .map-container { margin-top: 1.5rem; border-radius: 12px; overflow: hidden; box-shadow: var(--shadow); }
+    .map-container iframe { width: 100%; height: 300px; border: 0; }
+    .form-check-label a { color: var(--primary); text-decoration: underline; }
+    @media (max-width: 576px) { .main-title { font-size: 1.6rem; } .form-card, .info-card { padding: 1rem; } .map-container iframe { height: 250px; } }
   </style>
 </head>
 <body>
 
   <div class="container">
-    
-    <!-- כותרת ראשית -->
     <h1 class="main-title">מרכז קהילתי עם שלום י"א</h1>
-
-    <!-- התמונה שלך -->
     <div class="text-center">
-      <img src="https://i.ibb.co/Z61VPjns/image.jpg" 
-           alt="מרכז קהילתי עם שלום י''א - מגרשי טניס" 
-           class="hero-img">
+      <img src="https://i.ibb.co/Z61VPjns/image.jpg" alt="מגרשי טניס" class="hero-img">
     </div>
 
-    <!-- כותרת הטופס -->
     <h2 class="text-center mt-4 mb-4" style="color: var(--primary); font-weight: 600;">
       הזמנת מגרש טניס
     </h2>
 
-    <!-- טופס -->
     <div class="form-card">
       <form id="bookingForm">
         <div class="mb-3">
@@ -177,9 +62,7 @@
         </div>
         <div class="mb-3">
           <label class="form-label"><span class="required-star">*</span> שעה</label>
-          <select class="form-select" id="time" required>
-            <option value="">בחר שעה</option>
-          </select>
+          <select class="form-select" id="time" required></select>
         </div>
         <div class="mb-3">
           <label class="form-label"><span class="required-star">*</span> משך זמן</label>
@@ -188,20 +71,30 @@
             <option value="2">שעתיים (80₪)</option>
           </select>
         </div>
-        <div class="mb-4">
+        <div class="mb-3">
           <label class="form-label"><span class="required-star">*</span> מגרש</label>
           <select class="form-select" id="court" required>
             <option value="">בחר מגרש</option>
-            <option>מגרש 1</option>
-            <option>מגרש 2</option>
-            <option>מגרש 3</option>
-            <option>מגרש 4</option>
-            <option>מגרש 5</option>
-            <option>מגרש 6</option>
+            <option>מגרש 1</option><option>מגרש 2</option><option>מגרש 3</option>
+            <option>מגרש 4</option><option>מגרש 5</option><option>מגרש 6</option>
           </select>
         </div>
 
-        <!-- תצוגת מחיר -->
+        <!-- הערות -->
+        <div class="mb-3">
+          <label class="form-label">הערות (לא חובה)</label>
+          <textarea class="form-control" id="notes" rows="2" placeholder="למשל: צריך תאורה, רוצה ציוד..."></textarea>
+        </div>
+
+        <!-- תנאי שימוש -->
+        <div class="mb-3 form-check">
+          <input type="checkbox" class="form-check-input" id="terms" required>
+          <label class="form-check-label" for="terms">
+            <span class="required-star">*</span> אני מסכים 
+            <a href="#terms" class="terms-link" target="_blank">לתנאי השימוש</a>
+          </label>
+        </div>
+
         <div class="text-center mb-3">
           <p class="price-display">סה"כ לתשלום: <span id="totalPrice">40₪</span></p>
         </div>
@@ -210,7 +103,6 @@
       </form>
     </div>
 
-    <!-- פרטי מרכז – שעות מתוקנות -->
     <div class="info-card">
       <h5>פרטי המרכז</h5>
       <p><strong>כתובת:</strong> 
@@ -220,28 +112,27 @@
       </p>
       <p><strong>טלפון:</strong> 08-8678400</p>
       <p><strong>שעות פעילות:</strong> ראשון-חמישי: 08:00–21:00 | שישי: 08:00–14:00 | שבת: 08:00–21:00</p>
-      
-      <a href="tel:088678400" class="btn btn-call">
-        התקשר עכשיו
-      </a>
+      <a href="tel:088678400" class="btn btn-call">התקשר עכשיו</a>
     </div>
 
-    <!-- איך מגיעים – מפה מדויקת -->
     <div class="map-container">
       <iframe 
         src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d600!2d34.6309!3d31.7832!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzEuNzgzMTY1LDM0LjYzMTA5Ng!5e0!3m2!1siw!2sil!4v1731780000000!5m2!1siw!2sil" 
-        allowfullscreen="" 
-        loading="lazy">
-      </iframe>
+        allowfullscreen="" loading="lazy"></iframe>
     </div>
 
-    <!-- הודעת הצלחה -->
     <div id="successMessage" class="alert alert-success mt-4 d-none text-center">
-      הזמנתך נשלחה בהצלחה! נחזור אליך בקרוב.
+      הזמנתך נשלחה בהצלחה! אישור נשלח למייל שלך.
     </div>
   </div>
 
-  <!-- JavaScript – שעות דינמיות + מחיר -->
+  <!-- EmailJS Init – Public Key שלך -->
+  <script>
+    (function(){
+      emailjs.init("z1P-O8ROFHiXihsLH");
+    })();
+  </script>
+
   <script>
     // תאריך
     const today = new Date();
@@ -249,18 +140,11 @@
     const mm = String(today.getMonth() + 1).padStart(2, '0');
     const dd = String(today.getDate()).padStart(2, '0');
     const minDate = `${yyyy}-${mm}-${dd}`;
-
-    const maxDateObj = new Date();
-    maxDateObj.setDate(today.getDate() + 13);
-    const maxY = maxDateObj.getFullYear();
-    const maxM = String(maxDateObj.getMonth() + 1).padStart(2, '0');
-    const maxD = String(maxDateObj.getDate()).padStart(2, '0');
-    const maxDate = `${maxY}-${maxM}-${maxD}`;
+    const maxDateObj = new Date(); maxDateObj.setDate(today.getDate() + 13);
+    const maxDate = `${maxDateObj.getFullYear()}-${String(maxDateObj.getMonth() + 1).padStart(2, '0')}-${String(maxDateObj.getDate()).padStart(2, '0')}`;
 
     const dateInput = document.getElementById('date');
-    dateInput.setAttribute('min', minDate);
-    dateInput.setAttribute('max', maxDate);
-    dateInput.value = minDate;
+    dateInput.setAttribute('min', minDate); dateInput.setAttribute('max', maxDate); dateInput.value = minDate;
 
     // שעות
     const timeSelect = document.getElementById('time');
@@ -268,63 +152,74 @@
     const fridayHours = ["08:00","09:00","10:00","11:00","12:00","13:00","14:00"];
 
     function updateTimeOptions() {
-      const selectedDate = new Date(dateInput.value);
-      const dayOfWeek = selectedDate.getDay(); // 0=ראשון, 5=שישי, 6=שבת
+      const day = new Date(dateInput.value).getDay();
       timeSelect.innerHTML = '<option value="">בחר שעה</option>';
-
-      const hours = (dayOfWeek === 5) ? fridayHours : regularHours;
+      const hours = (day === 5) ? fridayHours : regularHours;
       hours.forEach(h => {
-        const opt = document.createElement('option');
-        opt.value = h;
-        opt.textContent = h;
-        timeSelect.appendChild(opt);
+        const opt = document.createElement('option'); opt.value = h; opt.textContent = h; timeSelect.appendChild(opt);
       });
     }
+    dateInput.addEventListener('change', updateTimeOptions); updateTimeOptions();
 
-    dateInput.addEventListener('change', updateTimeOptions);
-    updateTimeOptions();
-
-    // חישוב מחיר
+    // מחיר
     const durationSelect = document.getElementById('duration');
     const totalPriceEl = document.getElementById('totalPrice');
+    function updatePrice() { totalPriceEl.textContent = durationSelect.value === "1" ? "40₪" : "80₪"; }
+    durationSelect.addEventListener('change', updatePrice); updatePrice();
 
-    function updatePrice() {
-      const hours = durationSelect.value;
-      const price = hours === "1" ? "40₪" : "80₪";
-      totalPriceEl.textContent = price;
-    }
-
-    durationSelect.addEventListener('change', updatePrice);
-    updatePrice();
+    // הזמנות קודמות
+    let bookings = JSON.parse(localStorage.getItem('tennis_bookings') || '[]');
 
     // שליחה
     document.getElementById('bookingForm').addEventListener('submit', function(e) {
       e.preventDefault();
-      if (!timeSelect.value) {
-        alert("בחר שעה זמינה");
+      const data = {
+        name: document.getElementById('name').value,
+        phone: document.getElementById('phone').value,
+        email: document.getElementById('email').value,
+        date: document.getElementById('date').value,
+        time: timeSelect.value,
+        duration: durationSelect.value,
+        court: document.getElementById('court').value,
+        notes: document.getElementById('notes').value,
+        price: totalPriceEl.textContent
+      };
+
+      // בדיקת זמינות
+      if (bookings.some(b => b.date === data.date && b.time === data.time && b.court === data.court)) {
+        alert("המגרש תפוס בתאריך ושעה זו. בחר מגרש או שעה אחרים.");
         return;
       }
-      const name = document.getElementById('name').value;
-      const phone = document.getElementById('phone').value;
-      const email = document.getElementById('email').value;
-      const date = document.getElementById('date').value;
-      const time = timeSelect.value;
-      const duration = durationSelect.value;
-      const court = document.getElementById('court').value;
-      const price = totalPriceEl.textContent;
 
-      const message = `הזמנה חדשה - מרכז קהילתי עם שלום י"א\n\nשם: ${name}\nטלפון: ${phone}\nאימייל: ${email}\nתאריך: ${date}\nשעה: ${time}\nמשך: ${duration === "1" ? "שעה אחת" : "שעתיים"}\nמגרש: ${court}\nסה"כ: ${price}`;
-      const whatsappUrl = `https://wa.me/972501234567?text=${encodeURIComponent(message)}`;
+      // שמירה
+      bookings.push(data);
+      localStorage.setItem('tennis_bookings', JSON.stringify(bookings));
 
-      window.open(whatsappUrl, '_blank');
-      document.getElementById('successMessage').classList.remove('d-none');
-      this.reset();
-      setTimeout(() => {
-        dateInput.value = minDate;
-        durationSelect.value = "1";
-        updateTimeOptions();
-        updatePrice();
-      }, 100);
+      // וואטסאפ
+      const msg = `הזמנה חדשה - מרכז קהילתי עם שלום י"א\n\nשם: ${data.name}\nטלפון: ${data.phone}\nאימייל: ${data.email}\nתאריך: ${data.date}\nשעה: ${data.time}\nמשך: ${data.duration === "1" ? "שעה אחת" : "שעתיים"}\nמגרש: ${data.court}\nהערות: ${data.notes || "אין"}\nסה"כ: ${data.price}`;
+      window.open(`https://wa.me/972501234567?text=${encodeURIComponent(msg)}`, '_blank');
+
+      // שליחת אישור במייל – עם ה-Template ID שלך!
+      emailjs.send("service_ma6h7ym", "template_k2oqbr7", {
+        to_email: data.email,
+        customer_name: data.name,
+        date: data.date,
+        time: data.time,
+        court: data.court,
+        duration: data.duration === "1" ? "שעה אחת" : "שעתיים",
+        price: data.price
+      }).then(() => {
+        document.getElementById('successMessage').classList.remove('d-none');
+        this.reset();
+        setTimeout(() => {
+          dateInput.value = minDate;
+          durationSelect.value = "1";
+          updateTimeOptions(); updatePrice();
+        }, 100);
+      }).catch(err => {
+        console.error(err);
+        alert("ההזמנה נשלחה לוואטסאפ, אך לא נשלח אישור במייל. נסה שוב מאוחר יותר.");
+      });
     });
   </script>
 </body>
