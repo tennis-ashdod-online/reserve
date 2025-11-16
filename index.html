@@ -190,21 +190,25 @@
       updateTimeOptions();
       updatePrice();
 
-      // שליחה ללקוח – תבנית קצרה (לא אליך!)
+      // שליחה ללקוח – תמיד למייל שלו
       emailjs.send("service_ma6h7ym", "template_4eh09k2", {
-        to_email: data.email,  // ← **למייל של הלקוח**
+        to_email: data.email,  // ← **חובה: למייל של הלקוח**
         customer_name: data.name,
         date: data.date,
         time: data.time,
         court: data.court,
         duration: data.duration === "1" ? "שעה אחת" : "שעתיים",
         price: data.price
-      }).then(() => console.log("מייל ללקוח נשלח ל: " + data.email))
-        .catch(err => { console.error("שגיאה במייל ללקוח:", err); alert("לא נשלח אישור ללקוח."); });
+      }).then(() => {
+        console.log("מייל ללקוח נשלח ל: " + data.email);
+      }).catch(err => {
+        console.error("שגיאה במייל ללקוח:", err);
+        alert("ההזמנה נרשמה, אבל לא נשלח אישור ללקוח. נסה שוב.");
+      });
 
-      // שליחה אליך – תבנית מלאה
+      // שליחה אליך – תמיד אליך
       emailjs.send("service_ma6h7ym", "template_admin_full", {
-        to_email: "eitan.morgunov@gmail.com",  // ← **אליך בלבד**
+        to_email: "eitan.morgunov@gmail.com",
         customer_name: data.name,
         phone: data.phone,
         email: data.email,
@@ -214,8 +218,11 @@
         duration: data.duration === "1" ? "שעה אחת" : "שעתיים",
         price: data.price,
         notes: data.notes
-      }).then(() => console.log("מייל אליך נשלח"))
-        .catch(err => console.error("שגיאה במייל אליך:", err));
+      }).then(() => {
+        console.log("מייל אליך נשלח");
+      }).catch(err => {
+        console.error("שגיאה במייל אליך:", err);
+      });
     });
   </script>
 </body>
