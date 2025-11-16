@@ -126,7 +126,7 @@
     </div>
   </div>
 
-  <!-- EmailJS Init – Public Key שלך -->
+  <!-- EmailJS Init -->
   <script>
     (function(){
       emailjs.init("z1P-O8ROFHiXihsLH");
@@ -195,11 +195,7 @@
       bookings.push(data);
       localStorage.setItem('tennis_bookings', JSON.stringify(bookings));
 
-      // וואטסאפ
-      const msg = `הזמנה חדשה - מרכז קהילתי עם שלום י"א\n\nשם: ${data.name}\nטלפון: ${data.phone}\nאימייל: ${data.email}\nתאריך: ${data.date}\nשעה: ${data.time}\nמשך: ${data.duration === "1" ? "שעה אחת" : "שעתיים"}\nמגרש: ${data.court}\nהערות: ${data.notes || "אין"}\nסה"כ: ${data.price}`;
-      window.open(`https://wa.me/972501234567?text=${encodeURIComponent(msg)}`, '_blank');
-
-      // שליחת אישור במייל – עם ה-Template ID שלך!
+      // שליחת אישור ללקוח
       emailjs.send("service_ma6h7ym", "template_k2oqbr7", {
         to_email: data.email,
         customer_name: data.name,
@@ -208,6 +204,19 @@
         court: data.court,
         duration: data.duration === "1" ? "שעה אחת" : "שעתיים",
         price: data.price
+      }).catch(() => {});
+
+      // שליחת התראה אליך
+      emailjs.send("service_ma6h7ym", "template_k2oqbr7", {
+        to_email: "eitan.morgunov@gmail.com",
+        customer_name: data.name,
+        date: data.date,
+        time: data.time,
+        court: data.court,
+        duration: data.duration === "1" ? "שעה אחת" : "שעתיים",
+        price: data.price,
+        phone: data.phone,
+        notes: data.notes || "אין הערות"
       }).then(() => {
         document.getElementById('successMessage').classList.remove('d-none');
         this.reset();
@@ -218,7 +227,7 @@
         }, 100);
       }).catch(err => {
         console.error(err);
-        alert("ההזמנה נשלחה לוואטסאפ, אך לא נשלח אישור במייל. נסה שוב מאוחר יותר.");
+        alert("ההזמנה נרשמה, אך לא נשלח אישור. נסה שוב מאוחר יותר.");
       });
     });
   </script>
