@@ -16,7 +16,6 @@
     :root { 
       --primary: #1a5d1a; --light: #f8f9ea; --shadow: 0 8px 25px rgba(0,0,0,0.08);
       --font-size: 1rem;
-      --contrast: normal;
     }
     body { 
       font-family: 'Rubik', sans-serif; background: var(--light); color: #333; line-height: 1.7; 
@@ -64,7 +63,7 @@
     }
     @keyframes popup { from { transform: translate(-50%, -60%); opacity: 0; } to { transform: translate(-50%, -50%); opacity: 1; } }
 
-    /* כפתור חזור למעלה – רק חץ לבן */
+    /* כפתור חזור למעלה – רק חץ */
     #backToTop {
       position: fixed; right: 20px; bottom: 20px; z-index: 999;
       background: var(--primary); color: white; border: none;
@@ -89,29 +88,34 @@
     @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
     .whatsapp-float-left, .whatsapp-float-left * { text-decoration: none !important; outline: none !important; }
 
-    /* תפריט נגישות */
-    .accessibility-menu {
-      position: fixed; right: 20px; top: 50%; transform: translateY(-50%);
-      background: white; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-      padding: 1rem; z-index: 9998; width: 60px; display: flex; flex-direction: column; gap: 0.8rem;
-      transition: all 0.3s ease; opacity: 0; visibility: hidden;
+    /* תפריט נגישות – צד שמאל למעלה */
+    #accessibilityToggle {
+      position: fixed; left: 20px; top: 20px; z-index: 9999;
+      background: var(--primary); color: white; width: 56px; height: 56px;
+      border-radius: 50%; border: none; font-size: 1.8rem;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.2); cursor: pointer;
+      transition: all 0.3s ease;
     }
-    .accessibility-menu.open { opacity: 1; visibility: visible; }
+    #accessibilityToggle:hover { transform: scale(1.1); }
+
+    .accessibility-menu {
+      position: fixed; left: 20px; top: 90px; z-index: 9998;
+      background: white; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+      padding: 1rem; width: 60px; display: flex; flex-direction: column; gap: 0.8rem;
+      transition: all 0.3s ease; opacity: 0; visibility: hidden; transform: translateY(-10px);
+    }
+    .accessibility-menu.open { opacity: 1; visibility: visible; transform: translateY(0); }
+
     .accessibility-btn {
       background: #f1f1f1; border: none; width: 48px; height: 48px; border-radius: 50%;
       font-size: 1.3rem; color: #333; display: flex; align-items: center; justify-content: center;
       transition: all 0.2s; cursor: pointer;
     }
     .accessibility-btn:hover { background: var(--primary); color: white; transform: scale(1.1); }
-    #accessibilityToggle {
-      position: fixed; right: 20px; bottom: 80px; z-index: 9999;
-      background: var(--primary); color: white; width: 56px; height: 56px;
-      border-radius: 50%; border: none; font-size: 1.8rem;
-      display: flex; align-items: center; justify-content: center;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.2); cursor: pointer;
-    }
+    .accessibility-btn.active { background: var(--primary); color: white; }
 
-    /* ניגודיות גבוהה */
+    /* ניגודיות */
     .high-contrast { 
       --light: #000 !important; --primary: #fff !important; 
       background: #000 !important; color: #fff !important; 
@@ -119,19 +123,19 @@
     .high-contrast * { color: #fff !important; background: #000 !important; border-color: #fff !important; }
     .high-contrast .form-card, .high-contrast .info-card { background: #111 !important; }
 
-    /* הדגשת קישורים */
+    /* קישורים */
     .highlight-links a { outline: 3px solid yellow !important; background: rgba(255,255,0,0.3) !important; }
 
     /* אפור */
     .grayscale { filter: grayscale(100%); }
 
     @media (max-width: 576px) {
-      .main-title { font-size: 1.6rem; }
-      #backToTop, #accessibilityToggle { width: 48px; height: 48px; font-size: 1.3rem; }
+      #accessibilityToggle { left: 15px; top: 15px; width: 50px; height: 50px; font-size: 1.5rem; }
+      .accessibility-menu { left: 15px; top: 80px; width: 50px; }
+      .accessibility-btn { width: 42px; height: 42px; font-size: 1.1rem; }
+      #backToTop { right: 15px; bottom: 15px; width: 48px; height: 48px; font-size: 1.3rem; }
       .whatsapp-float-left { left: 15px; bottom: 20px; }
       .whatsapp-icon { width: 52px; height: 52px; font-size: 32px; }
-      .accessibility-menu { right: 10px; width: 50px; }
-      .accessibility-btn { width: 42px; height: 42px; font-size: 1.1rem; }
     }
   </style>
 </head>
@@ -157,7 +161,7 @@
     <i class="fab fa-whatsapp whatsapp-icon"></i>
   </a>
 
-  <!-- תפריט נגישות -->
+  <!-- תפריט נגישות – צד שמאל למעלה -->
   <button id="accessibilityToggle" title="פתח תפריט נגישות">
     <i class="fas fa-universal-access"></i>
   </button>
@@ -167,7 +171,9 @@
     <button class="accessibility-btn" onclick="toggleContrast()" title="ניגודיות גבוהה"><i class="fas fa-adjust"></i></button>
     <button class="accessibility-btn" onclick="toggleLinks()" title="הדגש קישורים"><i class="fas fa-link"></i></button>
     <button class="accessibility-btn" onclick="toggleGrayscale()" title="מצב אפור"><i class="fas fa-eye-slash"></i></button>
-    <button class="accessibility-btn" onclick="readPage()" title="קרא את הדף"><i class="fas fa-volume-up"></i></button>
+    <button id="speakBtn" class="accessibility-btn" onclick="toggleSpeak()" title="הפעל/עצור קריאה">
+      <i class="fas fa-volume-up"></i>
+    </button>
   </div>
 
   <div class="container">
@@ -353,16 +359,42 @@
     const toggle = document.getElementById('accessibilityToggle');
     toggle.addEventListener('click', () => menu.classList.toggle('open'));
 
-    function increaseFont() { let size = parseFloat(getComputedStyle(document.body).fontSize); document.body.style.fontSize = (size + 1) + 'px'; }
-    function decreaseFont() { let size = parseFloat(getComputedStyle(document.body).fontSize); if (size > 12) document.body.style.fontSize = (size - 1) + 'px'; }
+    function increaseFont() { 
+      let size = parseFloat(getComputedStyle(document.body).fontSize); 
+      document.body.style.fontSize = (size + 1) + 'px'; 
+    }
+    function decreaseFont() { 
+      let size = parseFloat(getComputedStyle(document.body).fontSize); 
+      if (size > 12) document.body.style.fontSize = (size - 1) + 'px'; 
+    }
     function toggleContrast() { document.body.classList.toggle('high-contrast'); }
     function toggleLinks() { document.body.classList.toggle('highlight-links'); }
     function toggleGrayscale() { document.body.classList.toggle('grayscale'); }
-    function readPage() {
-      const text = document.body.innerText;
-      const utterance = new SpeechSynthesisUtterance(text);
-      utterance.lang = 'he-IL';
-      speechSynthesis.speak(utterance);
+
+    // קריאה בקול – עם עצירה
+    let utterance = null;
+    const speakBtn = document.getElementById('speakBtn');
+    const speakIcon = speakBtn.querySelector('i');
+
+    function toggleSpeak() {
+      if (speechSynthesis.speaking) {
+        speechSynthesis.cancel();
+        speakIcon.classList.replace('fa-volume-mute', 'fa-volume-up');
+        speakBtn.classList.remove('active');
+      } else {
+        const text = document.body.innerText;
+        utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = 'he-IL';
+        utterance.rate = 0.9;
+        utterance.pitch = 1;
+        utterance.onend = () => {
+          speakIcon.classList.replace('fa-volume-mute', 'fa-volume-up');
+          speakBtn.classList.remove('active');
+        };
+        speechSynthesis.speak(utterance);
+        speakIcon.classList.replace('fa-volume-up', 'fa-volume-mute');
+        speakBtn.classList.add('active');
+      }
     }
   </script>
 </body>
