@@ -80,13 +80,11 @@
           </select>
         </div>
 
-        <!-- הערות -->
         <div class="mb-3">
           <label class="form-label">הערות (לא חובה)</label>
           <textarea class="form-control" id="notes" rows="2" placeholder="למשל: צריך תאורה, רוצה ציוד..."></textarea>
         </div>
 
-        <!-- תנאי שימוש -->
         <div class="mb-3 form-check">
           <input type="checkbox" class="form-check-input" id="terms" required>
           <label class="form-check-label" for="terms">
@@ -134,7 +132,6 @@
   </script>
 
   <script>
-    // תאריך
     const today = new Date();
     const yyyy = today.getFullYear();
     const mm = String(today.getMonth() + 1).padStart(2, '0');
@@ -146,7 +143,6 @@
     const dateInput = document.getElementById('date');
     dateInput.setAttribute('min', minDate); dateInput.setAttribute('max', maxDate); dateInput.value = minDate;
 
-    // שעות
     const timeSelect = document.getElementById('time');
     const regularHours = ["08:00","09:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00","20:00","21:00"];
     const fridayHours = ["08:00","09:00","10:00","11:00","12:00","13:00","14:00"];
@@ -161,16 +157,13 @@
     }
     dateInput.addEventListener('change', updateTimeOptions); updateTimeOptions();
 
-    // מחיר
     const durationSelect = document.getElementById('duration');
     const totalPriceEl = document.getElementById('totalPrice');
     function updatePrice() { totalPriceEl.textContent = durationSelect.value === "1" ? "40₪" : "80₪"; }
     durationSelect.addEventListener('change', updatePrice); updatePrice();
 
-    // הזמנות קודמות
     let bookings = JSON.parse(localStorage.getItem('tennis_bookings') || '[]');
 
-    // שליחה
     document.getElementById('bookingForm').addEventListener('submit', function(e) {
       e.preventDefault();
       const data = {
@@ -181,21 +174,19 @@
         time: timeSelect.value,
         duration: durationSelect.value,
         court: document.getElementById('court').value,
-        notes: document.getElementById('notes').value,
+        notes: document.getElementById('notes').value || "אין",
         price: totalPriceEl.textContent
       };
 
-      // בדיקת זמינות
       if (bookings.some(b => b.date === data.date && b.time === data.time && b.court === data.court)) {
         alert("המגרש תפוס בתאריך ושעה זו. בחר מגרש או שעה אחרים.");
         return;
       }
 
-      // שמירה
       bookings.push(data);
       localStorage.setItem('tennis_bookings', JSON.stringify(bookings));
 
-      // שליחת אישור ללקוח
+      // שליחה ללקוח
       emailjs.send("service_ma6h7ym", "template_k2oqbr7", {
         to_email: data.email,
         customer_name: data.name,
@@ -206,17 +197,18 @@
         price: data.price
       }).catch(() => {});
 
-      // שליחת התראה אליך
-      emailjs.send("service_ma6h7ym", "template_k2oqbr7", {
+      // שליחה אליך – תבנית מלאה
+      emailjs.send("service_ma6h7ym", "template_admin_full", {
         to_email: "eitan.morgunov@gmail.com",
         customer_name: data.name,
+        phone: data.phone,
+        email: data.email,
         date: data.date,
         time: data.time,
         court: data.court,
         duration: data.duration === "1" ? "שעה אחת" : "שעתיים",
         price: data.price,
-        phone: data.phone,
-        notes: data.notes || "אין הערות"
+        notes: data.notes
       }).then(() => {
         document.getElementById('successMessage').classList.remove('d-none');
         this.reset();
