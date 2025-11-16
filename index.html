@@ -3,7 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>מרכז קהילתי עם שלום י"א - הזמנת מגרש טניס</title>
+  <title>הזמנת מגרש טניס – מרכז קהילתי עם שלום י"א, אשדוד</title>
+  <meta name="description" content="הזמנת מגרש טניס אונליין – 40₪ לשעה, 6 מגרשים, 08:00–21:00. אישור מיידי במייל!">
+  <!-- שיפור 1: Favicon -->
+  <link rel="icon" href="https://i.ibb.co/Z61VPjns/image.jpg" type="image/jpeg">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
   <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&display=swap" rel="stylesheet">
   <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
@@ -31,6 +34,9 @@
 </head>
 <body>
 
+  <!-- שיפור 3: כפתור חזור למעלה -->
+  <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="btn btn-primary position-fixed bottom-0 end-0 m-3 d-none" id="backToTop" style="z-index:999; border-radius:50%; width:50px; height:50px; box-shadow: var(--shadow);">↑</button>
+
   <div class="container">
     <h1 class="main-title">מרכז קהילתי עם שלום י"א</h1>
     <div class="text-center">
@@ -49,7 +55,8 @@
         </div>
         <div class="mb-3">
           <label class="form-label"><span class="required-star">*</span> טלפון</label>
-          <input type="tel" class="form-control" id="phone" required>
+          <input type="tel" class="form-control" id="phone" required pattern="05[0-9]{8}" placeholder="05XXXXXXXX">
+          <small class="text-muted">פורמט: 05XXXXXXXX</small>
         </div>
         <div class="mb-3">
           <label class="form-label"><span class="required-star">*</span> אימייל</label>
@@ -96,7 +103,8 @@
           <p class="price-display">סה"כ לתשלום: <span id="totalPrice">40₪</span></p>
         </div>
 
-        <button type="submit" class="btn btn-submit w-100">שלח הזמנה</button>
+        <!-- שיפור 4: כפתור עם מצב "שולח..." -->
+        <button type="submit" class="btn btn-submit w-100" id="submitBtn">שלח הזמנה</button>
       </form>
     </div>
 
@@ -116,9 +124,8 @@
       <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d600!2d34.6309!3d31.7832!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzEuNzgzMTY1LDM0LjYzMTA5Ng!5e0!3m2!1siw!2sil!4v1731780000000!5m2!1siw!2sil" allowfullscreen="" loading="lazy"></iframe>
     </div>
 
-    <div id="successMessage" class="alert alert-success mt-4 d-none text-center">
-      הזמנתך נשלחה! אישור במייל.
-    </div>
+    <!-- שיפור 7: הודעת הצלחה מותאמת אישית -->
+    <div id="successMessage" class="alert mt-4 d-none text-center"></div>
   </div>
 
   <script>
@@ -158,8 +165,19 @@
 
     let bookings = JSON.parse(localStorage.getItem('tennis_bookings') || '[]');
 
+    // שיפור 3: הצגת כפתור "חזור למעלה" אחרי גלילה
+    window.addEventListener('scroll', () => {
+      document.getElementById('backToTop').classList.toggle('d-none', window.scrollY < 300);
+    });
+
     document.getElementById('bookingForm').addEventListener('submit', function(e) {
       e.preventDefault();
+
+      // שיפור 4: מצב "שולח..."
+      const submitBtn = document.getElementById('submitBtn');
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = 'שולח...';
+
       const data = {
         name: document.getElementById('name').value.trim(),
         phone: document.getElementById('phone').value.trim(),
@@ -172,17 +190,33 @@
         price: totalPriceEl.textContent
       };
 
+      // שיפור 6: אימות טלפון ישראלי
+      if (!/^05\d{8}$/.test(data.phone)) {
+        alert("הכנס טלפון ישראלי תקין (10 ספרות, מתחיל ב-05)");
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = 'שלח הזמנה';
+        return;
+      }
+
       if (bookings.some(b => b.date === data.date && b.time === data.time && b.court === data.court)) {
         alert("המגרש תפוס. בחר מגרש/שעה אחרים.");
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = 'שלח הזמנה';
         return;
       }
 
       bookings.push(data);
       localStorage.setItem('tennis_bookings', JSON.stringify(bookings));
 
+      // שיפור 7: הודעת הצלחה מותאמת אישית
       const successMsg = document.getElementById('successMessage');
+      successMsg.innerHTML = `
+        <strong>תודה ${data.name}!</strong><br>
+        ההזמנה שלך נקלטה: מגרש ${data.court} בתאריך ${data.date} בשעה ${data.time}<br>
+        אישור נשלח ל-${data.email}
+      `;
+      successMsg.className = 'alert alert-success mt-4 text-center';
       successMsg.classList.remove('d-none');
-      setTimeout(() => successMsg.classList.add('d-none'), 3000);
 
       this.reset();
       dateInput.value = minDate;
@@ -190,25 +224,21 @@
       updateTimeOptions();
       updatePrice();
 
-      // === שליחה ללקוח – תבנית קצרה ===
+      // שליחה ללקוח
       emailjs.send("service_ma6h7ym", "template_4eh09k2", {
-        to_email: data.email,  // ← למייל של הלקוח
+        to_email: data.email,
         customer_name: data.name,
         date: data.date,
         time: data.time,
         court: data.court,
         duration: data.duration === "1" ? "שעה אחת" : "שעתיים",
         price: data.price
-      }).then(() => {
-        console.log("מייל ללקוח נשלח ל: " + data.email);
-      }).catch(err => {
-        console.error("שגיאה במייל ללקוח:", err);
-        alert("ההזמנה נרשמה, אבל לא נשלח אישור ללקוח.");
-      });
+      }).then(() => console.log("מייל ללקוח: OK"))
+        .catch(err => { console.error("לקוח:", err); alert("לא נשלח אישור ללקוח."); });
 
-      // === שליחה אליך – תבנית מלאה ===
+      // שליחה אליך
       emailjs.send("service_ma6h7ym", "template_admin_full", {
-        to_email: "eitan.morgunov@gmail.com",  // ← אליך
+        to_email: "eitan.morgunov@gmail.com",
         customer_name: data.name,
         phone: data.phone,
         email: data.email,
@@ -218,11 +248,15 @@
         duration: data.duration === "1" ? "שעה אחת" : "שעתיים",
         price: data.price,
         notes: data.notes
-      }).then(() => {
-        console.log("מייל אליך נשלח");
-      }).catch(err => {
-        console.error("שגיאה במייל אליך:", err);
-      });
+      }).then(() => console.log("מייל אליך: OK"))
+        .catch(err => console.error("אליך:", err));
+
+      // איפוס כפתור אחרי 3 שניות
+      setTimeout(() => {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = 'שלח הזמנה';
+        successMsg.classList.add('d-none');
+      }, 3000);
     });
   </script>
 </body>
