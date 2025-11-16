@@ -47,6 +47,12 @@
     .form-label {
       font-weight: 500;
       color: #1a5d1a;
+      position: relative;
+    }
+    .required-star {
+      color: #d32f2f;
+      font-weight: bold;
+      margin-right: 4px;
     }
     .form-control, .form-select {
       border-radius: 12px;
@@ -88,7 +94,7 @@
     <!-- כותרת ראשית -->
     <h1 class="main-title">מרכז קהילתי עם שלום י"א</h1>
 
-    <!-- התמונה שלך – חזרה! -->
+    <!-- התמונה שלך -->
     <div class="text-center">
       <img src="https://i.ibb.co/Z61VPjns/image.jpg" 
            alt="מרכז קהילתי עם שלום י''א - מגרשי טניס" 
@@ -100,23 +106,27 @@
       הזמנת מגרש טניס
     </h2>
 
-    <!-- טופס הזמנה -->
+    <!-- טופס עם כוכביות אדומות + אימייל -->
     <div class="form-card">
       <form id="bookingForm">
         <div class="mb-3">
-          <label class="form-label">שם מלא</label>
+          <label class="form-label"><span class="required-star">*</span> שם מלא</label>
           <input type="text" class="form-control" id="name" required>
         </div>
         <div class="mb-3">
-          <label class="form-label">טלפון</label>
+          <label class="form-label"><span class="required-star">*</span> טלפון</label>
           <input type="tel" class="form-control" id="phone" required>
         </div>
         <div class="mb-3">
-          <label class="form-label">תאריך</label>
+          <label class="form-label"><span class="required-star">*</span> אימייל</label>
+          <input type="email" class="form-control" id="email" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label"><span class="required-star">*</span> תאריך</label>
           <input type="date" class="form-control" id="date" required>
         </div>
         <div class="mb-3">
-          <label class="form-label">שעה</label>
+          <label class="form-label"><span class="required-star">*</span> שעה</label>
           <select class="form-select" id="time" required>
             <option value="">בחר שעה</option>
             <option>08:00</option><option>09:00</option><option>10:00</option>
@@ -126,7 +136,7 @@
           </select>
         </div>
         <div class="mb-4">
-          <label class="form-label">מגרש</label>
+          <label class="form-label"><span class="required-star">*</span> מגרש</label>
           <select class="form-select" id="court" required>
             <option value="">בחר מגרש</option>
             <option>מגרש 1 (חימר)</option>
@@ -144,17 +154,18 @@
     </div>
   </div>
 
-  <!-- JavaScript – שליחה לוואטסאפ -->
+  <!-- JavaScript – כולל אימייל בהודעה -->
   <script>
     document.getElementById('bookingForm').addEventListener('submit', function(e) {
       e.preventDefault();
       const name = document.getElementById('name').value;
       const phone = document.getElementById('phone').value;
+      const email = document.getElementById('email').value;
       const date = document.getElementById('date').value;
       const time = document.getElementById('time').value;
       const court = document.getElementById('court').value;
 
-      const message = `הזמנה חדשה - מרכז קהילתי עם שלום י"א\n\nשם: ${name}\nטלפון: ${phone}\nתאריך: ${date}\nשעה: ${time}\nמגרש: ${court}`;
+      const message = `הזמנה חדשה - מרכז קהילתי עם שלום י"א\n\nשם: ${name}\nטלפון: ${phone}\nאימייל: ${email}\nתאריך: ${date}\nשעה: ${time}\nמגרש: ${court}`;
       const whatsappUrl = `https://wa.me/972501234567?text=${encodeURIComponent(message)}`;
 
       window.open(whatsappUrl, '_blank');
