@@ -64,7 +64,7 @@
       border-color: var(--primary);
       box-shadow: 0 0 0 0.2rem rgba(26, 93, 26, 0.15);
     }
-    .btn-submit {
+    .btn-submit, .btn-call {
       background: var(--primary);
       border: none;
       border-radius: 12px;
@@ -73,7 +73,7 @@
       font-size: 1.1rem;
       transition: all 0.3s ease;
     }
-    .btn-submit:hover {
+    .btn-submit:hover, .btn-call:hover {
       background: #145214;
       transform: translateY(-2px);
     }
@@ -94,6 +94,22 @@
     .info-card p {
       margin: 0.5rem 0;
       font-size: 1rem;
+    }
+    .btn-call {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 0.75rem;
+      text-decoration: none;
+      color: white;
+    }
+    .map-link {
+      color: var(--primary);
+      text-decoration: underline;
+      font-weight: 500;
+    }
+    .map-link:hover {
+      color: #145214;
     }
     input[type="date"]::-webkit-calendar-picker-indicator {
       cursor: pointer;
@@ -169,12 +185,21 @@
       </form>
     </div>
 
-    <!-- פרטי מרכז -->
+    <!-- פרטי מרכז + כפתור התקשרות + מפה -->
     <div class="info-card">
       <h5>פרטי המרכז</h5>
-      <p><strong>כתובת:</strong> הרי גולן 6, אשדוד, ישראל</p>
+      <p><strong>כתובת:</strong> 
+        <a href="https://maps.google.com/?q=הרי+גולן+6,+אשדוד" target="_blank" class="map-link">
+          הרי גולן 6, אשדוד, ישראל
+        </a>
+      </p>
       <p><strong>טלפון:</strong> 08-8678400</p>
       <p><strong>שעות פעילות:</strong> ראשון–שבת | 08:00–21:00</p>
+      
+      <!-- כפתור התקשר עכשיו -->
+      <a href="tel:088678400" class="btn btn-call">
+        התקשר עכשיו
+      </a>
     </div>
 
     <!-- מחירון -->
@@ -188,18 +213,16 @@
     <div id="successMessage" class="alert alert-success mt-4 d-none text-center">
       הזמנתך נשלחה בהצלחה! נחזור אליך בקרוב.
     </div>
-  <div>
+  </div>
 
   <!-- JavaScript – הגבלה ל-14 יום + שליחה -->
   <script>
-    // תאריך היום
     const today = new Date();
     const yyyy = today.getFullYear();
     const mm = String(today.getMonth() + 1).padStart(2, '0');
     const dd = String(today.getDate()).padStart(2, '0');
     const minDate = `${yyyy}-${mm}-${dd}`;
 
-    // תאריך מקסימלי: היום + 13 ימים
     const maxDateObj = new Date();
     maxDateObj.setDate(today.getDate() + 13);
     const maxY = maxDateObj.getFullYear();
@@ -212,7 +235,6 @@
     dateInput.setAttribute('max', maxDate);
     dateInput.value = minDate;
 
-    // חוסם תאריכים מחוץ לטווח
     dateInput.addEventListener('input', function() {
       const selected = this.value;
       if (selected < minDate || selected > maxDate) {
