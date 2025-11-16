@@ -111,6 +111,17 @@
     .map-link:hover {
       color: #145214;
     }
+    .price-display {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: #1a5d1a;
+    }
+    .map-container {
+      margin-top: 1.5rem;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
     input[type="date"]::-webkit-calendar-picker-indicator {
       cursor: pointer;
     }
@@ -139,7 +150,7 @@
       הזמנת מגרש טניס
     </h2>
 
-    <!-- טופס -->
+    <!-- טופס עם משך זמן -->
     <div class="form-card">
       <form id="bookingForm">
         <div class="mb-3">
@@ -169,6 +180,13 @@
             <option>20:00</option><option>21:00</option>
           </select>
         </div>
+        <div class="mb-3">
+          <label class="form-label"><span class="required-star">*</span> משך זמן</label>
+          <select class="form-select" id="duration" required>
+            <option value="1">שעה אחת (40₪)</option>
+            <option value="2">שעתיים (80₪)</option>
+          </select>
+        </div>
         <div class="mb-4">
           <label class="form-label"><span class="required-star">*</span> מגרש</label>
           <select class="form-select" id="court" required>
@@ -181,11 +199,17 @@
             <option>מגרש 6</option>
           </select>
         </div>
+
+        <!-- תצוגת מחיר -->
+        <div class="text-center mb-3">
+          <p class="price-display">סה"כ לתשלום: <span id="totalPrice">40₪</span></p>
+        </div>
+
         <button type="submit" class="btn btn-submit w-100">שלח הזמנה</button>
       </form>
     </div>
 
-    <!-- פרטי מרכז – כתובת חדשה -->
+    <!-- פרטי מרכז -->
     <div class="info-card">
       <h5>פרטי המרכז</h5>
       <p><strong>כתובת:</strong> 
@@ -196,10 +220,21 @@
       <p><strong>טלפון:</strong> 08-8678400</p>
       <p><strong>שעות פעילות:</strong> ראשון–שבת | 08:00–21:00</p>
       
-      <!-- כפתור התקשר עכשיו -->
       <a href="tel:088678400" class="btn btn-call">
         התקשר עכשיו
       </a>
+    </div>
+
+    <!-- איך מגיעים – מפה מוטמעת -->
+    <div class="map-container">
+      <iframe 
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3386.789!2d34.645!3d31.791!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzDCsDQ3JzMzLjAiTiAzNMKwMzgnNDIuMCJF!5e0!3m2!1siw!2sil!4v1234567890" 
+        width="100%" 
+        height="300" 
+        style="border:0;" 
+        allowfullscreen="" 
+        loading="lazy">
+      </iframe>
     </div>
 
     <!-- מחירון -->
@@ -215,8 +250,9 @@
     </div>
   </div>
 
-  <!-- JavaScript – הגבלה ל-14 יום + שליחה -->
+  <!-- JavaScript – מחיר + מפה + הגבלה -->
   <script>
+    // תאריך
     const today = new Date();
     const yyyy = today.getFullYear();
     const mm = String(today.getMonth() + 1).padStart(2, '0');
@@ -242,6 +278,20 @@
       }
     });
 
+    // חישוב מחיר
+    const durationSelect = document.getElementById('duration');
+    const totalPriceEl = document.getElementById('totalPrice');
+
+    function updatePrice() {
+      const hours = durationSelect.value;
+      const price = hours === "1" ? "40₪" : "80₪";
+      totalPriceEl.textContent = price;
+    }
+
+    durationSelect.addEventListener('change', updatePrice);
+    updatePrice(); // ברירת מחדל
+
+    // שליחה
     document.getElementById('bookingForm').addEventListener('submit', function(e) {
       e.preventDefault();
       const name = document.getElementById('name').value;
@@ -249,9 +299,11 @@
       const email = document.getElementById('email').value;
       const date = document.getElementById('date').value;
       const time = document.getElementById('time').value;
+      const duration = durationSelect.value;
       const court = document.getElementById('court').value;
+      const price = totalPriceEl.textContent;
 
-      const message = `הזמנה חדשה - מרכז קהילתי עם שלום י"א\n\nשם: ${name}\nטלפון: ${phone}\nאימייל: ${email}\nתאריך: ${date}\nשעה: ${time}\nמגרש: ${court}`;
+      const message = `הזמנה חדשה - מרכז קהילתי עם שלום י"א\n\nשם: ${name}\nטלפון: ${phone}\nאימייל: ${email}\nתאריך: ${date}\nשעה: ${time}\nמשך: ${duration === "1" ? "שעה אחת" : "שעתיים"}\nמגרש: ${court}\nסה"כ: ${price}`;
       const whatsappUrl = `https://wa.me/972501234567?text=${encodeURIComponent(message)}`;
 
       window.open(whatsappUrl, '_blank');
@@ -259,6 +311,8 @@
       this.reset();
       setTimeout(() => {
         dateInput.value = minDate;
+        durationSelect.value = "1";
+        updatePrice();
       }, 100);
     });
   </script>
