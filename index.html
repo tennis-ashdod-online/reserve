@@ -98,7 +98,7 @@
         </div>
 
         <button type="submit" class="btn btn-submit w-100">שלח הזמנה</button>
-      </form>
+      </form>form>
     </div>
 
     <div class="info-card">
@@ -121,7 +121,7 @@
 
     <!-- הודעה נעלמת אוטומטית -->
     <div id="successMessage" class="alert alert-success mt-4 d-none text-center">
-      הזמנתך נשלחה בהצלחה!
+      הזמנתך נשלחה בהצלחה! אישור נשלח למייל שלך.
     </div>
   </div>
 
@@ -173,14 +173,14 @@
     document.getElementById('bookingForm').addEventListener('submit', function(e) {
       e.preventDefault();
       const data = {
-        name: document.getElementById('name').value,
-        phone: document.getElementById('phone').value,
-        email: document.getElementById('email').value,
+        name: document.getElementById('name').value.trim(),
+        phone: document.getElementById('phone').value.trim(),
+        email: document.getElementById('email').value.trim(),
         date: document.getElementById('date').value,
         time: timeSelect.value,
         duration: durationSelect.value,
         court: document.getElementById('court').value,
-        notes: document.getElementById('notes').value || "אין",
+        notes: document.getElementById('notes').value.trim() || "אין",
         price: totalPriceEl.textContent
       };
 
@@ -194,8 +194,8 @@
       bookings.push(data);
       localStorage.setItem('tennis_bookings', JSON.stringify(bookings));
 
-      // שליחה ללקוח
-      emailjs.send("service_ma6h7ym", "template_k2oqbr7", {
+      // שליחה ללקוח – תבנית נכונה
+      emailjs.send("service_ma6h7ym", "template_4eh09k2", {
         to_email: data.email,
         customer_name: data.name,
         date: data.date,
@@ -203,10 +203,15 @@
         court: data.court,
         duration: data.duration === "1" ? "שעה אחת" : "שעתיים",
         price: data.price
-      }).catch(() => {});
+      }).then(() => {
+        console.log("מייל ללקוח נשלח בהצלחה!");
+      }).catch(err => {
+        console.error("שגיאה בשליחת מייל ללקוח:", err);
+        alert("ההזמנה נרשמה, אך לא נשלח אישור למייל שלך. נסה שוב או צור קשר.");
+      });
 
-      // שליחה אליך – החלף ב-ID של התבנית החדשה שלך
-      emailjs.send("service_ma6h7ym", "template_4eh09k2", {
+      // שליחה אליך – תבנית מלאה
+      emailjs.send("service_ma6h7ym", "template_admin_full", {  // ← החלף ב-ID של התבנית שלך
         to_email: "eitan.morgunov@gmail.com",
         customer_name: data.name,
         phone: data.phone,
@@ -227,14 +232,14 @@
           successMsg.classList.add('d-none');
         }, 3000);
 
-        // איפוס מלא של הטופס
+        // איפוס מלא
         this.reset();
         dateInput.value = minDate;
         durationSelect.value = "1";
         updateTimeOptions();
         updatePrice();
       }).catch(err => {
-        console.error(err);
+        console.error("שגיאה בשליחת מייל אליך:", err);
         alert("ההזמנה נרשמה, אך לא נשלח אישור. נסה שוב מאוחר יותר.");
       });
     });
