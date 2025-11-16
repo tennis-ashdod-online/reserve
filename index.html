@@ -5,11 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>הזמנת מגרש טניס – מרכז קהילתי עם שלום י"א, אשדוד</title>
   <meta name="description" content="הזמנת מגרש טניס אונליין – 40₪ לשעה, 6 מגרשים, 08:00–21:00. אישור מיידי במייל!">
-  <!-- שיפור 1: Favicon -->
   <link rel="icon" href="https://i.ibb.co/Z61VPjns/image.jpg" type="image/jpeg">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
   <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&display=swap" rel="stylesheet">
-  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+  <!-- אפקט קונפטי -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
   <style>
     :root { --primary: #1a5d1a; --light: #f8f9ea; --shadow: 0 8px 25px rgba(0,0,0,0.08); }
     body { font-family: 'Rubik', sans-serif; background: var(--light); color: #333; line-height: 1.7; }
@@ -29,13 +30,48 @@
     .map-container { margin-top: 1.5rem; border-radius: 12px; overflow: hidden; box-shadow: var(--shadow); }
     .map-container iframe { width: 100%; height: 300px; border: 0; }
     .form-check-label a { color: var(--primary); text-decoration: underline; }
+
+    /* ספינר טעינה – מרכז המסך */
+    .loader-overlay {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(255,255,255,0.95); z-index: 9999;
+      display: flex; justify-content: center; align-items: center;
+      flex-direction: column; gap: 1rem;
+      transition: opacity 0.5s ease;
+    }
+    .loader {
+      width: 60px; height: 60px; border: 6px solid #f3f3f3;
+      border-top: 6px solid var(--primary); border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* הודעת הצלחה עם קונפטי */
+    .success-popup {
+      position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+      background: white; padding: 2rem 3rem; border-radius: 20px;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.2); z-index: 10000;
+      text-align: center; font-weight: 700; font-size: 1.3rem; color: var(--primary);
+      border: 3px solid var(--primary); animation: popup 0.5s ease-out;
+    }
+    @keyframes popup { from { transform: translate(-50%, -60%); opacity: 0; } to { transform: translate(-50%, -50%); opacity: 1; } }
+
     @media (max-width: 576px) { .main-title { font-size: 1.6rem; } .form-card, .info-card { padding: 1rem; } .map-container iframe { height: 250px; } }
   </style>
 </head>
 <body>
 
-  <!-- שיפור 3: כפתור חזור למעלה -->
-  <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="btn btn-primary position-fixed bottom-0 end-0 m-3 d-none" id="backToTop" style="z-index:999; border-radius:50%; width:50px; height:50px; box-shadow: var(--shadow);">↑</button>
+  <!-- כפתור חזור למעלה -->
+  <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="btn btn-primary position-fixed bottom-0 end-0 m-3 d-none" id="backToTop" style="z-index:999; border-radius:50%; width:50px; height:50px; box-shadow: var(--shadow);">Up</button>
+
+  <!-- ספינר טעינה -->
+  <div id="loaderOverlay" class="loader-overlay d-none">
+    <div class="loader"></div>
+    <p class="text-muted">שולח את ההזמנה...</p>
+  </div>
+
+  <!-- הודעת הצלחה עם קונפטי -->
+  <div id="successPopup" class="d-none"></div>
 
   <div class="container">
     <h1 class="main-title">מרכז קהילתי עם שלום י"א</h1>
@@ -103,7 +139,6 @@
           <p class="price-display">סה"כ לתשלום: <span id="totalPrice">40₪</span></p>
         </div>
 
-        <!-- שיפור 4: כפתור עם מצב "שולח..." -->
         <button type="submit" class="btn btn-submit w-100" id="submitBtn">שלח הזמנה</button>
       </form>
     </div>
@@ -123,16 +158,11 @@
     <div class="map-container">
       <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d600!2d34.6309!3d31.7832!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzEuNzgzMTY1LDM0LjYzMTA5Ng!5e0!3m2!1siw!2sil!4v1731780000000!5m2!1siw!2sil" allowfullscreen="" loading="lazy"></iframe>
     </div>
-
-    <!-- שיפור 7: הודעת הצלחה מותאמת אישית -->
-    <div id="successMessage" class="alert mt-4 d-none text-center"></div>
   </div>
 
   <script>
     (function(){ emailjs.init("z1P-O8ROFHiXihsLH"); })();
-  </script>
 
-  <script>
     const today = new Date();
     const yyyy = today.getFullYear();
     const mm = String(today.getMonth() + 1).padStart(2, '0');
@@ -165,7 +195,7 @@
 
     let bookings = JSON.parse(localStorage.getItem('tennis_bookings') || '[]');
 
-    // שיפור 3: הצגת כפתור "חזור למעלה" אחרי גלילה
+    // כפתור חזור למעלה
     window.addEventListener('scroll', () => {
       document.getElementById('backToTop').classList.toggle('d-none', window.scrollY < 300);
     });
@@ -173,7 +203,6 @@
     document.getElementById('bookingForm').addEventListener('submit', function(e) {
       e.preventDefault();
 
-      // שיפור 4: מצב "שולח..."
       const submitBtn = document.getElementById('submitBtn');
       submitBtn.disabled = true;
       submitBtn.innerHTML = 'שולח...';
@@ -190,7 +219,6 @@
         price: totalPriceEl.textContent
       };
 
-      // שיפור 6: אימות טלפון ישראלי
       if (!/^05\d{8}$/.test(data.phone)) {
         alert("הכנס טלפון ישראלי תקין (10 ספרות, מתחיל ב-05)");
         submitBtn.disabled = false;
@@ -205,58 +233,69 @@
         return;
       }
 
-      bookings.push(data);
-      localStorage.setItem('tennis_bookings', JSON.stringify(bookings));
+      // הצגת ספינר
+      const loader = document.getElementById('loaderOverlay');
+      loader.classList.remove('d-none');
 
-      // שיפור 7: הודעת הצלחה מותאמת אישית
-      const successMsg = document.getElementById('successMessage');
-      successMsg.innerHTML = `
-        <strong>תודה ${data.name}!</strong><br>
-        ההזמנה שלך נקלטה: מגרש ${data.court} בתאריך ${data.date} בשעה ${data.time}<br>
-        אישור נשלח ל-${data.email}
-      `;
-      successMsg.className = 'alert alert-success mt-4 text-center';
-      successMsg.classList.remove('d-none');
-
-      this.reset();
-      dateInput.value = minDate;
-      durationSelect.value = "1";
-      updateTimeOptions();
-      updatePrice();
-
-      // שליחה ללקוח
-      emailjs.send("service_ma6h7ym", "template_4eh09k2", {
-        to_email: data.email,
-        customer_name: data.name,
-        date: data.date,
-        time: data.time,
-        court: data.court,
-        duration: data.duration === "1" ? "שעה אחת" : "שעתיים",
-        price: data.price
-      }).then(() => console.log("מייל ללקוח: OK"))
-        .catch(err => { console.error("לקוח:", err); alert("לא נשלח אישור ללקוח."); });
-
-      // שליחה אליך
-      emailjs.send("service_ma6h7ym", "template_admin_full", {
-        to_email: "eitan.morgunov@gmail.com",
-        customer_name: data.name,
-        phone: data.phone,
-        email: data.email,
-        date: data.date,
-        time: data.time,
-        court: data.court,
-        duration: data.duration === "1" ? "שעה אחת" : "שעתיים",
-        price: data.price,
-        notes: data.notes
-      }).then(() => console.log("מייל אליך: OK"))
-        .catch(err => console.error("אליך:", err));
-
-      // איפוס כפתור אחרי 3 שניות
+      // אחרי 2 שניות – הצגת הצלחה + קונפטי
       setTimeout(() => {
-        submitBtn.disabled = false;
-        submitBtn.innerHTML = 'שלח הזמנה';
-        successMsg.classList.add('d-none');
-      }, 3000);
+        loader.classList.add('d-none');
+
+        // שמירת ההזמנה
+        bookings.push(data);
+        localStorage.setItem('tennis_bookings', JSON.stringify(bookings));
+
+        // הצגת הודעת הצלחה
+        const successPopup = document.getElementById('successPopup');
+        successPopup.innerHTML = `
+          <div class="success-popup">
+            <h4>ההזמנה בוצעה בהצלחה!</h4>
+            <p><strong>${data.name}</strong> – מגרש ${data.court}<br>
+            ${data.date} | ${data.time} | ${data.price}</p>
+            <p class="text-success">אישור נשלח ל-${data.email}</p>
+          </div>
+        `;
+        successPopup.classList.remove('d-none');
+
+        // אפקט קונפטי
+        confetti({
+          particleCount: 150,
+          spread: 70,
+          origin: { y: 0.6 },
+          colors: ['#1a5d1a', '#4CAF50', '#8BC34A', '#CDDC39']
+        });
+
+        // שליחת מיילים
+        emailjs.send("service_ma6h7ym", "template_4eh09k2", {
+          to_email: data.email, customer_name: data.name, date: data.date,
+          time: data.time, court: data.court,
+          duration: data.duration === "1" ? "שעה אחת" : "שעתיים",
+          price: data.price
+        }).catch(err => console.error("לקוח:", err));
+
+        emailjs.send("service_ma6h7ym", "template_admin_full", {
+          to_email: "eitan.morgunov@gmail.com", customer_name: data.name,
+          phone: data.phone, email: data.email, date: data.date,
+          time: data.time, court: data.court,
+          duration: data.duration === "1" ? "שעה אחת" : "שעתיים",
+          price: data.price, notes: data.notes
+        }).catch(err => console.error("אליך:", err));
+
+        // איפוס הטופס
+        this.reset();
+        dateInput.value = minDate;
+        durationSelect.value = "1";
+        updateTimeOptions();
+        updatePrice();
+
+        // הסתרת ההודעה אחרי 4 שניות
+        setTimeout(() => {
+          successPopup.classList.add('d-none');
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = 'שלח הזמנה';
+        }, 4000);
+
+      }, 2000); // 2 שניות
     });
   </script>
 </body>
