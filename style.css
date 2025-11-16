@@ -1,26 +1,45 @@
 body {
-  background: linear-gradient(to bottom, #e0f7fa, #ffffff);
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(to bottom, #e8f5e9, #ffffff);
+  font-family: 'Rubik', 'Segoe UI', sans-serif;
   min-height: 100vh;
 }
 
-h1 {
+header {
+  background: linear-gradient(135deg, #1a5d1a, #2e7d32) !important;
+}
+
+.logo {
+  height: 50px;
+  width: auto;
+}
+
+h1, h2 {
   color: #1a5d1a;
-  font-weight: bold;
+  font-weight: 700;
 }
 
 .card {
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
   border: none;
-  border-radius: 15px;
+  border-radius: 18px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.1);
 }
 
 .btn-success {
-  background-color: #1a5d1a;
+  background: #1a5d1a;
   border: none;
+  border-radius: 12px;
   font-weight: bold;
+  padding: 12px;
 }
 
 .form-control, .form-select {
-  border-radius: 10px;
+  border-radius: 12px;
+  border: 1px solid #a5d6a7;
+}
+
+.img-fluid.shadow {
+  transition: transform 0.3s;
+}
+.img-fluid.shadow:hover {
+  transform: scale(1.05);
 }
