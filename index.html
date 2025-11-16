@@ -77,29 +77,30 @@
       background: #145214;
       transform: translateY(-2px);
     }
-    .success-alert, .price-card {
+    .info-card, .price-card {
       border-radius: 12px;
       font-weight: 500;
-    }
-    .price-card {
-      background: #e8f5e8;
-      border: 2px solid var(--primary);
+      margin-top: 1.5rem;
       padding: 1rem;
       text-align: center;
-      margin-top: 1.5rem;
-      font-size: 1.1rem;
+      background: #e8f5e8;
+      border: 2px solid var(--primary);
     }
-    .price-card h5 {
+    .info-card h5, .price-card h5 {
       color: var(--primary);
       margin-bottom: 0.75rem;
       font-weight: 700;
+    }
+    .info-card p {
+      margin: 0.5rem 0;
+      font-size: 1rem;
     }
     input[type="date"]::-webkit-calendar-picker-indicator {
       cursor: pointer;
     }
     @media (max-width: 576px) {
       .main-title { font-size: 1.6rem; }
-      .form-card, .price-card { padding: 1rem; }
+      .form-card, .info-card, .price-card { padding: 1rem; }
     }
   </style>
 </head>
@@ -148,7 +149,8 @@
             <option>08:00</option><option>09:00</option><option>10:00</option>
             <option>11:00</option><option>12:00</option><option>13:00</option>
             <option>14:00</option><option>15:00</option><option>16:00</option>
-            <option>17:00</option><option>18:00</option><option>19:00</option><option>20:00</option>
+            <option>17:00</option><option>18:00</option><option>19:00</option>
+            <option>20:00</option><option>21:00</option>
           </select>
         </div>
         <div class="mb-4">
@@ -167,7 +169,15 @@
       </form>
     </div>
 
-    <!-- מחירון מודרני -->
+    <!-- פרטי מרכז -->
+    <div class="info-card">
+      <h5>פרטי המרכז</h5>
+      <p><strong>כתובת:</strong> הרי גולן 6, אשדוד, ישראל</p>
+      <p><strong>טלפון:</strong> 08-8678400</p>
+      <p><strong>שעות פעילות:</strong> ראשון–שבת | 08:00–21:00</p>
+    </div>
+
+    <!-- מחירון -->
     <div class="price-card">
       <h5>מחירון</h5>
       <p class="mb-1"><strong>40₪</strong> לשעה</p>
@@ -175,10 +185,10 @@
     </div>
 
     <!-- הודעת הצלחה -->
-    <div id="successMessage" class="alert alert-success success-alert mt-4 d-none text-center">
+    <div id="successMessage" class="alert alert-success mt-4 d-none text-center">
       הזמנתך נשלחה בהצלחה! נחזור אליך בקרוב.
     </div>
-  </div>
+  <div>
 
   <!-- JavaScript – הגבלה ל-14 יום + שליחה -->
   <script>
@@ -189,7 +199,7 @@
     const dd = String(today.getDate()).padStart(2, '0');
     const minDate = `${yyyy}-${mm}-${dd}`;
 
-    // תאריך מקסימלי: היום + 13 ימים = 14 יום קדימה
+    // תאריך מקסימלי: היום + 13 ימים
     const maxDateObj = new Date();
     maxDateObj.setDate(today.getDate() + 13);
     const maxY = maxDateObj.getFullYear();
