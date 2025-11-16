@@ -98,7 +98,7 @@
         </div>
 
         <button type="submit" class="btn btn-submit w-100">שלח הזמנה</button>
-      </form>form>
+      </form>
     </div>
 
     <div class="info-card">
@@ -194,7 +194,19 @@
       bookings.push(data);
       localStorage.setItem('tennis_bookings', JSON.stringify(bookings));
 
-      // שליחה ללקוח – תבנית נכונה
+      // הצגת הודעה מוקדמת
+      const successMsg = document.getElementById('successMessage');
+      successMsg.classList.remove('d-none');
+      setTimeout(() => successMsg.classList.add('d-none'), 3000);
+
+      // איפוס מוקדם
+      this.reset();
+      dateInput.value = minDate;
+      durationSelect.value = "1";
+      updateTimeOptions();
+      updatePrice();
+
+      // שליחה ללקוח – תמיד נשלחת
       emailjs.send("service_ma6h7ym", "template_4eh09k2", {
         to_email: data.email,
         customer_name: data.name,
@@ -207,11 +219,11 @@
         console.log("מייל ללקוח נשלח בהצלחה!");
       }).catch(err => {
         console.error("שגיאה בשליחת מייל ללקוח:", err);
-        alert("ההזמנה נרשמה, אך לא נשלח אישור למייל שלך. נסה שוב או צור קשר.");
+        alert("ההזמנה נרשמה, אך לא נשלח אישור למייל של הלקוח. נסה שוב.");
       });
 
-      // שליחה אליך – תבנית מלאה
-      emailjs.send("service_ma6h7ym", "template_admin_full", {  // ← החלף ב-ID של התבנית שלך
+      // שליחה אליך – תמיד נשלחת
+      emailjs.send("service_ma6h7ym", "template_admin_full", {  // ← החלף ב-ID שלך
         to_email: "eitan.morgunov@gmail.com",
         customer_name: data.name,
         phone: data.phone,
@@ -223,24 +235,9 @@
         price: data.price,
         notes: data.notes
       }).then(() => {
-        // הצגת הודעה
-        const successMsg = document.getElementById('successMessage');
-        successMsg.classList.remove('d-none');
-
-        // הסתרה אוטומטית אחרי 3 שניות
-        setTimeout(() => {
-          successMsg.classList.add('d-none');
-        }, 3000);
-
-        // איפוס מלא
-        this.reset();
-        dateInput.value = minDate;
-        durationSelect.value = "1";
-        updateTimeOptions();
-        updatePrice();
+        console.log("מייל אליך נשלח בהצלחה!");
       }).catch(err => {
         console.error("שגיאה בשליחת מייל אליך:", err);
-        alert("ההזמנה נרשמה, אך לא נשלח אישור. נסה שוב מאוחר יותר.");
       });
     });
   </script>
