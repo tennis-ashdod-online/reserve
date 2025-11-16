@@ -3,75 +3,164 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>טניס אשדוד - הזמנת מגרש</title>
+  <title>מרכז קהילתי עם שלום י"א - הזמנת מגרש טניס</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
-  <link rel="stylesheet" href="style.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #1a5d1a;
+      --light: #f8f9fa;
+      --shadow: 0 8px 25px rgba(0,0,0,0.08);
+    }
+    body {
+      font-family: 'Rubik', sans-serif;
+      background: var(--light);
+      color: #333;
+      line-height: 1.7;
+    }
+    .main-title {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--primary);
+      text-align: center;
+      margin: 2rem 0 1.5rem;
+      letter-spacing: 0.5px;
+    }
+    .hero-img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 20px;
+      box-shadow: var(--shadow);
+      margin-bottom: 2rem;
+      transition: transform 0.3s ease;
+    }
+    .hero-img:hover {
+      transform: translateY(-5px);
+    }
+    .form-card {
+      border: none;
+      border-radius: 20px;
+      box-shadow: var(--shadow);
+      padding: 1.5rem;
+      background: white;
+    }
+    .form-label {
+      font-weight: 500;
+      color: #1a5d1a;
+    }
+    .form-control, .form-select {
+      border-radius: 12px;
+      border: 1.5px solid #a8d5a8;
+      padding: 0.75rem;
+      font-size: 1rem;
+    }
+    .form-control:focus, .form-select:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 0.2rem rgba(26, 93, 26, 0.15);
+    }
+    .btn-submit {
+      background: var(--primary);
+      border: none;
+      border-radius: 12px;
+      padding: 0.9rem;
+      font-weight: 600;
+      font-size: 1.1rem;
+      transition: all 0.3s ease;
+    }
+    .btn-submit:hover {
+      background: #145214;
+      transform: translateY(-2px);
+    }
+    .success-alert {
+      border-radius: 12px;
+      font-weight: 500;
+    }
+    @media (max-width: 576px) {
+      .main-title { font-size: 1.6rem; }
+      .form-card { padding: 1rem; }
+    }
+  </style>
 </head>
 <body>
-  <!-- כותרת עם לוגו -->
-  <header class="text-center py-3 bg-success text-white">
-    <img src="https://i.ibb.co/3dYkJ7W/tennis-ashdod-logo.png" alt="לוגו טניס אשדוד" class="logo img-fluid" />
-    <h1 class="d-inline-block ms-2">טניס אשדוד</h1>
-  </header>
 
-  <div class="container mt-4">
+  <div class="container">
     
-    <!-- תמונת הכותרת – התמונה שלך, בגודל מקורי, לא מרוחה -->
-    <div class="text-center mb-4">
-      <img src="https://i.ibb.co/Z61VPjns/image.jpg" 
-           alt="מגרשי טניס אשדוד" 
-           class="img-fluid rounded shadow" 
-           style="max-width: 100%; height: auto; border-radius: 15px;">
+    <!-- כותרת ראשית – נקייה, מודרנית -->
+    <h1 class="main-title">מרכז קהילתי עם שלום י"א</h1>
+
+    <!-- תמונת הכותרת – התמונה שלך בלבד -->
+    <div class="text-center">
+      <img src="הדבק_כאן_את_הקישור_החדש_של_התמונה" 
+           alt="מרכז קהילתי עם שלום י''א" 
+           class="hero-img">
     </div>
 
-    <h2 class="text-center mb-4">הזמנת מגרש טניס</h2>
-    
-    <div class="card shadow">
-      <div class="card-body">
-        <form id="bookingForm">
-          <div class="mb-3">
-            <label class="form-label">שם מלא</label>
-            <input type="text" class="form-control" id="name" required>
-          </div>
-          <div class="mb-3">
-            <label class="form-label">טלפון</label>
-            <input type="tel" class="form-control" id="phone" required>
-          </div>
-          <div class="mb-3">
-            <label class="form-label">תאריך</label>
-            <input type="date" class="form-control" id="date" required>
-          </div>
-          <div class="mb-3">
-            <label class="form-label">שעה</label>
-            <select class="form-select" id="time" required>
-              <option value="">בחר שעה</option>
-              <option>08:00</option><option>09:00</option><option>10:00</option>
-              <option>11:00</option><option>12:00</option><option>13:00</option>
-              <option>14:00</option><option>15:00</option><option>16:00</option>
-              <option>17:00</option><option>18:00</option><option>19:00</option><option>20:00</option>
-            </select>
-          </div>
-          <div class="mb-3">
-            <label class="form-label">מגרש</label>
-            <select class="form-select" id="court" required>
-              <option value="">בחר מגרש</option>
-              <option>מגרש 1 (חימר)</option>
-              <option>מגרש 2 (דשא)</option>
-              <option>מגרש 3 (קשה)</option>
-            </select>
-          </div>
-          <button type="submit" class="btn btn-success w-100">שלח הזמנה</button>
-        </form>
-      </div>
+    <!-- כותרת הטופס -->
+    <h2 class="text-center mt-4 mb-4" style="color: var(--primary); font-weight: 600;">
+      הזמנת מגרש טניס
+    </h2>
+
+    <!-- טופס הזמנה – עיצוב מודרני -->
+    <div class="form-card">
+      <form id="bookingForm">
+        <div class="mb-3">
+          <label class="form-label">שם מלא</label>
+          <input type="text" class="form-control" id="name" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">טלפון</label>
+          <input type="tel" class="form-control" id="phone" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">תאריך</label>
+          <input type="date" class="form-control" id="date" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">שעה</label>
+          <select class="form-select" id="time" required>
+            <option value="">בחר שעה</option>
+            <option>08:00</option><option>09:00</option><option>10:00</option>
+            <option>11:00</option><option>12:00</option><option>13:00</option>
+            <option>14:00</option><option>15:00</option><option>16:00</option>
+            <option>17:00</option><option>18:00</option><option>19:00</option><option>20:00</option>
+          </select>
+        </div>
+        <div class="mb-4">
+          <label class="form-label">מגרש</label>
+          <select class="form-select" id="court" required>
+            <option value="">בחר מגרש</option>
+            <option>מגרש 1 (חימר)</option>
+            <option>מגרש 2 (דשא)</option>
+            <option>מגרש 3 (קשה)</option>
+          </select>
+        </div>
+        <button type="submit" class="btn btn-submit w-100">שלח הזמנה</button>
+      </form>
     </div>
 
-    <!-- הוסרנו את כל הגלריה – רק התמונה שלך נשארה -->
-
-    <div id="successMessage" class="alert alert-success mt-3 d-none">
+    <!-- הודעת הצלחה -->
+    <div id="successMessage" class="alert alert-success success-alert mt-4 d-none text-center">
       הזמנתך נשלחה בהצלחה! נחזור אליך בקרוב.
     </div>
   </div>
 
-  <script src="script.js"></script>
+  <!-- JavaScript – שליחה לוואטסאפ -->
+  <script>
+    document.getElementById('bookingForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const name = document.getElementById('name').value;
+      const phone = document.getElementById('phone').value;
+      const date = document.getElementById('date').value;
+      const time = document.getElementById('time').value;
+      const court = document.getElementById('court').value;
+
+      const message = `הזמנה חדשה - מרכז קהילתי עם שלום י"א\n\nשם: ${name}\nטלפון: ${phone}\nתאריך: ${date}\nשעה: ${time}\nמגרש: ${court}`;
+      const whatsappUrl = `https://wa.me/972501234567?text=${encodeURIComponent(message)}`;
+
+      window.open(whatsappUrl, '_blank');
+      document.getElementById('successMessage').classList.remove('d-none');
+      this.reset();
+    });
+  </script>
 </body>
 </html>
