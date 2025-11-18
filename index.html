@@ -12,9 +12,7 @@
   <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
   <style>
-    :root { 
-      --primary: #1a5d1a; --light: #f8f9ea; --shadow: 0 6px 18px rgba(0,0,0,0.08);
-    }
+    :root { --primary: #1a5d1a; --light: #f8f9ea; --shadow: 0 6px 18px rgba(0,0,0,0.08); }
     body { font-family: 'Rubik', sans-serif; background: var(--light); color: #333; margin: 0; padding: 0; }
     .container { max-width: 1000px; padding: 1rem; margin-top: 70px; }
 
@@ -24,43 +22,25 @@
       box-shadow: 0 2px 15px rgba(0,0,0,0.1); z-index: 9999;
       display: flex; justify-content: space-between; align-items: center; padding: 0 15px;
     }
-
-    /* כפתורי שפות – קבועים באמצע ולא זזים לעולם */
     .lang-switcher {
-      position: absolute;
-      left: 50%;
-      transform: translateX(-50%);
+      position: absolute; left: 50%; transform: translateX(-50%);
       display: flex; gap: 8px; background: rgba(255,255,255,0.9);
-      padding: 6px 10px; border-radius: 25px; box-shadow: 0 3px 10px rgba(0,0,0,0.12);
-      z-index: 100;
+      padding: 6px 10px; border-radius: 25px; box-shadow: 0 3px 10px rgba(0,0,0,0.12); z-index: 100;
     }
-    .lang-btn {
-      border: none; background: none; font-weight: bold; font-size: 0.9rem;
-      padding: 5px 12px; border-radius: 20px; cursor: pointer; transition: all 0.2s;
-    }
+    .lang-btn { border: none; background: none; font-weight: bold; font-size: 0.9rem;
+      padding: 5px 12px; border-radius: 20px; cursor: pointer; transition: all 0.2s; }
     .lang-btn.active { background: var(--primary); color: white; }
 
-    .hamburger-menu {
-      width: 50px; height: 50px; background: var(--primary); color: white;
+    .hamburger-menu { width: 50px; height: 50px; background: var(--primary); color: white;
       border-radius: 50%; display: flex; align-items: center; justify-content: center;
-      font-size: 1.6rem; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.2); z-index: 10000;
-    }
+      font-size: 1.6rem; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.2); z-index: 10000; }
     .hamburger-menu:hover { transform: scale(1.1); }
 
-    /* וואטסאפ – בלי שום קו כחול, לעולם! */
-    .whatsapp-float {
-      position: fixed; left: 15px; bottom: 20px; z-index: 1000; animation: pulse 2s infinite;
-      text-decoration: none !important;
-      outline: none !important;
-      -webkit-tap-highlight-color: transparent !important;
-    }
-    .whatsapp-icon {
-      font-size: 32px; color: white; background-color: #25D366; width: 58px; height: 58px;
+    .whatsapp-float { position: fixed; left: 15px; bottom: 20px; z-index: 1000; animation: pulse 2s infinite;
+      text-decoration: none !important; outline: none !important; -webkit-tap-highlight-color: transparent !important; }
+    .whatsapp-icon { font-size: 32px; color: white; background-color: #25D366; width: 58px; height: 58px;
       border-radius: 50%; display: flex; align-items: center; justify-content: center;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-      text-decoration: none !important;
-      outline: none !important;
-    }
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
     @keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.08)} }
 
     .sidebar { position: fixed; top: 0; right: -100%; width: 320px; height: 100%; background: white;
@@ -92,9 +72,7 @@
       #terms { width: 30px !important; height: 30px !important; }
       .terms-text { font-size: 1.05rem; }
     }
-    @media (min-width: 576px) {
-      .hero-img { height: 520px; border-radius: 24px; }
-    }
+    @media (min-width: 576px) { .hero-img { height: 520px; border-radius: 24px; } }
   </style>
 </head>
 <body>
@@ -112,7 +90,6 @@
 
   <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
-  <!-- וואטסאפ – בלי קו כחול בכלל -->
   <a href="https://wa.me/972524864380?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%A6%D7%A8%D7%99%D7%9A%20%D7%A2%D7%96%D7%A8%D7%94%20%D7%91%D7%94%D7%96%D7%9E%D7%A0%D7%AA%20%D7%9E%D7%92%D7%A8%D7%A9%20%D7%98%D7%A0%D7%99%D7%A1" 
      class="whatsapp-float" target="_blank" aria-label="WhatsApp">
     <i class="fab fa-whatsapp whatsapp-icon"></i>
@@ -123,7 +100,7 @@
     <h3 data-t="info-title">מידע ותמיכה</h3>
     <div style="background:#f9f9f9;padding:1rem;border-radius:12px;margin-bottom:1.5rem;">
       <h4 data-t="center-details">פרטי המרכז</h4>
-      <p><strong data-t="address">כתובת:</strong> <span data-t="address-val">הרי גolן 5, אשדוד</span></p>
+      <p><strong data-t="address">כתובת:</strong> <span data-t="address-val">הרי גולן 5, אשדוד, ישראל</span></p>
       <p><strong data-t="phone">טלפון:</strong> 08-8678400</p>
       <p><strong data-t="hours">שעות פתיחה:</strong><br><span data-t="hours-val">א'-ה' 08:00–21:00<br>שישי 08:00–14:00<br>שבת 08:00–21:00</span></p>
       <div style="height:220px;margin-top:1rem;border-radius:10px;overflow:hidden;">
@@ -179,11 +156,12 @@
 
   <script>
     const translations = {
-      he: {"center-name":"מרכז קהילתי עם שלום י\"א","book-title":"הזמנת מגרש טניס","name":"שם מלא","phone":"טלפון","email":"אימייל","date":"תאריך","time":"שעת התחלה","duration":"משך","court":"מגרש","notes":"הערות","agree":"מסכים","terms":"לתנאים","total":"סה\"כ:","submit":"שלח הזמנה","info-title":"מידע ותמיכה","center-details":"פרטי המרכז","address":"כתובת:","address-val":"הרי גולן 5, אשדוד","hours":"שעות פתיחה:","hours-val":"א'-ה' 08:00–21:00<br>שישי 08:00–14:00<br>שבת 08:00–21:00","faq":"שאלות נפוצות"},
-      en: {"center-name":"Am Shalom Yud-Alef Community Center","book-title":"Book a Tennis Court","name":"Full Name","phone":"Phone","email":"Email","date":"Date","time":"Start Time","duration":"Duration","court":"Court","notes":"Notes","agree":"I agree to","terms":"Terms & Conditions","total":"Total:","submit":"Send Booking","info-title":"Info & Support","center-details":"Center Details","address":"Address:","address-val":"Har Golan 5, Ashdod","hours":"Opening Hours:","hours-val":"Sun–Thu 08:00–21:00<br>Friday 08:00–14:00<br>Saturday 08:00–21:00","faq":"FAQ"},
-      ru: {"center-name":"Общественный центр Ам Шалом Юд-Алеф","book-title":"Бронирование теннисного корта","name":"ФИО","phone":"Телефон","email":"Email","date":"Дата","time":"Время начала","duration":"Продолжительность","court":"Корт","notes":"Примечания","agree":"Согласен с","terms":"условиями","total":"Итого:","submit":"Отправить бронь","info-title":"Информация","center-details":"Контакты центра","address":"Адрес:","address-val":"Хар Голан 5, Ашдод","hours":"Часы работы:","hours-val":"Вс–Чт 08:00–21:00<br>Пт 08:00–14:00<br>Сб 08:00–21:00","faq":"ЧаВо"}
+      he: {"center-name":"מרכז קהילתי עם שלום י\"א","book-title":"הזמנת מגרש טניס","name":"שם מלא","phone":"טלפון","email":"אימייל","date":"תאריך","time":"שעת התחלה","duration":"משך","court":"מגרש","notes":"הערות","agree":"מסכים","terms":"לתנאים","total":"סה\"כ:","submit":"שלח הזמנה","info-title":"מידע ותמיכה","center-details":"פרטי המרכז","address":"כתובת:","address-val":"הרי גולן 5, אשדוד, ישראל","hours":"שעות פתיחה:","hours-val":"א'-ה' 08:00–21:00<br>שישי 08:00–14:00<br>שבת 08:00–21:00","faq":"שאלות נפוצות"},
+      en: {"center-name":"Am Shalom Yud-Alef Community Center","book-title":"Book a Tennis Court","name":"Full Name","phone":"Phone","email":"Email","date":"Date","time":"Start Time","duration":"Duration","court":"Court","notes":"Notes","agree":"I agree to","terms":"Terms & Conditions","total":"Total:","submit":"Send Booking","info-title":"Info & Support","center-details":"Center Details","address":"Address:","address-val":"Har Golan 5, Ashdod, Israel","hours":"Opening Hours:","hours-val":"Sun–Thu 08:00–21:00<br>Friday 08:00–14:00<br>Saturday 08:00–21:00","faq":"FAQ"},
+      ru: {"center-name":"Общественный центр Ам Шалом Юд-Алеф","book-title":"Бронирование теннисного корта","name":"ФИО","phone":"Телефон","email":"Email","date":"Дата","time":"Время начала","duration":"Продолжительность","court":"Корт","notes":"Примечания","agree":"Согласен с","terms":"условиями","total":"Итого:","submit":"Отправить бронь","info-title":"Информация","center-details":"Контакты центра","address":"Адрес:","address-val":"Хар Голан 5, Ашдод, Израиль","hours":"Часы работы:","hours-val":"Вс–Чт 08:00–21:00<br>Пт 08:00–14:00<br>Сб 08:00–21:00","faq":"ЧаВо"}
     };
 
+    // שפות
     document.querySelectorAll('.lang-btn').forEach(btn => {
       btn.addEventListener('click', () => {
         const lang = btn.dataset.lang;
@@ -199,25 +177,47 @@
       });
     });
 
+    // תפריט המבורגר
     const hamburger = document.getElementById('hamburgerMenu');
     const sidebar = document.getElementById('sidebar');
     const overlay = document.getElementById('sidebarOverlay');
     const closeBtn = document.getElementById('closeSidebar');
+    hamburger.addEventListener('click', () => { sidebar.classList.toggle('open'); overlay.classList.toggle('active'); });
+    closeBtn.addEventListener('click', () => { sidebar.classList.remove('open'); overlay.classList.remove('active'); });
+    overlay.addEventListener('click', () => { sidebar.classList.remove('open'); overlay.classList.remove('active'); });
 
-    hamburger.addEventListener('click', () => {
-      sidebar.classList.toggle('open');
-      overlay.classList.toggle('active');
-    });
-    closeBtn.addEventListener('click', () => {
-      sidebar.classList.remove('open');
-      overlay.classList.remove('active');
-    });
-    overlay.addEventListener('click', () => {
-      sidebar.classList.remove('open');
-      overlay.classList.remove('active');
-    });
-
+    // EmailJS + קונפטי + חלונית אישור – חזר ועובד!
     (function(){ emailjs.init("z1P-O8ROFHiXihsLH"); })();
+
+    document.getElementById('bookingForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const templateParams = {
+        name: document.getElementById('name').value,
+        phone: document.getElementById('phone').value,
+        email: document.getElementById('email').value,
+        date: document.getElementById('date').value,
+        time: document.getElementById('time').value,
+        duration: document.getElementById('duration').options[document.getElementById('duration').selectedIndex].text,
+        court: document.getElementById('court').value,
+        notes: document.getElementById('notes').value || 'ללא',
+        price: document.getElementById('totalPrice').textContent
+      };
+
+      emailjs.send('service_tennis', 'template_tennis', templateParams)
+        .then(() => {
+          confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
+          alert('ההזמנה נשלחה בהצלחה! נשלח לך אישור במייל תוך דקות');
+          document.getElementById('bookingForm').reset();
+          document.getElementById('totalPrice').textContent = '40₪';
+          updateTimeOptions();
+        }, (err) => {
+          alert('שגיאה בשליחה, נסה שוב או שלח וואטסאפ');
+          console.error(err);
+        });
+    });
+
+    // שעות + מחיר
     const today = new Date();
     const dateInput = document.getElementById('date');
     const timeSelect = document.getElementById('time');
@@ -266,7 +266,6 @@
     durationSelect.addEventListener('change', () => {
       totalPriceEl.textContent = durationSelect.value === "1" ? "40₪" : "80₪";
     });
-    totalPriceEl.textContent = "40₪";
   </script>
 </body>
 </html>
