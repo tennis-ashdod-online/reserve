@@ -16,7 +16,7 @@
 
   <style>
     :root { 
-      --primary: #1a5d1a; --light: #f8f9ea; --shadow: 0 6px 18px rgba(0,0,0,0.08);
+      --primary: #1a5d1a; --primary-light: #2e7d32; --light: #f8f9ea; --shadow: 0 6px 18px rgba(0,0,0,0.08);
     }
     body { 
       font-family: 'Rubik', sans-serif; background: var(--light); color: #333; margin: 0; padding: 0; 
@@ -47,47 +47,111 @@
     .whatsapp-icon { font-size: 32px; color: white; background:#25D366; width: 58px; height: 58px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
     @keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.1)} }
 
+    /* כפתורים עליונים – שניהם בצד ימין */
     .top-controls {
       position: fixed;
       top: 12px;
-      left: 12px;
       right: 12px;
       display: flex;
-      justify-content: space-between;
+      gap: 12px;
       z-index: 9999;
       pointer-events: none;
     }
     .top-controls > * { pointer-events: auto; }
 
     #accessibilityToggle, .hamburger-menu {
-      width: 52px; height: 52px; border-radius: 50%; background: var(--primary); color: white;
-      display: flex; align-items: center; justify-content: center; font-size: 1.6rem;
-      box-shadow: 0 5px 16px rgba(0,0,0,0.25); border: none; cursor: pointer;
-      transition: all 0.3s;
+      width: 56px; height: 56px; border-radius: 50%; background: var(--primary); color: white;
+      display: flex; align-items: center; justify-content: center; font-size: 1.7rem;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.25); border: none; cursor: pointer;
+      transition: all 0.3s ease;
     }
-    #accessibilityToggle:hover, .hamburger-menu:hover { transform: scale(1.15); box-shadow: 0 8px 25px rgba(0,0,0,0.35); }
+    #accessibilityToggle:hover, .hamburger-menu:hover { 
+      transform: scale(1.15); 
+      background: var(--primary-light);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.35); 
+    }
 
+    /* תפריט נגישות מודרני – מצד ימין, ירוק, יפהפה */
     #accessibilityMenu {
-      position: fixed; top: 78px; left: 12px; background: white; border-radius: 16px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.25); padding: 1rem; width: 240px; z-index: 9998;
-      display: none; border: 2px solid var(--primary);
+      position: fixed;
+      top: 80px;
+      right: 12px;
+      width: 300px;
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+      overflow: hidden;
+      z-index: 9998;
+      opacity: 0;
+      transform: translateY(-20px);
+      visibility: hidden;
+      transition: all 0.4s ease;
+      border: 3px solid var(--primary);
     }
-    #accessibilityMenu.open { display: block; animation: slideDown 0.4s ease; }
-    @keyframes slideDown { from { opacity: 0; transform: translateY(-15px); } to { opacity: 1; transform: none; } }
-    .acc-btn { width: 100%; margin: 0.5rem 0; padding: 0.8rem; border-radius: 10px; border: none; background: #f0f0f0; text-align: right; font-size: 0.95rem; }
-    .acc-btn.active { background: var(--primary); color: white; }
+    #accessibilityMenu.open {
+      opacity: 1;
+      transform: translateY(0);
+      visibility: visible;
+    }
 
+    .acc-header {
+      background: var(--primary);
+      color: white;
+      padding: 1rem;
+      text-align: center;
+      font-weight: 600;
+      font-size: 1.1rem;
+    }
+    .acc-body {
+      padding: 1.2rem;
+    }
+    .acc-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.9rem 1rem;
+      margin: 0.4rem 0;
+      background: #f0f7f0;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-size: 1rem;
+    }
+    .acc-item:hover {
+      background: var(--primary);
+      color: white;
+      transform: translateX(-6px);
+    }
+    .acc-item i {
+      font-size: 1.4rem;
+      color: var(--primary);
+    }
+    .acc-item:hover i { color: white; }
+
+    .acc-item.active {
+      background: var(--primary-light);
+      color: white;
+    }
+    .acc-item.active i { color: white; }
+
+    /* סיידבר */
     .sidebar { position: fixed; top: 0; right: -100%; width: 320px; height: 100%; background: white; box-shadow: -8px 0 25px rgba(0,0,0,0.15); z-index: 9996; transition: right 0.4s ease; padding: 80px 20px 20px; overflow-y: auto; }
     .sidebar.open { right: 0; }
     .sidebar .close-btn { position: absolute; top: 15px; left: 15px; background: none; border: none; font-size: 2.2rem; color: #333; cursor: pointer; }
 
     @media (min-width: 576px) { .hero-img { height: 500px; } .container { margin-top: 100px; } }
-    @media (max-width: 576px) { .main-subtitle { font-size: 1.6rem; } .hero-img { height: 280px; } .sidebar { width: 100%; } }
+    @media (max-width: 576px) { 
+      .main-subtitle { font-size: 1.6rem; } 
+      .hero-img { height: 280px; } 
+      .sidebar { width: 100%; }
+      #accessibilityMenu { width: 90%; right: 5%; }
+    }
 
     body.high-contrast { background: black !important; color: white !important; }
     body.high-contrast * { background: black !important; color: white !important; border-color: white !important; }
     body.highlight-links a { text-decoration: underline !important; color: #ff0 !important; }
     body.grayscale { filter: grayscale(100%); }
+    body.large-text { font-size: 1.4rem !important; }
   </style>
 </head>
 <body>
@@ -99,22 +163,47 @@
 
   <div id="successPopup" class="d-none"></div>
 
+  <!-- כפתורים עליונים – שניהם בצד ימין -->
   <div class="top-controls">
-    <button id="accessibilityToggle" aria-label="נגישות">
+    <button id="accessibilityToggle" aria-label="תפריט נגישות" title="נגישות">
       <i class="fas fa-universal-access"></i>
     </button>
-    <div class="hamburger-menu" id="hamburgerMenu">
+    <div class="hamburger-menu" id="hamburgerMenu" title="תפריט">
       <i class="fas fa-bars"></i>
     </div>
   </div>
 
+  <!-- תפריט נגישות מודרני – ירוק, יפה, מצד ימין -->
   <div id="accessibilityMenu">
-    <button class="acc-btn" onclick="increaseFont()">הגדל טקסט</button>
-    <button class="acc-btn" onclick="decreaseFont()">הקטן טקסט</button>
-    <button class="acc-btn" onclick="toggleContrast()">ניגודיות גבוהה</button>
-    <button class="acc-btn" onclick="toggleLinks()">הדגש קישורים</button>
-    <button class="acc-btn" onclick="toggleGrayscale()">גווני אפור</button>
-    <button class="acc-btn" id="speakBtn" onclick="toggleSpeak()">הקראה</button>
+    <div class="acc-header">
+      <i class="fas fa-universal-access"></i> הגדרות נגישות
+    </div>
+    <div class="acc-body">
+      <div class="acc-item" onclick="increaseFont()">
+        <span>הגדל טקסט</span>
+        <i class="fas fa-text-height"></i>
+      </div>
+      <div class="acc-item" onclick="decreaseFont()">
+        <span>הקטן טקסט</span>
+        <i class="fas fa-text-height"></i>
+      </div>
+      <div class="acc-item" onclick="toggleContrast()">
+        <span>ניגודיות גבוהה</span>
+        <i class="fas fa-adjust"></i>
+      </div>
+      <div class="acc-item" onclick="toggleGrayscale()">
+        <span>גווני אפור</span>
+        <i class="fas fa-eye-slash"></i>
+      </div>
+      <div class="acc-item" onclick="toggleLinks()">
+        <span>הדגש קישורים</span>
+        <i class="fas fa-link"></i>
+      </div>
+      <div class="acc-item" id="speakBtn" onclick="toggleSpeak()">
+        <span id="speakText">הקראה</span>
+        <i class="fas fa-volume-up"></i>
+      </div>
+    </div>
   </div>
 
   <a href="https://wa.me/972524864380?text=הי, אני צריך עזרה בהזמנת מגרש טניס" class="whatsapp-float" target="_blank">
@@ -129,9 +218,7 @@
       <p><strong>כתובת:</strong> הרי גולן 5, אשדוד</p>
       <p><strong>טלפון:</strong> 08-8678400</p>
       <p><strong>שעות פתיחה:</strong><br>א'-ה' 08:00–21:00<br>שישי 08:00–14:00<br>שבת 08:00–21:00</p>
-      <div class="map-container-sidebar">
-        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3381.377!2d34.6309!3d31.7832!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzEuNzgzMTY1LDM0LjYzMTA5Ng!5e0!3m2!1siw!2sil!4v1731780000000" width="100%" height="220" style="border:0; border-radius:10px;" allowfullscreen="" loading="lazy"></iframe>
-      </div>
+      <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3381.377!2d34.6309!3d31.7832!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzEuNzgzMTY1LDM0LjYzMTA5Ng!5e0!3m2!1siw!2sil!4v1731780000000" width="100%" height="220" style="border:0; border-radius:10px;" allowfullscreen="" loading="lazy"></iframe>
     </div>
     <div class="sidebar-section">
       <h4>שאלות נפוצות</h4>
@@ -159,8 +246,7 @@
           <div class="col-6"><label class="form-label">* תאריך</label><input type="date" class="form-control" id="date" required></div>
           <div class="col-6"><label class="form-label">* שעת התחלה</label><select class="form-select" id="time" required></select></div>
           <div class="col-6"><label class="form-label">* משך</label><select class="form-select" id="duration" required>
-            <option value="1">שעה (40₪)</option>
-            <option value="2">שעתיים (80₪)</option>
+            <option value="1">שעה (40₪)</option><option value="2">שעתיים (80₪)</option>
           </select></div>
           <div class="col-6"><label class="form-label">* מגרש</label><select class="form-select" id="court" required>
             <option value="">בחר מגרש</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option>
@@ -263,43 +349,40 @@
       }, 1800);
     });
 
-    // לחיצה על ההמבורגר – פותחת/סוגרת + חוזרת למעלה
+    // תפריט המבורגר – פותח/סוגר + חוזר למעלה
     const hamburgerBtn = document.getElementById('hamburgerMenu');
     const sidebar = document.getElementById('sidebar');
-
     hamburgerBtn.addEventListener('click', () => {
       if (sidebar.classList.contains('open')) {
-        // אם פתוח → סגור אותו וחזור למעלה
         sidebar.classList.remove('open');
         window.scrollTo({ top: 0, behavior: 'smooth' });
       } else {
-        // אם סגור → פתח
         sidebar.classList.add('open');
       }
     });
-
-    // סגירה גם בלחיצה על כפתור ה-X או מחוץ לסיידבר
     document.getElementById('closeSidebar').onclick = () => sidebar.classList.remove('open');
     sidebar.onclick = e => e.target === sidebar && sidebar.classList.remove('open');
 
-    // נגישות
-    document.getElementById('accessibilityToggle').onclick = () => document.getElementById('accessibilityMenu').classList.toggle('open');
+    // תפריט נגישות – מודרני
+    document.getElementById('accessibilityToggle').onclick = () => {
+      document.getElementById('accessibilityMenu').classList.toggle('open');
+    };
 
-    function increaseFont() { let s = parseFloat(getComputedStyle(document.body).fontSize); document.body.style.fontSize = (s+1.5)+'px'; }
-    function decreaseFont() { let s = parseFloat(getComputedStyle(document.body).fontSize); if(s>14) document.body.style.fontSize = (s-1.5)+'px'; }
+    function increaseFont() { document.body.style.fontSize = (parseFloat(getComputedStyle(document.body).fontSize) + 2) + 'px'; }
+    function decreaseFont() { let s = parseFloat(getComputedStyle(document.body).fontSize); if(s > 14) document.body.style.fontSize = (s - 2) + 'px'; }
     function toggleContrast() { document.body.classList.toggle('high-contrast'); }
-    function toggleLinks() { document.body.classList.toggle('highlight-links'); }
     function toggleGrayscale() { document.body.classList.toggle('grayscale'); }
+    function toggleLinks() { document.body.classList.toggle('highlight-links'); }
 
     function toggleSpeak() {
       if (speechSynthesis.speaking) {
         speechSynthesis.cancel();
-        document.getElementById('speakBtn').innerHTML = 'הקראה';
+        document.getElementById('speakText').textContent = 'הקראה';
       } else {
-        const utter = new SpeechSynthesisUtterance(document.body.innerText.substring(0,1000));
+        const utter = new SpeechSynthesisUtterance(document.body.innerText.substring(0,1200));
         utter.lang = 'he-IL';
         speechSynthesis.speak(utter);
-        document.getElementById('speakBtn').innerHTML = 'עצור';
+        document.getElementById('speakText').textContent = 'עצור הקראה';
       }
     }
   </script>
