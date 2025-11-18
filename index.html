@@ -80,19 +80,9 @@
     .sidebar { position: fixed; top: 0; right: -100%; width: 320px; height: 100%; background: white; box-shadow: -8px 0 25px rgba(0,0,0,0.15); z-index: 9996; transition: right 0.4s ease; padding: 80px 20px 20px; overflow-y: auto; }
     .sidebar.open { right: 0; }
     .sidebar .close-btn { position: absolute; top: 15px; left: 15px; background: none; border: none; font-size: 2.2rem; color: #333; cursor: pointer; }
-    .sidebar h3 { color: var(--primary); text-align: center; margin-bottom: 1.5rem; }
-    .sidebar-section { margin-bottom: 2rem; background: #f9f9f9; padding: 1rem; border-radius: 12px; }
-    .sidebar-section h4 { color: var(--primary); margin-bottom: 0.8rem; }
 
-    @media (min-width: 576px) {
-      .hero-img { height: 500px; }
-      .container { margin-top: 100px; }
-    }
-    @media (max-width: 576px) {
-      .main-subtitle { font-size: 1.6rem; }
-      .hero-img { height: 280px; }
-      .sidebar { width: 100%; }
-    }
+    @media (min-width: 576px) { .hero-img { height: 500px; } .container { margin-top: 100px; } }
+    @media (max-width: 576px) { .main-subtitle { font-size: 1.6rem; } .hero-img { height: 280px; } .sidebar { width: 100%; } }
 
     body.high-contrast { background: black !important; color: white !important; }
     body.high-contrast * { background: black !important; color: white !important; border-color: white !important; }
@@ -124,9 +114,7 @@
     <button class="acc-btn" onclick="toggleContrast()">ניגודיות גבוהה</button>
     <button class="acc-btn" onclick="toggleLinks()">הדגש קישורים</button>
     <button class="acc-btn" onclick="toggleGrayscale()">גווני אפור</button>
-    <button class="acc-btn" id="speakBtn" onclick="toggleSpeak()">
-      <i class="fas fa-volume-up"></i> הקראה
-    </button>
+    <button class="acc-btn" id="speakBtn" onclick="toggleSpeak()">הקראה</button>
   </div>
 
   <a href="https://wa.me/972524864380?text=הי, אני צריך עזרה בהזמנת מגרש טניס" class="whatsapp-float" target="_blank">
@@ -275,13 +263,13 @@
       }, 1800);
     });
 
-    // התוספת שביקשת – לחיצה על ההמבורגר
+    // לחיצה על ההמבורגר – פותחת/סוגרת + חוזרת למעלה
     const hamburgerBtn = document.getElementById('hamburgerMenu');
     const sidebar = document.getElementById('sidebar');
 
     hamburgerBtn.addEventListener('click', () => {
       if (sidebar.classList.contains('open')) {
-        // אם פתוח → סגור + חזור לראש העמוד
+        // אם פתוח → סגור אותו וחזור למעלה
         sidebar.classList.remove('open');
         window.scrollTo({ top: 0, behavior: 'smooth' });
       } else {
@@ -290,9 +278,11 @@
       }
     });
 
+    // סגירה גם בלחיצה על כפתור ה-X או מחוץ לסיידבר
     document.getElementById('closeSidebar').onclick = () => sidebar.classList.remove('open');
     sidebar.onclick = e => e.target === sidebar && sidebar.classList.remove('open');
 
+    // נגישות
     document.getElementById('accessibilityToggle').onclick = () => document.getElementById('accessibilityMenu').classList.toggle('open');
 
     function increaseFont() { let s = parseFloat(getComputedStyle(document.body).fontSize); document.body.style.fontSize = (s+1.5)+'px'; }
@@ -304,12 +294,12 @@
     function toggleSpeak() {
       if (speechSynthesis.speaking) {
         speechSynthesis.cancel();
-        document.getElementById('speakBtn').innerHTML = '<i class="fas fa-volume-up"></i> הקראה';
+        document.getElementById('speakBtn').innerHTML = 'הקראה';
       } else {
         const utter = new SpeechSynthesisUtterance(document.body.innerText.substring(0,1000));
         utter.lang = 'he-IL';
         speechSynthesis.speak(utter);
-        document.getElementById('speakBtn').innerHTML = '<i class="fas fa-volume-mute"></i> עצור';
+        document.getElementById('speakBtn').innerHTML = 'עצור';
       }
     }
   </script>
