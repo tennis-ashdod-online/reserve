@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>הזמנת מגרש טניס באשדוד אונליין | מרכז קהילתי עם שלום י״א – 40₪ לשעה</title>
-  <meta name="description" content="הזמנת מגרש טניס באשדוד בלחיצה – 40₪ לשעה, יון 6 מגרשים, תאורה עד 21:00, אישור מיידי במייל. הזמן עכשיו!">
+  <meta name="description" content="הזמנת מגרש טניס באשדוד בלחיצה – 40₪ לשעה, 6 מגרשים, תאורה עד 21:00, אישור מיידי במייל. הזמן עכשיו!">
   <link rel="icon" href="https://i.ibb.co/Z61VPjns/image.jpg" type="image/jpeg">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
   <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&display=swap" rel="stylesheet">
@@ -41,31 +41,19 @@
     }
     .hamburger-menu:hover { transform: scale(1.1); }
 
-    /* וואטסאפ – ללא קו כחול לעולם! */
+    /* וואטסאפ – בלי קו כחול לעולם */
     .whatsapp-float {
-      position: fixed;
-      left: 15px;
-      bottom: 20px;
-      z-index: 1000;
-      animation: pulse 2s infinite;
-      text-decoration: none !important;
-      outline: none !important;
-    }
-    .whatsapp-float:hover, .whatsapp-float:focus, .whatsapp-float:active {
-      outline: none !important;
-      box-shadow: 0 0 0 4px rgba(37,211,102,0.4) !important;
+      position: fixed; left: 15px; bottom: 20px; z-index: 1000; animation: pulse 2s infinite;
+      text-decoration: none !important; outline: none !important;
     }
     .whatsapp-icon {
-      font-size: 32px; color: white; background-color: #25D366;
-      width: 58px; height: 58px; border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-      outline: none !important; border: none !important;
+      font-size: 32px; color: white; background-color: #25D366; width: 58px; height: 58px;
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3); outline: none !important; border: none !important;
     }
     @keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.08)} }
 
-    .sidebar {
-      position: fixed; top: 0; right: -100%; width: 320px; height: 100%; background: white;
+    .sidebar { position: fixed; top: 0; right: -100%; width: 320px; height: 100%; background: white;
       box-shadow: -8px 0 25px rgba(0,0,0,0.15); z-index: 9998; transition: right 0.4s ease;
       padding: 80px 20px 20px; overflow-y: auto;
     }
@@ -86,32 +74,39 @@
     .btn-submit { background: var(--primary); border: none; border-radius: 10px; padding: 0.8rem; font-weight: 600; color: white !important; font-size: 1.1rem; }
     .price-display { font-size: 1.4rem; font-weight: 700; color: #1a5d1a; text-align: center; margin: 1.2rem 0; }
 
-    /* צ'קבוקס – גדול, מודגש, ומוזז לגמרי לשמאל */
-    #terms {
-      width: 28px !important;
-      height: 28px !important;
-      border: 4px solid var(--primary) !important;
-      border-radius: 9px !important;
-      accent-color: var(--primary);
-      cursor: pointer;
-      transform: scale(1.2);
-      margin-left: 0 !important;
-      margin-right: 12px !important;
-      float: left;
-    }
-    .form-check {
+    /* התיקון החדש – בדיוק כמו שסימנת בתמונה! */
+    .terms-row {
       display: flex;
       align-items: center;
-      justify-content: flex-start;
-      padding-left: 0;
-      margin-bottom: 1rem;
+      justify-content: space-between;
+      margin: 1.5rem 0 1rem;
+      position: relative;
     }
-    .form-check-label {
+    #terms {
+      width: 32px !important;
+      height: 32px !important;
+      border: 4.5px solid var(--primary) !important;
+      border-radius: 10px !important;
+      accent-color: var(--primary);
+      cursor: pointer;
+      transform: scale(1.3);
+      margin: 0;
+      position: absolute;
+      left: 8px;
+      top: 50%;
+      transform: translateY(-50%) scale(1.3);
+    }
+    .terms-text {
+      flex: 1;
+      text-align: center;
       font-weight: 700 !important;
       color: var(--primary) !important;
-      font-size: 1.1rem;
-      margin: 0;
-      line-height: 1.4;
+      font-size: 1.12rem;
+      margin: 0 40px; /* מרווח מהצ'קבוקס */
+    }
+    .terms-text a {
+      color: var(--primary);
+      text-decoration: underline;
     }
 
     @media (min-width: 576px) {
@@ -121,7 +116,8 @@
       .main-subtitle { font-size: 1.7rem; }
       .hero-img { height: 280px; }
       .sidebar { width: 100%; }
-      #terms { width: 26px !important; height: 26px !important; }
+      #terms { width: 30px !important; height: 30px !important; left: 5px; }
+      .terms-text { font-size: 1.05rem; margin: 0 35px; }
     }
   </style>
 </head>
@@ -140,7 +136,6 @@
 
   <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
-  <!-- וואטסאפ – ללא קו כחול בשום מצב -->
   <a href="https://wa.me/972524864380?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%A6%D7%A8%D7%99%D7%9A%20%D7%A2%D7%96%D7%A8%D7%94%20%D7%91%D7%94%D7%96%D7%9E%D7%A0%D7%AA%20%D7%9E%D7%92%D7%A8%D7%A9%20%D7%98%D7%A0%D7%99%D7%A1" 
      class="whatsapp-float" target="_blank" aria-label="WhatsApp">
     <i class="fab fa-whatsapp whatsapp-icon"></i>
@@ -169,11 +164,9 @@
 
   <div class="container">
     <h1 class="main-subtitle" data-t="center-name">מרכז קהילתי עם שלום י"א</h1>
-
     <div style="margin-bottom:1rem;border-radius:20px;overflow:hidden;box-shadow:var(--shadow);">
       <img src="https://i.ibb.co/Z61VPjns/image.jpg" alt="מגרשי טניס באשדוד" class="hero-img">
     </div>
-
     <h2 class="text-center mb-4" style="color:var(--primary);font-weight:600;" data-t="book-title">הזמנת מגרש טניס</h2>
 
     <div class="form-card">
@@ -192,13 +185,13 @@
           </select></div>
           <div class="col-12"><label class="form-label"><span data-t="notes">הערות</span></label><textarea class="form-control" id="notes" rows="1"></textarea></div>
 
-          <!-- צ'קבוקס – עכשיו בצד שמאל לגמרי, גדול ומודגש -->
+          <!-- התיקון החדש – בדיוק כמו בתמונה שלך -->
           <div class="col-12">
-            <div class="form-check">
-              <input type="checkbox" class="form-check-input" id="terms" required>
-              <label class="form-check-label" for="terms">
+            <div class="terms-row">
+              <input type="checkbox" id="terms" required>
+              <div class="terms-text">
                 * <span data-t="agree">מסכים</span> <a href="#" data-t="terms">לתנאים</a>
-              </label>
+              </div>
             </div>
           </div>
 
@@ -210,14 +203,12 @@
   </div>
 
   <script>
-    const translations = { /* נשאר בדיוק כמו קודם – עובד מושלם */ 
+    const translations = {
       he: {"center-name":"מרכז קהילתי עם שלום י\"א","book-title":"הזמנת מגרש טניס","name":"שם מלא","phone":"טלפון","email":"אימייל","date":"תאריך","time":"שעת התחלה","duration":"משך","court":"מגרש","notes":"הערות","agree":"מסכים","terms":"לתנאים","total":"סה\"כ:","submit":"שלח הזמנה","info-title":"מידע ותמיכה","center-details":"פרטי המרכז","address":"כתובת:","address-val":"הרי גולן 5, אשדוד","hours":"שעות פתיחה:","hours-val":"א'-ה' 08:00–21:00<br>שישי 08:00–14:00<br>שבת 08:00–21:00","faq":"שאלות נפוצות","q-equipment":"צריך ציוד?","a-equipment":"מומלץ להביא אישי. שכירה: מחבט 15₪, כדורים 5₪.","q-rain":"גשם?","a-rain":"ביטול אוטומטי + החזר מלא.","q-multiple":"יותר ממגרש אחד?","a-multiple":"הזמן שוב או שלח וואטסאפ.","q-light":"תאורה?","a-light":"כן, עד 21:00 – חינם!"},
-      en: {"center-name":"Am Shalom Yud-Alef Community Center","book-title":"Book a Tennis Court","name":"Full Name","phone":"Phone","email":"Email","date":"Date","time":"Start Time","duration":"Duration","court":"Court","notes":"Notes","agree":"I agree to","terms":"Terms","total":"Total:","submit":"Send Booking","info-title":"Info & Support","center-details":"Center Details","address":"Address:","address-val":"Har Golan 5, Ashdod","hours":"Opening Hours:"," ...
-      },
-      ru: { /* ... */ }
+      en: {"center-name":"Am Shalom Yud-Alef Community Center","book-title":"Book a Tennis Court","name":"Full Name","phone":"Phone","email":"Email","date":"Date","time":"Start Time","duration":"Duration","court":"Court","notes":"Notes","agree":"I agree to","terms":"Terms","total":"Total:","submit":"Send Booking","info-title":"Info & Support"},
+      ru: {"center-name":"Общественный центр Ам Шалом Юд-Алеф","book-title":"Бронирование теннисного корта","name":"ФИО","phone":"Телефон","email":"Email","date":"Дата","time":"Время начала","duration":"Продолжительность","court":"Корт","notes":"Примечания","agree":"Согласен с","terms":"условиями","total":"Итого:","submit":"Отправить бронь","info-title":"Информация"}
     };
 
-    // כל הסקריפט שלך – נשאר בדיוק כמו שהיה, עובד מושלם
     document.querySelectorAll('.lang-btn').forEach(btn => {
       btn.addEventListener('click', () => {
         const lang = btn.dataset.lang;
@@ -238,8 +229,7 @@
     const overlay = document.getElementById('sidebarOverlay');
     const closeBtn = document.getElementById('closeSidebar');
 
-    hamburger.addEventListener('click', (e) => {
-      e.stopPropagation();
+    hamburger.addEventListener('click', () => {
       sidebar.classList.toggle('open');
       overlay.classList.toggle('active');
     });
@@ -252,7 +242,6 @@
       overlay.classList.remove('active');
     });
 
-    // שעות + מחיר
     (function(){ emailjs.init("z1P-O8ROFHiXihsLH"); })();
     const today = new Date();
     const dateInput = document.getElementById('date');
