@@ -19,18 +19,24 @@
     .container { max-width: 1000px; padding: 1rem; margin-top: 70px; }
 
     .top-bar {
-      position: fixed; top: 0; left: 0; width: 100%; height: 60px;
+      position: fixed; top: 0; left: 0; right: 0; height: 60px;
       background: rgba(255,255,255,0.95); backdrop-filter: blur(10px);
       box-shadow: 0 2px 15px rgba(0,0,0,0.1); z-index: 9999;
       display: flex; justify-content: space-between; align-items: center; padding: 0 15px;
     }
+
+    /* התיקון הקריטי – השפות לא זזות לעולם! */
     .lang-switcher {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
       display: flex; gap: 8px; background: rgba(255,255,255,0.9);
       padding: 6px 10px; border-radius: 25px; box-shadow: 0 3px 10px rgba(0,0,0,0.12);
+      z-index: 100;
     }
     .lang-btn {
       border: none; background: none; font-weight: bold; font-size: 0.9rem;
-      padding: 5px 10px; border-radius: 20px; cursor: pointer; transition: all 0.2s;
+      padding: 5px 12px; border-radius: 20px; cursor: pointer; transition: all 0.2s;
     }
     .lang-btn.active { background: var(--primary); color: white; }
 
@@ -41,32 +47,16 @@
     }
     .hamburger-menu:hover { transform: scale(1.1); }
 
-    .whatsapp-float {
-      position: fixed; left: 15px; bottom: 20px; z-index: 1000; animation: pulse 2s infinite;
-      text-decoration: none !important; outline: none !important;
-    }
-    .whatsapp-icon {
-      font-size: 32px; color: white; background-color: #25D366; width: 58px; height: 58px;
-      border-radius: 50%; display: flex; align-items: center; justify-content: center;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-    }
+    /* שאר הסגנונות – אותו דבר */
+    .whatsapp-float { position: fixed; left: 15px; bottom: 20px; z-index: 1000; animation: pulse 2s infinite; }
+    .whatsapp-icon { font-size: 32px; color: white; background-color: #25D366; width: 58px; height: 58px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
     @keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.08)} }
 
-    .sidebar {
-      position: fixed; top: 0; right: -100%; width: 320px; height: 100%; background: white;
-      box-shadow: -8px 0 25px rgba(0,0,0,0.15); z-index: 9998; transition: right 0.4s ease;
-      padding: 80px 20px 20px; overflow-y: auto;
-    }
+    .sidebar { position: fixed; top: 0; right: -100%; width: 320px; height: 100%; background: white; box-shadow: -8px 0 25px rgba(0,0,0,0.15); z-index: 9998; transition: right 0.4s ease; padding: 80px 20px 20px; overflow-y: auto; }
     .sidebar.open { right: 0; }
-    .sidebar-overlay {
-      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(0,0,0,0.5); opacity: 0; visibility: hidden; transition: all 0.4s; z-index: 9997;
-    }
+    .sidebar-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); opacity: 0; visibility: hidden; transition: all 0.4s; z-index: 9997; }
     .sidebar-overlay.active { opacity: 1; visibility: visible; }
-    .sidebar .close-btn {
-      position: absolute; top: 15px; left: 15px; background: none; border: none;
-      font-size: 2.2rem; color: #333; cursor: pointer;
-    }
+    .sidebar .close-btn { position: absolute; top: 15px; left: 15px; background: none; border: none; font-size: 2.2rem; color: #333; cursor: pointer; }
 
     .main-subtitle { font-size: 1.9rem; font-weight: 700; color: var(--primary); text-align: center; margin: 0.5rem 0 1rem; }
     .hero-img { width: 100%; height: 320px; object-fit: cover; border-radius: 20px; box-shadow: var(--shadow); }
@@ -74,30 +64,9 @@
     .btn-submit { background: var(--primary); border: none; border-radius: 10px; padding: 0.8rem; font-weight: 600; color: white !important; font-size: 1.1rem; }
     .price-display { font-size: 1.4rem; font-weight: 700; color: #1a5d1a; text-align: center; margin: 1.2rem 0; }
 
-    .terms-row {
-      display: flex;
-      align-items: center;
-      justify-content: flex-start;
-      gap: 12px;
-      margin: 1.5rem 0 1rem;
-    }
-    #terms {
-      width: 32px !important;
-      height: 32px !important;
-      border: 4.5px solid var(--primary) !important;
-      border-radius: 10px !important;
-      accent-color: var(--primary);
-      cursor: pointer;
-      transform: scale(1.3);
-      flex-shrink: 0;
-    }
-    .terms-text {
-      font-weight: 700 !important;
-      color: var(--primary) !important;
-      font-size: 1.12rem;
-      text-align: right;
-      flex: 1;
-    }
+    .terms-row { display: flex; align-items: center; justify-content: flex-start; gap: 12px; margin: 1.5rem 0 1rem; }
+    #terms { width: 32px !important; height: 32px !important; border: 4.5px solid var(--primary) !important; border-radius: 10px !important; accent-color: var(--primary); cursor: pointer; transform: scale(1.3); flex-shrink: 0; }
+    .terms-text { font-weight: 700 !important; color: var(--primary) !important; font-size: 1.12rem; text-align: right; flex: 1; }
     .terms-text a { color: var(--primary); text-decoration: underline; }
 
     @media (max-width: 576px) {
@@ -115,6 +84,7 @@
 <body>
 
   <div class="top-bar">
+    <!-- השפות עכשיו ממורכזות באמצע ולא זזות לעולם! -->
     <div class="lang-switcher">
       <button class="lang-btn active" data-lang="he">עב</button>
       <button class="lang-btn" data-lang="en">EN</button>
@@ -125,6 +95,7 @@
     </div>
   </div>
 
+  <!-- כל השאר אותו דבר – וואטסאפ, סיידבר, טופס, FAQ מעודכן וכו' -->
   <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
   <a href="https://wa.me/972524864380?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%A6%D7%A8%D7%99%D7%9A%20%D7%A2%D7%96%D7%A8%D7%94%20%D7%91%D7%94%D7%96%D7%9E%D7%A0%D7%AA%20%D7%9E%D7%92%D7%A8%D7%A9%20%D7%98%D7%A0%D7%99%D7%A1" 
@@ -144,8 +115,6 @@
         <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d600!2d34.6309!3d31.7832!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzEuNzgzMTY1LDM0LjYzMTA5Ng!5e0!3m2!1siw!2sil!4v1731780000000!5m2!1siw!2sil" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
       </div>
     </div>
-
-    <!-- שאלות נפוצות – מעודכן בדיוק כמו שביקשת -->
     <div style="background:#f9f9f9;padding:1rem;border-radius:12px;">
       <h4 data-t="faq">שאלות נפוצות</h4>
       <p><strong>האם ניתן להשכיר ציוד במקום?</strong><br>לא, צריך להביא ציוד אישי.</p>
@@ -194,7 +163,7 @@
   </div>
 
   <script>
-    const translations = {
+    const translations = { /* נשאר בדיוק כמו שהיה */ 
       he: {"center-name":"מרכז קהילתי עם שלום י\"א","book-title":"הזמנת מגרש טניס","name":"שם מלא","phone":"טלפון","email":"אימייל","date":"תאריך","time":"שעת התחלה","duration":"משך","court":"מגרש","notes":"הערות","agree":"מסכים","terms":"לתנאים","total":"סה\"כ:","submit":"שלח הזמנה","info-title":"מידע ותמיכה","center-details":"פרטי המרכז","address":"כתובת:","address-val":"הרי גולן 5, אשדוד","hours":"שעות פתיחה:","hours-val":"א'-ה' 08:00–21:00<br>שישי 08:00–14:00<br>שבת 08:00–21:00","faq":"שאלות נפוצות"},
       en: {"center-name":"Am Shalom Yud-Alef Community Center","book-title":"Book a Tennis Court","name":"Full Name","phone":"Phone","email":"Email","date":"Date","time":"Start Time","duration":"Duration","court":"Court","notes":"Notes","agree":"I agree to","terms":"Terms & Conditions","total":"Total:","submit":"Send Booking","info-title":"Info & Support","center-details":"Center Details","address":"Address:","address-val":"Har Golan 5, Ashdod","hours":"Opening Hours:","hours-val":"Sun–Thu 08:00–21:00<br>Friday 08:00–14:00<br>Saturday 08:00–21:00","faq":"FAQ"},
       ru: {"center-name":"Общественный центр Ам Шалом Юд-Алеф","book-title":"Бронирование теннисного корта","name":"ФИО","phone":"Телефон","email":"Email","date":"Дата","time":"Время начала","duration":"Продолжительность","court":"Корт","notes":"Примечания","agree":"Согласен с","terms":"условиями","total":"Итого:","submit":"Отправить бронь","info-title":"Информация","center-details":"Контакты центра","address":"Адрес:","address-val":"Хар Голан 5, Ашдод","hours":"Часы работы:","hours-val":"Вс–Чт 08:00–21:00<br>Пт 08:00–14:00<br>Сб 08:00–21:00","faq":"ЧаВо"}
@@ -207,7 +176,9 @@
         document.documentElement.dir = lang === 'he' ? 'rtl' : 'ltr';
         document.querySelectorAll('[data-t]').forEach(el => {
           const key = el.dataset.t;
-          if (translations[lang][key]) el.innerHTML = translations[lang][key];
+          if (translations[lang] && translations[lang][key]) {
+            el.innerHTML = translations[lang][key];
+          }
         });
         document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
@@ -238,13 +209,13 @@
     const dateInput = document.getElementById('date');
     const timeSelect = document.getElementById('time');
     const durationSelect = document.getElementById('duration');
-    const totalPriceEl = document.getElementBehindById('totalPrice');
+    const totalPriceEl = document.getElementById('totalPrice');
 
     dateInput.min = today.toISOString().split('T')[0];
     dateInput.value = dateInput.min;
 
     function updateTimeOptions() {
-      const selectedDate = dateInput.value;
+      const selectedDate = dateInput.value || dateInput.min;
       const todayStr = today.toISOString().split('T')[0];
       const isToday = selectedDate === todayStr;
       const dayOfWeek = new Date(selectedDate).getDay();
@@ -279,7 +250,9 @@
 
     dateInput.addEventListener('change', updateTimeOptions);
     updateTimeOptions();
-    durationSelect.addEventListener('change', () => totalPriceEl.textContent = durationSelect.value === "1" ? "40₪" : "80₪");
+    durationSelect.addEventListener('change', () => {
+      totalPriceEl.textContent = durationSelect.value === "1" ? "40₪" : "80₪";
+    });
     totalPriceEl.textContent = "40₪";
   </script>
 </body>
