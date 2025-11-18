@@ -18,14 +18,14 @@
     }
     body { 
       font-family: 'Rubik', sans-serif; background: var(--light); color: #333; line-height: 1.6; 
-      font-size: var(--font-size); transition: all 0.3s ease; margin: 0; padding: 0;
+      font-size: var(--font-size); margin: 0; padding: 0;
     }
     .container { max-width: 1000px; padding: 0.5rem; }
     .main-subtitle { 
       font-size: 1.8rem; font-weight: 700; color: var(--primary); text-align: center; 
-      margin: 0.8rem 0 0.3rem;
+      margin: 1.2rem 0 0.5rem;
     }
-    .hero-container { position: relative; margin-bottom: 1rem; }
+    .hero-container { margin-bottom: 1rem; }
     .hero-img { 
       width: 100%; height: 320px; object-fit: cover; border-radius: 20px; 
       box-shadow: var(--shadow); display: block;
@@ -40,56 +40,56 @@
       background: var(--primary); border: none; border-radius: 10px; padding: 0.75rem; 
       font-weight: 600; font-size: 1rem; color: white !important;
     }
-    .btn-submit:hover { background: #145214; color: white !important; }
+    .btn-submit:hover { background: #145214; }
     .price-display { font-size: 1.3rem; font-weight: 700; color: #1a5d1a; text-align: center; margin: 1rem 0; }
 
     /* ספינר והצלחה */
     .loader-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.95); z-index: 9999; display: flex; justify-content: center; align-items: center; flex-direction: column; gap: 0.8rem; }
     .loader { width: 50px; height: 50px; border: 5px solid #f3f3f3; border-top: 5px solid var(--primary); border-radius: 50%; animation: spin 1s linear infinite; }
     @keyframes spin { to { transform: rotate(360deg); } }
-    .success-popup { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 1.5rem 2.5rem; border-radius: 18px; box-shadow: 0 12px 35px rgba(0,0,0,0.2); z-index: 10000; text-align: center; font-weight: 700; font-size: 1.2rem; color: var(--primary); border: 2.5px solid var(--primary); animation: popup 0.5s ease-out; }
+    .success-popup { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 1.5rem 2.5rem; border-radius: 18px; box-shadow: 0 12px 35px rgba(0,0,0,0.2); z-index: 10000; text-align: center; color: var(--primary); border: 2.5px solid var(--primary); animation: popup 0.5s ease-out; }
     @keyframes popup { from { transform: translate(-50%, -60%); opacity: 0; } to { transform: translate(-50%, -50%); opacity: 1; } }
 
-    /* וואטסאפ – בלי קו כחול בכלל! */
+    /* וואטסאפ – ללא קו כחול בכלל */
     .whatsapp-float {
       position: fixed; left: 15px; bottom: 20px; z-index: 1000;
-      animation: pulse 2s infinite; text-decoration: none !important;
+      animation: pulse 2s infinite;
     }
     .whatsapp-icon {
       font-size: 32px; color: white; background-color: #25D366;
-          width: 58px; height: 58px; border-radius: 50%; display: flex;
+      width: 58px; height: 58px; border-radius: 50%; display: flex;
       align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-      transition: all 0.3s ease; text-decoration: none !important;
-      outline: none !important; border: none !important;
+      transition: all 0.3s ease; outline: none !important; border: none !important;
     }
     .whatsapp-icon:hover { transform: scale(1.15); }
-    .whatsapp-icon:focus, .whatsapp-icon:active { outline: none !important; box-shadow: 0 0 0 4px rgba(37,211,102,0.4) !important; }
+    .whatsapp-icon:focus, .whatsapp-icon:active { outline: none !important; box-shadow: 0 0 0 4px rgba(37,211,102,0.4); }
     @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.08); } }
 
     /* תפריט נגישות */
-    #accessibilityToggle { position: fixed; left: 15px; top: 80px; z-index: 9999; background: var(--primary); color: white; width: 50px; height: 50px; border-radius: 50%; border: none; font-size: 1.6rem; display: flex; align-items: center; justify-content: center; box-shadow: 0 5px 16px rgba(0,0,0,0.2); cursor: pointer; }
+    #accessibilityToggle { position: fixed; left: 15px; top: 90px; z-index: 9999; background: var(--primary); color: white; width: 52px; height: 52px; border-radius: 50%; border: none; font-size: 1.7rem; display: flex; align-items: center; justify-content: center; box-shadow: 0 5px 16px rgba(0,0,0,0.2); cursor: pointer; }
     #accessibilityToggle:hover { transform: scale(1.1); }
-    .accessibility-menu { position: fixed; left: 15px; top: 140px; z-index: 9998; background: white; border-radius: 14px; box-shadow: 0 8px 25px rgba(0,0,0,0.15); padding: 0.8rem; width: 55px; display: flex; flex-direction: column; gap: 0.6rem; transition: all 0.3s ease; opacity: 0; visibility: hidden; transform: translateY(-8px); }
-    .accessibility-menu.open { opacity: 1; visibility: visible; transform: translateY(0); }
-    .accessibility-btn { background: #f1f1f1; border: none; width: 44px; height: 44px; border-radius: 50%; font-size: 1.2rem; color: #333; display: flex; align-items: center; justify-content: center; transition: all 0.2s; cursor: pointer; }
-    .accessibility-btn:hover, .accessibility-btn.active { background: var(--primary); color: white; transform: scale(1.1); }
 
-    /* ניגודיות וכו' */
-    .high-contrast { --light: #000 !important; --primary: #fff !important; background: #000 !important; color: #fff !important; }
-    .high-contrast * { color: #fff !important; background: #000 !important; border-color: #fff !important; }
-    .high-contrast .form-card { background: #111 !important; }
-    .highlight-links a { outline: 3px solid yellow !important; background: rgba(255,255,0,0.3) !important; }
-    .grayscale { filter: grayscale(100%); }
-
-    /* תפריט המבורגר */
+    /* תפריט המבורגר – מוזז למטה כדי לא להסתיר את הכותרת */
     .hamburger-menu {
-      position: fixed; top: 15px; right: 15px; z-index: 9997;
-      background: var(--primary); color: white; width: 56px; height: 56px;
-      border-radius: 50%; display: flex; align-items: center; justify-content: center;
-      font-size: 1.8rem; cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+      position: fixed;
+      top: 90px;        /* מוזז למטה */
+      right: 15px;
+      z-index: 9997;
+      background: var(--primary);
+      color: white;
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.8rem;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
       transition: all 0.3s ease;
     }
     .hamburger-menu:hover { transform: scale(1.1); }
+
     .sidebar {
       position: fixed; top: 0; right: -100%; width: 320px; height: 100%; background: white;
       box-shadow: -8px 0 25px rgba(0,0,0,0.15); z-index: 9996; transition: right 0.4s ease;
@@ -98,7 +98,7 @@
     .sidebar.open { right: 0; }
     .sidebar .close-btn {
       position: absolute; top: 15px; left: 15px; background: none; border: none;
-      font-size: 2rem; color: #333; cursor: pointer;
+      font-size: 2.2rem; color: #333; cursor: pointer;
     }
     .sidebar h3 { color: var(--primary); margin-bottom: 1.5rem; text-align: center; font-size: 1.5rem; }
     .sidebar-section { margin-bottom: 2rem; background: #f9f9f9; padding: 1rem; border-radius: 12px; }
@@ -107,9 +107,8 @@
 
     @media (min-width: 576px) {
       .hero-img { height: 500px; border-radius: 24px; }
-      #accessibilityToggle { left: 25px; top: 90px; width: 56px; height: 56px; font-size: 1.8rem; }
-      .accessibility-menu { left: 25px; top: 155px; width: 60px; }
-      .hamburger-menu { top: 20px; right: 20px; }
+      .hamburger-menu { top: 100px; right: 20px; } /* קצת יותר למטה בדסקטופ */
+      #accessibilityToggle { top: 100px; left: 20px; }
     }
     @media (max-width: 576px) {
       .main-subtitle { font-size: 1.6rem; }
@@ -120,43 +119,32 @@
 </head>
 <body>
 
-  <!-- ספינר -->
   <div id="loaderOverlay" class="loader-overlay d-none">
     <div class="loader"></div>
     <p class="text-muted">שולח...</p>
   </div>
 
-  <!-- הצלחה -->
   <div id="successPopup" class="d-none"></div>
 
-  <!-- וואטסאפ – בלי קו כחול! -->
-  <a href="https://wa.me/972524864380?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%A6%D7%A8%D7%99%D7%9A%20%D7%A2%D7%96%D7%A8%D7%94%20%D7%91%D7%94%D7%96%D7%9E%D7%A0%D7%AA%20%D7%9E%D7%92%D7%A8%D7%A9%20%D7%98%D7%A0%D7%99%D7%A1" 
+  <!-- וואטסאפ -->
+  <a href="https://wa.me/972524864380?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%A6%D7%A8%D7%99%D7%9A%20%D7%A2%D7%96%D7%A8%D7%94%20%D7%91%D7%94%D7%96%D7%9E%D7%A0%D7%AA%20%D7%9E%D7%92%D7%A8%A9%20%D7%98%D7%A0%D7%99%D7%A1" 
      class="whatsapp-float" target="_blank" title="צריך עזרה?" aria-label="וואטסאפ">
     <i class="fab fa-whatsapp whatsapp-icon"></i>
   </a>
 
-  <!-- תפריט נגישות -->
-  <button id="accessibilityToggle" title="נגישות" aria-label="נגישות">
+  <!-- נגישות -->
+  <button id="accessibilityToggle" title="נגישות">
     <i class="fas fa-universal-access"></i>
   </button>
-  <div id="accessibilityMenu" class="accessibility-menu">
-    <button class="accessibility-btn" onclick="increaseFont()" title="הגדל גופן"><i class="fas fa-plus"></i></button>
-    <button class="accessibility-btn" onclick="decreaseFont()" title="הקטן גופן"><i class="fas fa-minus"></i></button>
-    <button class="accessibility-btn" onclick="toggleContrast()" title="ניגודיות גבוהה"><i class="fas fa-adjust"></i></button>
-    <button class="accessibility-btn" onclick="toggleLinks()" title="הדגש קישורים"><i class="fas fa-link"></i></button>
-    <button class="accessibility-btn" onclick="toggleGrayscale()" title="גווני אפור"><i class="fas fa-eye-slash"></i></button>
-    <button id="speakBtn" class="accessibility-btn" onclick="toggleSpeak()" title="קריאת דף">
-      <i class="fas fa-volume-up"></i>
-    </button>
-  </div>
 
-  <!-- תפריט המבורגר -->
-  <div class="hamburger-menu" id="hamburgerMenu" aria-label="תפריט">
+  <!-- תפריט המבורגר – מוזז למטה -->
+  <div class="hamburger-menu" id="hamburgerMenu">
     <i class="fas fa-bars"></i>
   </div>
 
+  <!-- סיידבר -->
   <div class="sidebar" id="sidebar">
-    <button class="close-btn" id="closeSidebar" aria-label="סגור תפריט">×</button>
+    <button class="close-btn" id="closeSidebar">×</button>
     <h3>מידע ותמיכה</h3>
     
     <div class="sidebar-section">
@@ -164,7 +152,6 @@
       <p><strong>כתובת:</strong> הרי גולן 5, אשדוד</p>
       <p><strong>טלפון:</strong> 08-8678400</p>
       <p><strong>שעות פתיחה:</strong><br>א'-ה' 08:00–21:00<br>שישי 08:00–14:00<br>שבת 08:00–21:00</p>
-      
       <div class="map-container-sidebar">
         <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d600!2d34.6309!3d31.7832!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzEuNzgzMTY1LDM0LjYzMTA5Ng!5e0!3m2!1siw!2sil!4v1731780000000!5m2!1siw!2sil" 
                 width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
@@ -173,10 +160,10 @@
 
     <div class="sidebar-section">
       <h4>שאלות נפוצות</h4>
-      <p><strong>צריך ציוד?</strong> כן, מומלץ להביא אישי. ניתן לשכור: מחבט 15₪, כדורים 5₪.</p>
-      <p><strong>מה קורה בגשם?</strong> ביטול אוטומטי + החזר מלא.</p>
-      <p><strong>רוצה יותר ממגרש אחד?</strong> אפשר להזמין פעם נוספת או לפנות בוואטסאפ.</p>
-      <p><strong>יש תאורה?</strong> כן, עד 21:00 – חינם!</p>
+      <p><strong>צריך ציוד?</strong> מומלץ להביא אישי. שכירה: מחבט 15₪, כדורים 5₪.</p>
+      <p><strong>גשם?</strong> ביטול אוטומטי + החזר מלא.</p>
+      <p><strong>יותר ממגרש אחד?</strong> הזמן שוב או שלח וואטסאפ.</p>
+      <p><strong>תאורה?</strong> כן, עד 21:00 – חינם!</p>
     </div>
   </div>
 
@@ -184,10 +171,10 @@
     <h1 class="main-subtitle">מרכז קהילתי עם שלום י"א</h1>
 
     <div class="hero-container">
-      <img src="https://i.ibb.co/Z61VPjns/image.jpg" alt="מגרשי טניס באשדוד" class="hero-img">
+      <img src="https://i.ibb.co/Z61VPjns/image.jpg" alt="מגרשי טניס" class="hero-img">
     </div>
 
-    <h2 class="section-title text-center mb-4">הזמנת מגרש טניס</h2>
+    <h2 class="text-center mb-4" style="color:var(--primary); font-weight:600;">הזמנת מגרש טניס</h2>
 
     <div class="form-card">
       <form id="bookingForm">
@@ -197,11 +184,11 @@
           <div class="col-12"><label class="form-label"><span class="required-star">*</span> אימייל</label><input type="email" class="form-control" id="email" required></div>
           <div class="col-6"><label class="form-label"><span class="required-star">*</span> תאריך</label><input type="date" class="form-control" id="date" required></div>
           <div class="col-6"><label class="form-label"><span class="required-star">*</span> שעת התחלה</label><select class="form-select" id="time" required></select></div>
-          <div class="col-6"><label class="form-label"><span class="required-star">*</span> משך זמן</label><select class="form-select" id="duration" required><option value="1">שעה אחת (40₪)</option><option value="2">שעתיים (80₪)</option></17n></select></div>
-          <div class="col-6"><label class="form-label"><span class="required-star">*</span> מספר מגרש</label><select class="form-select" id="court" required><option value="">בחר מגרש</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option></select></div>
-          <div class="col-12"><label class="form-label">הערות (לא חובה)</label><textarea class="form-control" id="notes" rows="1" placeholder="למשל: צריך תאורה, יש לי 3 שחקנים..."></textarea></div>
-          <div class="col-12"><div class="form-check"><input type="checkbox" class="form-check-input" id="terms" required><label class="form-check-label" for="terms"><span class="required-star">*</span> אני מסכים <a href="#" class="terms-link">לתנאי השימוש</a></label></div></div>
-          <div class="col-12"><p class="price-display">סה״כ לתשלום: <strong><span id="totalPrice">40₪</span></strong></p></div>
+          <div class="col-6"><label class="form-label"><span class="required-star">*</span> משך</label><select class="form-select" id="duration" required><option value="1">שעה (40₪)</option><option value="2">שעתיים (80₪)</option></select></div>
+          <div class="col-6"><label class="form-label"><span class="required-star">*</span> מגרש</label><select class="form-select" id="court" required><option value="">בחר מגרש</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option></select></div>
+          <div class="col-12"><label class="form-label">הערות</label><textarea class="form-control" id="notes" rows="1" placeholder="צריך תאורה..."></textarea></div>
+          <div class="col-12"><div class="form-check"><input type="checkbox" class="form-check-input" id="terms" required><label class="form-check-label" for="terms"><span class="required-star">*</span> מסכים <a href="#" class="terms-link">לתנאים</a></label></div></div>
+          <div class="col-12"><p class="price-display">סה"כ: <strong><span id="totalPrice">40₪</span></strong></p></div>
           <div class="col-12"><button type="submit" class="btn btn-submit w-100" id="submitBtn">שלח הזמנה</button></div>
         </div>
       </form>
@@ -220,7 +207,9 @@
     const maxDate = `${maxDateObj.getFullYear()}-${String(maxDateObj.getMonth() + 1).padStart(2, '0')}-${String(maxDateObj.getDate()).padStart(2, '0')}`;
 
     const dateInput = document.getElementById('date');
-    dateInput.setAttribute('min', minDate); dateInput.setAttribute('max', maxDate); dateInput.value = minDate;
+    dateInput.setAttribute('min', minDate);
+    dateInput.setAttribute('max', maxDate);
+    dateInput.value = minDate;
 
     const timeSelect = document.getElementById('time');
     const durationSelect = document.getElementById('duration');
@@ -291,15 +280,16 @@
 
       if (!/^05\d{8}$/.test(data.phone)) { alert("טלפון לא תקין"); submitBtn.disabled = false; submitBtn.innerHTML = 'שלח הזמנה'; return; }
       if (!data.time) { alert("בחר שעה זמינה"); submitBtn.disabled = false; submitBtn.innerHTML = 'שלח הזמנה'; return; }
-      if (bookings.some(b => b.date === data.date && b.time === data.time && b.court === data.court)) { alert("המגרש תפוס בשעה זו"); submitBtn.disabled = false; submitBtn.innerHTML = 'שלח הזמנה'; return; }
+      if (bookings.some(b => b.date === data.date && b.time === data.time && b.court === data.court)) { alert("המגרש תפוס"); submitBtn.disabled = false; submitBtn.innerHTML = 'שלח הזמנה'; return; }
 
       const loader = document.getElementById('loaderOverlay'); loader.classList.remove('d-none');
       setTimeout(() => {
         loader.classList.add('d-none');
-        bookings.push(data); localStorage.setItem('tennis_bookings', JSON.stringify(bookings));
+        bookings.push(data);
+        localStorage.setItem('tennis_bookings', JSON.stringify(bookings));
 
         const successPopup = document.getElementById('successPopup');
-        successPopup.innerHTML = `<div class="success-popup"><h4>הוזמן!</h4><p><strong>${data.name}</strong><br>מגרש ${data.court} • ${data.date} • ${data.time}<br>${data.price}</p><p class="text-success">אישור נשלח במייל</p></div>`;
+        successPopup.innerHTML = `<div class="success-popup"><h4>הוזמן!</h4><p><strong>${data.name}</strong><br>מגרש ${data.court} • ${data.date} • ${data.time}<br>${data.price}</p><p class="text-success">אישור במייל</p></div>`;
         successPopup.classList.remove('d-none');
         confetti({ particleCount: 120, spread: 70, origin: { y: 0.6 } });
 
