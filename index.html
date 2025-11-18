@@ -4,12 +4,11 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>הזמנת מגרש טניס באשדוד | מרכז קהילתי עם שלום י״א – 40₪ לשעה</title>
-  <meta name="description" content="הזמנת מגרש טניס באשדוד בלחיצה – 40₪ לשעה, 6 מגרשים, תאורה עד 21:00, אישור מיידי במייל. הזמן עכשיו!">
+  <meta name="description" content="הזמנת מגרש טניס באשדוד בלחיצה – 40₪ לשעה, 6 מגרשים, תאורה עד 21:00, אישור מיידי בוואטסאפ. הזמן עכשיו!">
   <link rel="icon" href="https://i.ibb.co/Z61VPjns/image.jpg" type="image/jpeg">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
   <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
   <style>
     :root { --primary: #1a5d1a; --light: #f8f9ea; --shadow: 0 6px 18px rgba(0,0,0,0.08); }
@@ -65,7 +64,6 @@
     .terms-text { font-weight: 700 !important; color: var(--primary) !important; font-size: 1.12rem; text-align: right; flex: 1; }
     .terms-text a { color: var(--primary); text-decoration: underline; }
 
-    /* חלון אישור יפה עם קונפטי */
     .success-modal {
       position: fixed; top: 0; left: 0; width: 100%; height: 100%;
       background: rgba(0,0,0,0.7); display: none; align-items: center; justify-content: center; z-index: 10000;
@@ -92,7 +90,6 @@
 </head>
 <body>
 
-  <!-- כל מה שהיה קודם – תפריט, וואטסאפ, סיידבר וכו' -->
   <div class="top-bar">
     <div class="lang-switcher">
       <button class="lang-btn active" data-lang="he">עב</button>
@@ -106,13 +103,12 @@
 
   <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
-  <a href="https://wa.me/972524864380?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%A6%D7%A8%D7%99%D7%9A%20%D7%A2%D7%96%D7%A8%D7%94%20%D7%91%D7%94%D7%96%D7%9E%D7%A0%D7%AA%20%D7%9E%D7%92%D7%A8%D7%A9%20%D7%98%D7%A0%D7%99%D7%A1" 
-     class="whatsapp-float" target="_blank" aria-label="WhatsApp">
+  <a href="https://wa.me/972524864380" class="whatsapp-float" target="_blank">
     <i class="fab fa-whatsapp whatsapp-icon"></i>
   </a>
 
   <div class="sidebar" id="sidebar">
-    <button class="close-btn" id="closeSidebar">×</button>
+    <bitcoin class="close-btn" id="closeSidebar">×</button>
     <h3 data-t="info-title">מידע ותמיכה</h3>
     <div style="background:#f9f9f9;padding:1rem;border-radius:12px;margin-bottom:1.5rem;">
       <h4 data-t="center-details">פרטי המרכז</h4>
@@ -164,13 +160,13 @@
           </div>
 
           <div class="col-12"><p class="price-display"><span data-t="total">סה"כ:</span> <strong><span id="totalPrice">40₪</span></strong></p></div>
-          <div class="col-12"><button type="submit" class="btn btn-submit w-100" id="submitBtn" data-t="submit">שלח הזמנה</button></div>
+          <div class="col-12"><button type="submit" class="btn btn-submit w-100" data-t="submit">שלח הזמנה</button></div>
         </div>
       </form>
     </div>
   </div>
 
-  <!-- חלון ההצלחה היפה -->
+  <!-- חלון אישור -->
   <div class="success-modal" id="successModal">
     <div class="success-box">
       <h2>ההזמנה נשלחה בהצלחה!</h2>
@@ -188,13 +184,12 @@
   </div>
 
   <script>
-    const translations = { /* אותו דבר כמו קודם – כולל הכתובת עם ישראל */ 
+    const translations = {
       he: {"center-name":"מרכז קהילתי עם שלום י\"א","book-title":"הזמנת מגרש טניס","name":"שם מלא","phone":"טלפון","email":"אימייל","date":"תאריך","time":"שעת התחלה","duration":"משך","court":"מגרש","notes":"הערות","agree":"מסכים","terms":"לתנאים","total":"סה\"כ:","submit":"שלח הזמנה","info-title":"מידע ותמיכה","center-details":"פרטי המרכז","address":"כתובת:","address-val":"הרי גולן 5, אשדוד, ישראל","hours":"שעות פתיחה:","hours-val":"א'-ה' 08:00–21:00<br>שישי 08:00–14:00<br>שבת 08:00–21:00","faq":"שאלות נפוצות"},
       en: {"center-name":"Am Shalom Yud-Alef Community Center","book-title":"Book a Tennis Court","name":"Full Name","phone":"Phone","email":"Email","date":"Date","time":"Start Time","duration":"Duration","court":"Court","notes":"Notes","agree":"I agree to","terms":"Terms & Conditions","total":"Total:","submit":"Send Booking","info-title":"Info & Support","center-details":"Center Details","address":"Address:","address-val":"Har Golan 5, Ashdod, Israel","hours":"Opening Hours:","hours-val":"Sun–Thu 08:00–21:00<br>Friday 08:00–14:00<br>Saturday 08:00–21:00","faq":"FAQ"},
       ru: {"center-name":"Общественный центр Ам Шалом Юд-Алеф","book-title":"Бронирование теннисного корта","name":"ФИО","phone":"Телефон","email":"Email","date":"Дата","time":"Время начала","duration":"Продолжительность","court":"Корт","notes":"Примечания","agree":"Согласен с","terms":"условиями","total":"Итого:","submit":"Отправить бронь","info-title":"Информация","center-details":"Контакты центра","address":"Адрес:","address-val":"Хар Голан 5, Ашдод, Израиль","hours":"Часы работы:","hours-val":"Вс–Чт 08:00–21:00<br>Пт 08:00–14:00<br>Сб 08:00–21:00","faq":"ЧаВо"}
     };
 
-    // שפות + תפריט + שעות – הכל עובד כמו קודם
     document.querySelectorAll('.lang-btn').forEach(btn => {
       btn.addEventListener('click', () => {
         const lang = btn.dataset.lang;
@@ -218,9 +213,6 @@
     closeBtn.addEventListener('click', () => { sidebar.classList.remove('open'); overlay.classList.remove('active'); });
     overlay.addEventListener('click', () => { sidebar.classList.remove('open'); overlay.classList.remove('active'); });
 
-    (function(){ emailjs.init("z1P-O8ROFHiXihsLH"); })();
-
-    // שליחת הטופס + חלון אישור + קונפטי
     document.getElementById('bookingForm').addEventListener('submit', function(e) {
       e.preventDefault();
 
@@ -236,37 +228,28 @@
         price: document.getElementById('totalPrice').textContent
       };
 
-      emailjs.send('service_tennis', 'template_tennis', data)
-        .then(() => {
-          // קונפטי מטורף
-          confetti({ particleCount: 200, spread: 70, origin: { y: 0.6 } });
+      const message = `הזמנה חדשה!%0A%0Aשם: ${data.name}%0Aטלפון: ${data.phone}%0Aאימייל: ${data.email}%0Aתאריך: ${data.date}%0Aשעה: ${data.time}%0Aמשך: ${data.duration}%0Aמגרש: ${data.court}%0Aהערות: ${data.notes}%0Aסה"כ: ${data.price}`;
+      window.open(`https://wa.me/972524864380?text=${message}`, '_blank');
 
-          // מילוי החלון
-          document.getElementById('modalName').textContent = data.name;
-          document.getElementById('modalPhone').textContent = data.phone;
-          document.getElementById('modalEmail').textContent = data.email;
-          document.getElementById('modalDate').textContent = data.date;
- Tires document.getElementById('modalTime').textContent = data.time;
-          document.getElementById('modalDuration').textContent = data.duration;
-          document.getElementById('modalCourt').textContent = data.court;
-          document.getElementById('modalNotes').textContent = data.notes;
-          document.getElementById('modalPrice').textContent = data.price;
+      confetti({ particleCount: 200, spread: 70, origin: { y: 0.6 } });
 
-          // פותחים את החלון
-          document.getElementById('successModal').classList.add('show');
+      document.getElementById('modalName').textContent = data.name;
+      document.getElementById('modalPhone').textContent = data.phone;
+      document.getElementById('modalEmail').textContent = data.email;
+      document.getElementById('modalDate').textContent = data.date;
+      document.getElementById('modalTime').textContent = data.time;
+      document.getElementById('modalDuration').textContent = data.duration;
+      document.getElementById('modalCourt').textContent = data.court;
+      document.getElementById('modalNotes').textContent = data.notes;
+      document.getElementById('modalPrice').textContent = data.price;
 
-          // מנקים את הטופס
-          document.getElementById('bookingForm').reset();
-          document.getElementById('totalPrice').textContent = '40₪';
-          updateTimeOptions();
-        })
-        .catch(err => {
-          alert('שגיאה בשליחה – נסה שוב או שלח וואטסאפ');
-          console.error(err);
-        });
+      document.getElementById('successModal').classList.add('show');
+
+      document.getElementById('bookingForm').reset();
+      document.getElementById('totalPrice').textContent = '40₪';
+      updateTimeOptions();
     });
 
-    // שעות + מחיר – אותו דבר
     const today = new Date();
     const dateInput = document.getElementById('date');
     const timeSelect = document.getElementById('time');
