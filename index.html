@@ -6,109 +6,80 @@
   <title>הזמנת מגרש טניס – מרכז קהילתי עם שלום י"א, אשדוד</title>
   <meta name="description" content="הזמנת מגרש טניס אונליין – 40₪ לשעה, 6 מגרשים, 08:00–21:00. אישור מיידי במייל!">
   <link rel="icon" href="https://i.ibb.co/Z61VPjns/image.jpg" type="image/jpeg">
+  
+  <!-- Bootstrap + Rubik + Font Awesome (גרק 6.5 – עובד בטוח!) -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
   <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/11.0.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <!-- EmailJS + Confetti -->
   <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
   <style>
     :root { 
       --primary: #1a5d1a; --light: #f8f9ea; --shadow: 0 6px 18px rgba(0,0,0,0.08);
-      --font-size: 1rem;
     }
     body { 
-      font-family: 'Rubik', sans-serif; background: var(--light); color: #333; line-height: 1.6; 
-      font-size: var(--font-size); margin: 0; padding: 0; transition: all 0.3s;
+      font-family: 'Rubik', sans-serif; background: var(--light); color: #333; margin: 0; padding: 0; 
+      transition: all 0.3s; line-height: 1.6;
     }
-    .container { max-width: 1000px; padding: 0.5rem; margin-top: 80px; } /* מקום לכפתורים למעלה */
+    .container { max-width: 1000px; padding: 0.5rem; margin-top: 90px; }
 
-    .main-subtitle { 
-      font-size: 1.8rem; font-weight: 700; color: var(--primary); text-align: center; 
-      margin: 1.2rem 0 0.5rem;
-    }
-    .hero-container { margin-bottom: 1rem; }
-    .hero-img { 
-      width: 100%; height: 320px; object-fit: cover; border-radius: 20px; 
-      box-shadow: var(--shadow); display: block; transition: 0.3s;
-    }
+    .main-subtitle { font-size: 1.8rem; font-weight: 700; color: var(--primary); text-align: center; margin: 1.2rem 0 0.5rem; }
+    .hero-img { width: 100%; height: 320px; object-fit: cover; border-radius: 20px; box-shadow: var(--shadow); transition: 0.3s; }
     .hero-img:hover { transform: scale(1.01); }
 
     .form-card { border: none; border-radius: 18px; box-shadow: var(--shadow); padding: 1.2rem; background: white; margin-bottom: 2rem; }
     .form-label { font-weight: 500; color: #1a5d1a; font-size: 0.95rem; }
-    .required-star { color: #d32f2f; font-weight: bold; margin-left: 3px; }
-    .form-control, .form-select, textarea { border-radius: 10px; border: 1.4px solid #a8d5a8; padding: 0.65rem; font-size: 0.95rem; }
-    .form-control:focus, .form-select:focus, textarea:focus { border-color: var(--primary); box-shadow: 0 0 0 0.18rem rgba(26, 93, 26, 0.15); }
-    .btn-submit {
-      background: var(--primary); border: none; border-radius: 10px; padding: 0.75rem; 
-      font-weight: 600; font-size: 1rem; color: white !important;
-    }
+    .required-star { color: #d32f2f; margin-left: 3px; }
+    .form-control, .form-select, textarea { border-radius: 10px; border: 1.4px solid #a8d5a8; padding: 0.65rem; }
+    .btn-submit { background: var(--primary); border: none; border-radius: 10px; padding: 0.75rem; font-weight: 600; color: white; }
     .btn-submit:hover { background: #145214; }
     .price-display { font-size: 1.3rem; font-weight: 700; color: #1a5d1a; text-align: center; margin: 1rem 0; }
 
-    /* לודר והצלחה */
-    .loader-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.95); z-index: 9999; display: flex; justify-content: center; align-items: center; flex-direction: column; gap: 0.8rem; }
+    /* לודר + פופאפ הצלחה */
+    .loader-overlay { position: fixed; inset: 0; background: rgba(255,255,255,0.95); z-index: 9999; display: none; justify-content: center; align-items: center; flex-direction: column; gap: 1rem; }
+    .loader-overlay.show { display: flex; }
     .loader { width: 50px; height: 50px; border: 5px solid #f3f3f3; border-top: 5px solid var(--primary); border-radius: 50%; animation: spin 1s linear infinite; }
     @keyframes spin { to { transform: rotate(360deg); } }
-    .success-popup { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 2rem 3rem; border-radius: 18px; box-shadow: 0 12px 35px rgba(0,0,0,0.2); z-index: 10000; text-align: center; color: var(--primary); border: 3px solid var(--primary); animation: popup 0.5s ease-out; max-width: 90%; }
+    .success-popup { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 2rem 3rem; border-radius: 18px; box-shadow: 0 12px 35px rgba(0,0,0,0.3); z-index: 10000; text-align: center; border: 3px solid var(--primary); max-width: 90%; animation: popup 0.5s ease-out; }
     @keyframes popup { from { transform: translate(-50%, -70%); opacity: 0; } to { transform: translate(-50%, -50%); opacity: 1; } }
 
     /* וואטסאפ */
     .whatsapp-float { position: fixed; left: 15px; bottom: 20px; z-index: 1000; animation: pulse 2s infinite; }
-    .whatsapp-icon { font-size: 32px; color: white; background-color: #25D366; width: 58px; height: 58px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(0,0,0,0.3); transition: all 0.3s ease; }
-    .whatsapp-icon:hover { transform: scale(1.15); }
-    @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.08); } }
+    .whatsapp-icon { font-size: 32px; color: white; background:#25D366; width: 58px; height: 58px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
+    @keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.1)} }
 
-    /* כפתורים עליונים – פינה עליונה */
+    /* כפתורים עליונים – בפינה עליונה, לא דורסים כלום */
     .top-controls {
       position: fixed;
-      top: 15px;
-      left: 15px;
-      right: 15px;
+      top: 12px;
+      left: 12px;
+      right: 12px;
       display: flex;
       justify-content: space-between;
       z-index: 9999;
-      pointer-events: none; /* כדי שלא יפריע לגלילה */
+      pointer-events: none;
     }
-    .top-controls > * {
-      pointer-events: auto; /* רק הכפתורים עצמם לחיצים */
-    }
+    .top-controls > * { pointer-events: auto; }
 
     #accessibilityToggle, .hamburger-menu {
-      width: 52px;
-      height: 52px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.6rem;
-      box-shadow: 0 5px 16px rgba(0,0,0,0.2);
-      transition: all 0.3s ease;
-      background: var(--primary);
-      color: white;
-      border: none;
-      cursor: pointer;
+      width: 52px; height: 52px; border-radius: 50%; background: var(--primary); color: white;
+      display: flex; align-items: center; justify-content: center; font-size: 1.6rem;
+      box-shadow: 0 5px 16px rgba(0,0,0,0.25); border: none; cursor: pointer;
+      transition: all 0.3s;
     }
-    #accessibilityToggle:hover, .hamburger-menu:hover {
-      transform: scale(1.12);
-      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
-    }
+    #accessibilityToggle:hover, .hamburger-menu:hover { transform: scale(1.15); box-shadow: 0 8px 25px rgba(0,0,0,0.35); }
 
-    /* תפריט נגישות – מתחת לכפתור */
+    /* תפריט נגישות */
     #accessibilityMenu {
-      position: fixed;
-      top: 80px;
-      left: 15px;
-      background: white;
-      border-radius: 16px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-      padding: 1rem;
-      width: 240px;
-      z-index: 9998;
-      display: none;
-      border: 2px solid var(--primary);
+      position: fixed; top: 78px; left: 12px; background: white; border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.25); padding: 1rem; width: 240px; z-index: 9998;
+      display: none; border: 2px solid var(--primary);
     }
     #accessibilityMenu.open { display: block; animation: slideDown 0.4s ease; }
-    @keyframes slideDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes slideDown { from { opacity: 0; transform: translateY(-15px); } to { opacity: 1; transform: none; } }
     .acc-btn { width: 100%; margin: 0.5rem 0; padding: 0.8rem; border-radius: 10px; border: none; background: #f0f0f0; text-align: right; font-size: 0.95rem; }
     .acc-btn.active { background: var(--primary); color: white; }
 
@@ -116,34 +87,33 @@
     .sidebar { position: fixed; top: 0; right: -100%; width: 320px; height: 100%; background: white; box-shadow: -8px 0 25px rgba(0,0,0,0.15); z-index: 9996; transition: right 0.4s ease; padding: 80px 20px 20px; overflow-y: auto; }
     .sidebar.open { right: 0; }
     .sidebar .close-btn { position: absolute; top: 15px; left: 15px; background: none; border: none; font-size: 2.2rem; color: #333; cursor: pointer; }
-    .sidebar h3 { color: var(--primary); margin-bottom: 1.5rem; text-align: center; font-size: 1.5rem; }
+    .sidebar h3 { color: var(--primary); text-align: center; margin-bottom: 1.5rem; }
     .sidebar-section { margin-bottom: 2rem; background: #f9f9f9; padding: 1rem; border-radius: 12px; }
     .sidebar-section h4 { color: var(--primary); margin-bottom: 0.8rem; }
-    .map-container-sidebar { height: 220px; margin-top: 1rem; border-radius: 10px; overflow: hidden; }
 
     @media (min-width: 576px) {
-      .hero-img { height: 500px; border-radius: 24px; }
+      .hero-img { height: 500px; }
       .container { margin-top: 100px; }
     }
     @media (max-width: 576px) {
       .main-subtitle { font-size: 1.6rem; }
       .hero-img { height: 280px; }
       .sidebar { width: 100%; }
-      .top-controls { top: 10px; left: 10px; right: 10px; }
     }
 
+    /* מצבי נגישות */
     body.high-contrast { background: black !important; color: white !important; }
-    body.high-contrast * { color: white !important; background: black !important; border-color: white !important; }
-    body.highlight-links a { text-decoration: underline !important; color: yellow !important; }
+    body.high-contrast * { background: black !important; color: white !important; border-color: white !important; }
+    body.highlight-links a { text-decoration: underline !important; color: #ff0 !important; }
     body.grayscale { filter: grayscale(100%); }
   </style>
 </head>
 <body>
 
   <!-- לודר -->
-  <div id="loaderOverlay" class="loader-overlay d-none">
+  <div id="loaderOverlay" class="loader-overlay">
     <div class="loader"></div>
-    <p class="text-muted">שולח את ההזמנה...</p>
+    <p>שולח את ההזמנה...</p>
   </div>
 
   <!-- פופאפ הצלחה -->
@@ -151,10 +121,10 @@
 
   <!-- כפתורים עליונים -->
   <div class="top-controls">
-    <button id="accessibilityToggle" aria-label="תפריט נגישות" title="נגישות">
+    <button id="accessibilityToggle" aria-label="נגישות">
       <i class="fas fa-universal-access"></i>
     </button>
-    <div class="hamburger-menu" id="hamburgerMenu" title="תפריט">
+    <div class="hamburger-menu" id="hamburgerMenu">
       <i class="fas fa-bars"></i>
     </div>
   </div>
@@ -171,9 +141,8 @@
     </button>
   </div>
 
-  <!-- וואטסאפ */
-  <a href="https://wa.me/972524864380?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%A6%D7%A8%D7%99%D7%9A%20%D7%A2%D7%96%D7%A8%D7%94%20%D7%91%D7%94%D7%96%D7%9E%D7%A0%D7%AA%20%D7%9E%D7%92%D7%A8%D7%A9%20%D7%98%D7%A0%D7%99%D7%A1" 
-     class="whatsapp-float" target="_blank" title="צריך עזרה?" aria-label="וואטסאפ">
+  <!-- וואטסאפ -->
+  <a href="https://wa.me/972524864380?text=הי, אני צריך עזרה בהזמנת מגרש טניס" class="whatsapp-float" target="_blank">
     <i class="fab fa-whatsapp whatsapp-icon"></i>
   </a>
 
@@ -181,31 +150,28 @@
   <div class="sidebar" id="sidebar">
     <button class="close-btn" id="closeSidebar">×</button>
     <h3>מידע ותמיכה</h3>
-    
     <div class="sidebar-section">
       <h4>פרטי המרכז</h4>
       <p><strong>כתובת:</strong> הרי גולן 5, אשדוד</p>
       <p><strong>טלפון:</strong> 08-8678400</p>
       <p><strong>שעות פתיחה:</strong><br>א'-ה' 08:00–21:00<br>שישי 08:00–14:00<br>שבת 08:00–21:00</p>
       <div class="map-container-sidebar">
-        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d600!2d34.6309!3d31.7832!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzEuNzgzMTY1LDM0LjYzMTA5Ng!5e0!3m2!1siw!2sil!4v1731780000000!5m2!1siw!2sil" 
-                width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3381.377!2d34.6309!3d31.7832!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzEuNzgzMTY1LDM0LjYzMTA5Ng!5e0!3m2!1siw!2sil!4v1731780000000" width="100%" height="220" style="border:0; border-radius:10px;" allowfullscreen="" loading="lazy"></iframe>
       </div>
     </div>
-
     <div class="sidebar-section">
       <h4>שאלות נפוצות</h4>
-      <p>צריך ציוד? מומלץ אישי. שכירה: מחבט 15₪, כדורים 5₪.</p>
-      <p>גשם? ביטול אוטומטי + החזר מלא.</p>
-      <p>יותר ממגרש אחד? הזמן שוב או שלח וואטסאפ.</p>
-      <p>תאורה? כן, עד 21:00 – חינם!</p>
+      <p>• ציוד להשכרה: מחבט 15₪, כדורים 5₪</p>
+      <p>• גשם = ביטול אוטומטי + החזר</p>
+      <p>• יותר ממגרש? הזמן שוב או שלח וואטסאפ</p>
+      <p>• תאורה עד 21:00 – חינם!</p>
     </div>
   </div>
 
   <div class="container">
     <h1 class="main-subtitle">מרכז קהילתי עם שלום י"א</h1>
     <div class="hero-container">
-      <img src="https://i.ibb.co/Z61VPjns/image.jpg" alt="מגרשי טניס באשדוד" class="hero-img">
+      <img src="https://i.ibb.co/Z61VPjns/image.jpg" alt="מגרשי טניס" class="hero-img">
     </div>
 
     <h2 class="text-center mb-4" style="color:var(--primary); font-weight:600;">הזמנת מגרש טניס – 40₪ לשעה</h2>
@@ -213,15 +179,20 @@
     <div class="form-card">
       <form id="bookingForm">
         <div class="row g-2">
-          <div class="col-12 col-md-6"><label class="form-label"><span class="required-star">*</span> שם מלא</label><input type="text" class="form-control" id="name" required></div>
-          <div class="col-12 col-md-6"><label class="form-label"><span class="required-star">*</span> טלפון</label><input type="tel" class="form-control" id="phone" required pattern="05[0-9]{8}" placeholder="05XXXXXXXX"></div>
-          <div class="col-12"><label class="form-label"><span class="required-star">*</span> אימייל</label><input type="email" class="form-control" id="email" required></div>
-          <div class="col-6"><label class="form-label"><span class="required-star">*</span> תאריך</label><input type="date" class="form-control" id="date" required></div>
-          <div class="col-6"><label class="form-label"><span class="required-star">*</span> שעת התחלה</label><select class="form-select" id="time" required></select></div>
-          <div class="col-6"><label class="form-label"><span class="required-star">*</span> משך</label><select class="form-select" id="duration" required><option value="1">שעה (40₪)</option><option value="2">שעתיים (80₪)</option></select></div>
-          <div class="col-6"><label class="form-label"><span class="required-star">*</span> מגרש</label><select class="form-select" id="court" required><option value="">בחר מגרש</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option></select></div>
-          <div class="col-12"><label class="form-label">הערות</label><textarea class="form-control" id="notes" rows="1" placeholder="למשל: צריך תאורה, מביא 4 שחקנים..."></textarea></div>
-          <div class="col-12"><div class="form-check"><input type="checkbox" class="form-check-input" id="terms" required><label class="form-check-label" for="terms"><span class="required-star">*</span> מסכים <a href="#" class="text-decoration-underline">לתנאי השימוש ומדיניות הביטולים</a></label></div></div>
+          <div class="col-12 col-md-6"><label class="form-label">* שם מלא</label><input type="text" class="form-control" id="name" required></div>
+          <div class="col-12 col-md-6"><label class="form-label">* טלפון</label><input type="tel" class="form-control" id="phone" required pattern="05[0-9]{8}" placeholder="05XXXXXXXX"></div>
+          <div class="col-12"><label class="form-label">* אימייל</label><input type="email" class="form-control" id="email" required></div>
+          <div class="col-6"><label class="form-label">* תאריך</label><input type="date" class="form-control" id="date" required></div>
+          <div class="col-6"><label class="form-label">* שעת התחלה</label><select class="form-select" id="time" required></select></div>
+          <div class="col-6"><label class="form-label">* משך</label><select class="form-select" id="duration" required>
+            <option value="1">שעה (40₪)</option>
+            <option value="2">שעתיים (80₪)</option>
+          </select></div>
+          <div class="col-6"><label class="form-label">* מגרש</label><select class="form-select" id="court" required>
+            <option value="">בחר מגרש</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option>
+          </select></div>
+          <div class="col-12"><label class="form-label">הערות</label><textarea class="form-control" id="notes" rows="1"></textarea></div>
+          <div class="col-12"><div class="form-check"><input type="checkbox" class="form-check-input" id="terms" required><label class="form-check-label" for="terms">* מסכים לתנאי השימוש</label></div></div>
           <div class="col-12"><p class="price-display">סה"כ: <strong><span id="totalPrice">40₪</span></strong></p></div>
           <div class="col-12"><button type="submit" class="btn btn-submit w-100" id="submitBtn">שלח הזמנה</button></div>
         </div>
@@ -245,130 +216,102 @@
     const totalPriceEl = document.getElementById('totalPrice');
 
     function updateTimeOptions() {
-      const selectedDate = dateInput.value;
+      const selDate = dateInput.value;
       const todayStr = today.toISOString().split('T')[0];
-      const isToday = selectedDate === todayStr;
-      const dayOfWeek = new Date(selectedDate).getDay();
-      const isFriday = dayOfWeek === 5;
+      const isToday = selDate === todayStr;
+      const day = new Date(selDate).getDay() === 5;
 
-      const allHours = isFriday
+      const hours = day
         ? ["08:00","09:00","10:00","11:00","12:00","13:00","14:00"]
         : ["08:00","09:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00","20:00","21:00"];
 
       timeSelect.innerHTML = '<option value="">בחר שעה</option>';
-      let hasAvailable = false;
-
-      allHours.forEach(hour => {
-        const [h] = hour.split(':').map(Number);
-        const isPast = isToday && (h < today.getHours() || (h === today.getHours() && today.getMinutes() >= 5));
-        if (!isPast) {
-          timeSelect.add(new Option(hour, hour));
-          hasAvailable = true;
+      let ok = false;
+      hours.forEach(h => {
+        const [hr] = h.split(':').map(Number);
+        if (!isToday || hr > today.getHours() || (hr === today.getHours() && today.getMinutes() < 55)) {
+          timeSelect.add(new Option(h, h));
+          ok = true;
         }
       });
-
-      if (!hasAvailable && isToday) {
-        timeSelect.innerHTML = '<option value="">אין שעות פנויות היום</option>';
-        timeSelect.disabled = true;
-      } else {
-        timeSelect.disabled = false;
-      }
+      timeSelect.disabled = !ok && isToday;
     }
     dateInput.addEventListener('change', updateTimeOptions);
     updateTimeOptions();
 
-    durationSelect.addEventListener('change', () => totalPriceEl.textContent = durationSelect.value === "1" ? "40₪" : "80₪");
+    durationSelect.addEventListener('change', () => totalPriceEl.textContent = durationSelect.value==="1"?"40₪":"80₪");
 
     let bookings = JSON.parse(localStorage.getItem('tennis_bookings') || '[]');
 
     document.getElementById('bookingForm').addEventListener('submit', function(e) {
       e.preventDefault();
-      const submitBtn = document.getElementById('submitBtn');
-      submitBtn.disabled = true; submitBtn.innerHTML = 'שולח...';
+      const btn = document.getElementById('submitBtn');
+      btn.disabled = true; btn.innerHTML = 'שולח...';
 
       const data = {
         name: document.getElementById('name').value.trim(),
         phone: document.getElementById('phone').value.trim(),
         email: document.getElementById('email').value.trim(),
-        date: document.getElementById('date').value,
+        date: dateInput.value,
         time: timeSelect.value,
         duration: durationSelect.value,
         court: document.getElementById('court').value,
-        notes: document.getElementById('notes').value.trim() || "אין",
+        notes: document.getElementById('notes').value.trim() || "ללא",
         price: totalPriceEl.textContent
       };
 
-      if (!/^05\d{8}$/.test(data.phone)) { alert("טלפון לא תקין"); submitBtn.disabled = false; submitBtn.innerHTML = 'שלח הזמנה'; return; }
-      if (!data.time) { alert("בחר שעה זמינה"); submitBtn.disabled = false; submitBtn.innerHTML = 'שלח הזמנה'; return; }
-      if (bookings.some(b => b.date === data.date && b.time === data.time && b.court === data.court)) { 
-        alert("המגרש כבר תפוס בשעה זו"); submitBtn.disabled = false; submitBtn.innerHTML = 'שלח הזמנה'; return; 
-      }
+      if (!/^05\d{8}$/.test(data.phone)) return alert("טלפון לא תקין"), btn.disabled = false, btn.innerHTML = 'שלח הזמנה';
+      if (!data.time) return alert("בחר שעה"), btn.disabled = false, btn.innerHTML = 'שלח הזמנה';
+      if (bookings.some(b => b.date===data.date && b.time===data.time && b.court===data.court))
+        return alert("מגרש תפוס"), btn.disabled = false, btn.innerHTML = 'שלח הזמנה';
 
-      document.getElementById('loaderOverlay').classList.remove('d-none');
+      document.getElementById('loaderOverlay').classList.add('show');
 
       setTimeout(() => {
-        document.getElementById('loaderOverlay').classList.add('d-none');
+        document.getElementById('loaderOverlay').classList.remove('show');
         bookings.push(data);
         localStorage.setItem('tennis_bookings', JSON.stringify(bookings));
 
-        const successPopup = document.getElementById('successPopup');
-        successPopup.innerHTML = `<div class="success-popup">
-          <h4 style="color:var(--primary)">ההזמנה נקלטה בהצלחה!</h4>
+        document.getElementById('successPopup').innerHTML = `<div class="success-popup">
+          <h4 style="color:var(--primary)">הוזמן בהצלחה!</h4>
           <p><strong>${data.name}</strong><br>מגרש ${data.court} • ${data.date} • ${data.time}<br>${data.price}</p>
-          <p class="text-success">אישור נשלח למייל שלך</p>
+          <p class="text-success">אישור נשלח למייל</p>
         </div>`;
-        successPopup.classList.remove('d-none');
-        confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
+        document.getElementById('successPopup').classList.remove('d-none');
+        confetti({particleCount:150, spread:70, origin:{y:0.6}});
 
-        emailjs.send("service_ma6h7ym", "template_4eh09k2", { to_email: data.email, customer_name: data.name, date: data.date, time: data.time, court: data.court, duration: data.duration === "1" ? "שעה" : "שעתיים", price: data.price });
-        emailjs.send("service_ma6h7ym", "template_admin_full", { to_email: "eitan.morgunov@gmail.com", ...data });
+        emailjs.send("service_ma6h7ym","template_4eh09k2",{to_email:data.email, customer_name:data.name, date:data.date, time:data.time, court:data.court, duration:data.duration==="1"?"שעה":"שעתיים", price:data.price});
+        emailjs.send("service_ma6h7ym","template_admin_full",{to_email:"eitan.morgunov@gmail.com", ...data});
 
-        this.reset();
-        dateInput.value = minDate;
-        durationSelect.value = "1";
-        totalPriceEl.textContent = "40₪";
-        updateTimeOptions();
+        this.reset(); dateInput.value=minDate; durationSelect.value="1"; totalPriceEl.textContent="40₪"; updateTimeOptions();
 
-        setTimeout(() => {
-          successPopup.classList.add('d-none');
-          submitBtn.disabled = false;
-          submitBtn.innerHTML = 'שלח הזמנה';
-        }, 5000);
+        setTimeout(() => { document.getElementById('successPopup').classList.add('d-none'); btn.disabled=false; btn.innerHTML='שלח הזמנה'; }, 5000);
       }, 1800);
     });
 
-    // תפריט צד
-    document.getElementById('hamburgerMenu').addEventListener('click', () => document.getElementById('sidebar').classList.add('open'));
-    document.getElementById('closeSidebar').addEventListener('click', () => document.getElementById('sidebar').classList.remove('open'));
-    document.getElementById('sidebar').addEventListener('click', e => { if (e.target === e.currentTarget) e.currentTarget.classList.remove('open'); });
+    // תפריטים
+    document.getElementById('hamburgerMenu').onclick = () => document.getElementById('sidebar').classList.add('open');
+    document.getElementById('closeSidebar').onclick = () => document.getElementById('sidebar').classList.remove('open');
+    document.getElementById('sidebar').onclick = e => e.target===e.currentTarget && e.currentTarget.classList.remove('open');
 
-    // נגישות
-    document.getElementById('accessibilityToggle').addEventListener('click', () => {
-      document.getElementById('accessibilityMenu').classList.toggle('open');
-    });
+    document.getElementById('accessibilityToggle').onclick = () => document.getElementById('accessibilityMenu').classList.toggle('open');
 
-    function increaseFont() { let s = parseFloat(getComputedStyle(document.body).fontSize); document.body.style.fontSize = (s + 1.5) + 'px'; }
-    function decreaseFont() { let s = parseFloat(getComputedStyle(document.body).fontSize); if (s > 14) document.body.style.fontSize = (s - 1.5) + 'px'; }
+    function increaseFont() { let s = parseFloat(getComputedStyle(document.body).fontSize); document.body.style.fontSize = (s+1.5)+'px'; }
+    function decreaseFont() { let s = parseFloat(getComputedStyle(document.body).fontSize); if(s>14) document.body.style.fontSize = (s-1.5)+'px'; }
     function toggleContrast() { document.body.classList.toggle('high-contrast'); }
     function toggleLinks() { document.body.classList.toggle('highlight-links'); }
     function toggleGrayscale() { document.body.classList.toggle('grayscale'); }
 
-    let utterance = null;
-    const speakBtn = document.getElementById('speakBtn');
+    let utter;
     function toggleSpeak() {
       if (speechSynthesis.speaking) {
         speechSynthesis.cancel();
-        speakBtn.innerHTML = '<i class="fas fa-volume-up"></i> הקראה';
-        speakBtn.classList.remove('active');
+        document.getElementById('speakBtn').innerHTML = '<i class="fas fa-volume-up"></i> הקראה';
       } else {
-        const text = document.body.innerText.substring(0, 1000);
-        utterance = new SpeechSynthesisUtterance(text);
-        utterance.lang = 'he-IL';
-        utterance.rate = 0.9;
-        utterance.onend = () => { speakBtn.innerHTML = '<i class="fas fa-volume-up"></i> הקראה'; speakBtn.classList.remove('active'); };
-        speechSynthesis.speak(utterance);
-        speakBtn.innerHTML = '<i class="fas fa-volume-mute"></i> עצור הקראה';
-        speakBtn.classList.add('active');
+        utter = new SpeechSynthesisUtterance(document.body.innerText.substring(0,1000));
+        utter.lang = 'he-IL';
+        speechSynthesis.speak(utter);
+        document.getElementById('speakBtn').innerHTML = '<i class="fas fa-volume-mute"></i> עצור';
       }
     }
   </script>
