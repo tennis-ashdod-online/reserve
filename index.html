@@ -31,7 +31,7 @@
       box-shadow: var(--shadow); display: block;
     }
     .hero-img:hover { transform: scale(1.01); transition: 0.3s; }
-    .form-card { border: none; border-radius: 18px; box-shadow: var(--shadow); padding: 1.2rem; background: white; margin-bottom: 1rem; }
+    .form-card { border: none; border-radius: 18px; box-shadow: var(--shadow); padding: 1.2rem; background: white; margin-bottom: 2rem; }
     .form-label { font-weight: 500; color: #1a5d1a; font-size: 0.95rem; }
     .required-star { color: #d32f2f; font-weight: bold; margin-right: 3px; }
     .form-control, .form-select, textarea { border-radius: 10px; border: 1.4px solid #a8d5a8; padding: 0.65rem; font-size: 0.95rem; }
@@ -41,177 +41,171 @@
       font-weight: 600; font-size: 1rem; color: white !important;
     }
     .btn-submit:hover { background: #145214; color: white !important; }
-    .price-display { font-size: 1.3rem; font-weight: 700; color: #1a5d1a; }
-    .loader-overlay {
-      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(255,255,255,0.95); z-index: 9999;
-      display: flex; justify-content: center; align-items: center;
-      flex-direction: column; gap: 0.8rem;
-    }
-    .loader {
-      width: 50px; height: 50px; border: 5px solid #f3f3f3;
-      border-top: 5px solid var(--primary); border-radius: 50%;
-      animation: spin 1s linear infinite;
-    }
+    .price-display { font-size: 1.3rem; font-weight: 700; color: #1a5d1a; text-align: center; margin: 1rem 0; }
+
+    /* ספינר והצלחה */
+    .loader-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.95); z-index: 9999; display: flex; justify-content: center; align-items: center; flex-direction: column; gap: 0.8rem; }
+    .loader { width: 50px; height: 50px; border: 5px solid #f3f3f3; border-top: 5px solid var(--primary); border-radius: 50%; animation: spin 1s linear infinite; }
     @keyframes spin { to { transform: rotate(360deg); } }
-    .success-popup {
-      position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
-      background: white; padding: 1.5rem 2.5rem; border-radius: 18px;
-      box-shadow: 0 12px 35px rgba(0,0,0,0.2); z-index: 10000;
-      text-align: center; font-weight: 700; font-size: 1.2rem; color: var(--primary);
-      border: 2.5px solid var(--primary); animation: popup 0.5s ease-out;
-    }
+    .success-popup { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 1.5rem 2.5rem; border-radius: 18px; box-shadow: 0 12px 35px rgba(0,0,0,0.2); z-index: 10000; text-align: center; font-weight: 700; font-size: 1.2rem; color: var(--primary); border: 2.5px solid var(--primary); animation: popup 0.5s ease-out; }
     @keyframes popup { from { transform: translate(-50%, -60%); opacity: 0; } to { transform: translate(-50%, -50%); opacity: 1; } }
-    .whatsapp-float-left {
+
+    /* וואטסאפ – בלי קו כחול בכלל! */
+    .whatsapp-float {
       position: fixed; left: 15px; bottom: 20px; z-index: 1000;
-      animation: pulse 2s infinite;
+      animation: pulse 2s infinite; text-decoration: none !important;
     }
     .whatsapp-icon {
       font-size: 32px; color: white; background-color: #25D366;
-      width: 55px; height: 55px; border-radius: 50%; display: flex;
-      align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-      transition: all 0.3s ease;
+          width: 58px; height: 58px; border-radius: 50%; display: flex;
+      align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+      transition: all 0.3s ease; text-decoration: none !important;
+      outline: none !important; border: none !important;
     }
-    .whatsapp-icon:hover { transform: scale(1.1); }
-    @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
-    #accessibilityToggle {
-      position: fixed; left: 15px; top: 80px; z-index: 9999;
-      background: var(--primary); color: white; width: 50px; height: 50px;
-      border-radius: 50%; border: none; font-size: 1.6rem;
-      display: flex; align-items: center; justify-content: center;
-      box-shadow: 0 5px 16px rgba(0,0,0,0.2); cursor: pointer;
-    }
+    .whatsapp-icon:hover { transform: scale(1.15); }
+    .whatsapp-icon:focus, .whatsapp-icon:active { outline: none !important; box-shadow: 0 0 0 4px rgba(37,211,102,0.4) !important; }
+    @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.08); } }
+
+    /* תפריט נגישות */
+    #accessibilityToggle { position: fixed; left: 15px; top: 80px; z-index: 9999; background: var(--primary); color: white; width: 50px; height: 50px; border-radius: 50%; border: none; font-size: 1.6rem; display: flex; align-items: center; justify-content: center; box-shadow: 0 5px 16px rgba(0,0,0,0.2); cursor: pointer; }
     #accessibilityToggle:hover { transform: scale(1.1); }
-    .accessibility-menu {
-      position: fixed; left: 15px; top: 140px; z-index: 9998;
-      background: white; border-radius: 14px; box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-      padding: 0.8rem; width: 55px; display: flex; flex-direction: column; gap: 0.6rem;
-      transition: all 0.3s ease; opacity: 0; visibility: hidden; transform: translateY(-8px);
-    }
+    .accessibility-menu { position: fixed; left: 15px; top: 140px; z-index: 9998; background: white; border-radius: 14px; box-shadow: 0 8px 25px rgba(0,0,0,0.15); padding: 0.8rem; width: 55px; display: flex; flex-direction: column; gap: 0.6rem; transition: all 0.3s ease; opacity: 0; visibility: hidden; transform: translateY(-8px); }
     .accessibility-menu.open { opacity: 1; visibility: visible; transform: translateY(0); }
-    .accessibility-btn {
-      background: #f1f1f1; border: none; width: 44px; height: 44px; border-radius: 50%;
-      font-size: 1.2rem; color: #333; display: flex; align-items: center; justify-content: center;
-      transition: all 0.2s; cursor: pointer;
-    }
+    .accessibility-btn { background: #f1f1f1; border: none; width: 44px; height: 44px; border-radius: 50%; font-size: 1.2rem; color: #333; display: flex; align-items: center; justify-content: center; transition: all 0.2s; cursor: pointer; }
     .accessibility-btn:hover, .accessibility-btn.active { background: var(--primary); color: white; transform: scale(1.1); }
+
+    /* ניגודיות וכו' */
     .high-contrast { --light: #000 !important; --primary: #fff !important; background: #000 !important; color: #fff !important; }
     .high-contrast * { color: #fff !important; background: #000 !important; border-color: #fff !important; }
     .high-contrast .form-card { background: #111 !important; }
     .highlight-links a { outline: 3px solid yellow !important; background: rgba(255,255,0,0.3) !important; }
     .grayscale { filter: grayscale(100%); }
-    .section-title {
-      font-size: 1.7rem; font-weight: 600; color: var(--primary); 
-      text-align: center; margin: 0.3rem 0 1rem;
+
+    /* תפריט המבורגר */
+    .hamburger-menu {
+      position: fixed; top: 15px; right: 15px; z-index: 9997;
+      background: var(--primary); color: white; width: 56px; height: 56px;
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-size: 1.8rem; cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+      transition: all 0.3s ease;
     }
-    details {
-      background: white; border-radius: 12px; padding: 0.6rem 0.9rem; margin-bottom: 0.6rem;
-      box-shadow: 0 3px 10px rgba(0,0,0,0.05); cursor: pointer; font-size: 0.9rem;
+    .hamburger-menu:hover { transform: scale(1.1); }
+    .sidebar {
+      position: fixed; top: 0; right: -100%; width: 320px; height: 100%; background: white;
+      box-shadow: -8px 0 25px rgba(0,0,0,0.15); z-index: 9996; transition: right 0.4s ease;
+      padding: 80px 20px 20px; overflow-y: auto;
     }
-    summary {
-      font-weight: 600; color: var(--primary); list-style: none;
-      display: flex; align-items: center; justify-content: space-between; gap: 0.5rem;
+    .sidebar.open { right: 0; }
+    .sidebar .close-btn {
+      position: absolute; top: 15px; left: 15px; background: none; border: none;
+      font-size: 2rem; color: #333; cursor: pointer;
     }
-    summary::after { content: "Down Arrow"; font-size: 0.7rem; transition: 0.2s; }
-    details[open] summary::after { content: "Up Arrow"; }
-    .map-container { height: 0; overflow: hidden; transition: height 0.3s ease; }
-    .map-container.open { height: 220px; }
-    .map-container iframe { width: 100%; height: 100%; border: 0; border-radius: 10px; }
-    select.form-select {
-      padding-right: 2.2rem !important;
-      background-position: left 0.75rem center !important;
-      background-size: 1rem !important;
-    }
+    .sidebar h3 { color: var(--primary); margin-bottom: 1.5rem; text-align: center; font-size: 1.5rem; }
+    .sidebar-section { margin-bottom: 2rem; background: #f9f9f9; padding: 1rem; border-radius: 12px; }
+    .sidebar-section h4 { color: var(--primary); margin-bottom: 0.8rem; }
+    .map-container-sidebar { height: 220px; margin-top: 1rem; border-radius: 10px; overflow: hidden; }
+
     @media (min-width: 576px) {
       .hero-img { height: 500px; border-radius: 24px; }
       #accessibilityToggle { left: 25px; top: 90px; width: 56px; height: 56px; font-size: 1.8rem; }
       .accessibility-menu { left: 25px; top: 155px; width: 60px; }
-      .accessibility-btn { width: 48px; height: 48px; font-size: 1.3rem; }
+      .hamburger-menu { top: 20px; right: 20px; }
     }
     @media (max-width: 576px) {
       .main-subtitle { font-size: 1.6rem; }
-      .section-title { font-size: 1.5rem; }
       .hero-img { height: 280px; }
+      .sidebar { width: 100%; }
     }
   </style>
 </head>
 <body>
 
+  <!-- ספינר -->
   <div id="loaderOverlay" class="loader-overlay d-none">
     <div class="loader"></div>
     <p class="text-muted">שולח...</p>
   </div>
 
+  <!-- הצלחה -->
   <div id="successPopup" class="d-none"></div>
 
+  <!-- וואטסאפ – בלי קו כחול! -->
   <a href="https://wa.me/972524864380?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%A6%D7%A8%D7%99%D7%9A%20%D7%A2%D7%96%D7%A8%D7%94%20%D7%91%D7%94%D7%96%D7%9E%D7%A0%D7%AA%20%D7%9E%D7%92%D7%A8%D7%A9%20%D7%98%D7%A0%D7%99%D7%A1" 
-     class="whatsapp-float-left" target="_blank" title="צריך עזרה?">
+     class="whatsapp-float" target="_blank" title="צריך עזרה?" aria-label="וואטסאפ">
     <i class="fab fa-whatsapp whatsapp-icon"></i>
   </a>
 
-  <button id="accessibilityToggle" title="נגישות">
+  <!-- תפריט נגישות -->
+  <button id="accessibilityToggle" title="נגישות" aria-label="נגישות">
     <i class="fas fa-universal-access"></i>
   </button>
   <div id="accessibilityMenu" class="accessibility-menu">
-    <button class="accessibility-btn" onclick="increaseFont()" title="הגדל"><i class="fas fa-plus"></i></button>
-    <button class="accessibility-btn" onclick="decreaseFont()" title="הקטן"><i class="fas fa-minus"></i></button>
-    <button class="accessibility-btn" onclick="toggleContrast()" title="ניגודיות"><i class="fas fa-adjust"></i></button>
-    <button class="accessibility-btn" onclick="toggleLinks()" title="קישורים"><i class="fas fa-link"></i></button>
-    <button class="accessibility-btn" onclick="toggleGrayscale()" title="אפור"><i class="fas fa-eye-slash"></i></button>
-    <button id="speakBtn" class="accessibility-btn" onclick="toggleSpeak()" title="קריאה">
+    <button class="accessibility-btn" onclick="increaseFont()" title="הגדל גופן"><i class="fas fa-plus"></i></button>
+    <button class="accessibility-btn" onclick="decreaseFont()" title="הקטן גופן"><i class="fas fa-minus"></i></button>
+    <button class="accessibility-btn" onclick="toggleContrast()" title="ניגודיות גבוהה"><i class="fas fa-adjust"></i></button>
+    <button class="accessibility-btn" onclick="toggleLinks()" title="הדגש קישורים"><i class="fas fa-link"></i></button>
+    <button class="accessibility-btn" onclick="toggleGrayscale()" title="גווני אפור"><i class="fas fa-eye-slash"></i></button>
+    <button id="speakBtn" class="accessibility-btn" onclick="toggleSpeak()" title="קריאת דף">
       <i class="fas fa-volume-up"></i>
     </button>
+  </div>
+
+  <!-- תפריט המבורגר -->
+  <div class="hamburger-menu" id="hamburgerMenu" aria-label="תפריט">
+    <i class="fas fa-bars"></i>
+  </div>
+
+  <div class="sidebar" id="sidebar">
+    <button class="close-btn" id="closeSidebar" aria-label="סגור תפריט">×</button>
+    <h3>מידע ותמיכה</h3>
+    
+    <div class="sidebar-section">
+      <h4>פרטי המרכז</h4>
+      <p><strong>כתובת:</strong> הרי גולן 5, אשדוד</p>
+      <p><strong>טלפון:</strong> 08-8678400</p>
+      <p><strong>שעות פתיחה:</strong><br>א'-ה' 08:00–21:00<br>שישי 08:00–14:00<br>שבת 08:00–21:00</p>
+      
+      <div class="map-container-sidebar">
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d600!2d34.6309!3d31.7832!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzEuNzgzMTY1LDM0LjYzMTA5Ng!5e0!3m2!1siw!2sil!4v1731780000000!5m2!1siw!2sil" 
+                width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+      </div>
+    </div>
+
+    <div class="sidebar-section">
+      <h4>שאלות נפוצות</h4>
+      <p><strong>צריך ציוד?</strong> כן, מומלץ להביא אישי. ניתן לשכור: מחבט 15₪, כדורים 5₪.</p>
+      <p><strong>מה קורה בגשם?</strong> ביטול אוטומטי + החזר מלא.</p>
+      <p><strong>רוצה יותר ממגרש אחד?</strong> אפשר להזמין פעם נוספת או לפנות בוואטסאפ.</p>
+      <p><strong>יש תאורה?</strong> כן, עד 21:00 – חינם!</p>
+    </div>
   </div>
 
   <div class="container">
     <h1 class="main-subtitle">מרכז קהילתי עם שלום י"א</h1>
 
     <div class="hero-container">
-      <img src="https://i.ibb.co/Z61VPjns/image.jpg" alt="מגרשי טניס" class="hero-img">
+      <img src="https://i.ibb.co/Z61VPjns/image.jpg" alt="מגרשי טניס באשדוד" class="hero-img">
     </div>
 
-    <h2 class="section-title">הזמנת מגרש טניס</h2>
+    <h2 class="section-title text-center mb-4">הזמנת מגרש טניס</h2>
 
     <div class="form-card">
       <form id="bookingForm">
         <div class="row g-2">
-          <div class="col-12 col-md-6"><label class="form-label"><span class="required-star">*</span> שם</label><input type="text" class="form-control" id="name" required></div>
+          <div class="col-12 col-md-6"><label class="form-label"><span class="required-star">*</span> שם מלא</label><input type="text" class="form-control" id="name" required></div>
           <div class="col-12 col-md-6"><label class="form-label"><span class="required-star">*</span> טלפון</label><input type="tel" class="form-control" id="phone" required pattern="05[0-9]{8}" placeholder="05XXXXXXXX"></div>
           <div class="col-12"><label class="form-label"><span class="required-star">*</span> אימייל</label><input type="email" class="form-control" id="email" required></div>
           <div class="col-6"><label class="form-label"><span class="required-star">*</span> תאריך</label><input type="date" class="form-control" id="date" required></div>
-          <div class="col-6"><label class="form-label"><span class="required-star">*</span> שעה</label><select class="form-select" id="time" required></select></div>
-          <div class="col-6"><label class="form-label"><span class="required-star">*</span> משך</label><select class="form-select" id="duration" required><option value="1">שעה (40₪)</option><option value="2">שעתיים (80₪)</option></select></div>
-          <div class="col-6"><label class="form-label"><span class="required-star">*</span> מגרש</label><select class="form-select" id="court" required><option value="">בחר</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option></select></div>
-          <div class="col-12"><label class="form-label">הערות</label><textarea class="form-control" id="notes" rows="1" placeholder="צריך תאורה..."></textarea></div>
-          <div class="col-12"><div class="form-check"><input type="checkbox" class="form-check-input" id="terms" required><label class="form-check-label" for="terms"><span class="required-star">*</span> מסכים <a href="#" class="terms-link">לתנאים</a></label></div></div>
-          <div class="col-12 text-center"><p class="price-display">סה"כ: <span id="totalPrice">40₪</span></p></div>
+          <div class="col-6"><label class="form-label"><span class="required-star">*</span> שעת התחלה</label><select class="form-select" id="time" required></select></div>
+          <div class="col-6"><label class="form-label"><span class="required-star">*</span> משך זמן</label><select class="form-select" id="duration" required><option value="1">שעה אחת (40₪)</option><option value="2">שעתיים (80₪)</option></17n></select></div>
+          <div class="col-6"><label class="form-label"><span class="required-star">*</span> מספר מגרש</label><select class="form-select" id="court" required><option value="">בחר מגרש</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option></select></div>
+          <div class="col-12"><label class="form-label">הערות (לא חובה)</label><textarea class="form-control" id="notes" rows="1" placeholder="למשל: צריך תאורה, יש לי 3 שחקנים..."></textarea></div>
+          <div class="col-12"><div class="form-check"><input type="checkbox" class="form-check-input" id="terms" required><label class="form-check-label" for="terms"><span class="required-star">*</span> אני מסכים <a href="#" class="terms-link">לתנאי השימוש</a></label></div></div>
+          <div class="col-12"><p class="price-display">סה״כ לתשלום: <strong><span id="totalPrice">40₪</span></strong></p></div>
           <div class="col-12"><button type="submit" class="btn btn-submit w-100" id="submitBtn">שלח הזמנה</button></div>
         </div>
       </form>
     </div>
-
-    <details>
-      <summary><span>פרטי המרכז ומפה</span></summary>
-      <div class="p-2">
-        <p class="mb-1"><strong>כתובת:</strong> הרי גולן 5, אשדוד</p>
-        <p class="mb-1"><strong>טלפון:</strong> 08-8678400</p>
-        <p class="mb-2"><strong>שעות:</strong> א'-ה' 08:00–21:00 | ו' 08:00–14:00 | שבת 08:00–21:00</p>
-        <div class="map-container" id="mapContainer">
-          <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d600!2d34.6309!3d31.7832!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzEuNzgzMTY1LDM0LjYzMTA5Ng!5e0!3m2!1siw!2sil!4v1731780000000!5m2!1siw!2sil" allowfullscreen="" loading="lazy"></iframe>
-        </div>
-        <button onclick="document.getElementById('mapContainer').classList.toggle('open')" class="btn btn-sm btn-outline-primary w-100 mt-1">הצג/הסתר מפה</button>
-      </div>
-    </details>
-
-    <details>
-      <summary><span>שאלות נפוצות</span></summary>
-      <div class="p-2">
-        <p><strong>צריך ציוד?</strong> כן, הבא אישי. שכירה: מחבט 15₪, כדור 5₪.</p>
-        <p><strong>גשם?</strong> ביטול אוטומטי + החזר מלא.</p>
-        <p><strong>יותר ממגרש?</strong> הזמן שוב או שלח וואטסאפ.</p>
-        <p><strong>תאורה?</strong> כן, עד 21:00 – חינם.</p>
-      </div>
-    </details>
   </div>
 
   <script>
@@ -222,25 +216,20 @@
     const mm = String(today.getMonth() + 1).padStart(2, '0');
     const dd = String(today.getDate()).padStart(2, '0');
     const minDate = `${yyyy}-${mm}-${dd}`;
-    const maxDateObj = new Date(); 
-    maxDateObj.setDate(today.getDate() + 13);
+    const maxDateObj = new Date(); maxDateObj.setDate(today.getDate() + 13);
     const maxDate = `${maxDateObj.getFullYear()}-${String(maxDateObj.getMonth() + 1).padStart(2, '0')}-${String(maxDateObj.getDate()).padStart(2, '0')}`;
 
     const dateInput = document.getElementById('date');
-    dateInput.setAttribute('min', minDate);
-    dateInput.setAttribute('max', maxDate);
-    dateInput.value = minDate;
+    dateInput.setAttribute('min', minDate); dateInput.setAttribute('max', maxDate); dateInput.value = minDate;
 
     const timeSelect = document.getElementById('time');
     const durationSelect = document.getElementById('duration');
     const totalPriceEl = document.getElementById('totalPrice');
 
-    // עדכון שעות + חסימת שעות שכבר עברו ביום הנוכחי
     function updateTimeOptions() {
       const selectedDate = dateInput.value;
       const todayStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
       const isToday = selectedDate === todayStr;
-
       const dayOfWeek = new Date(selectedDate).getDay();
       const isFriday = dayOfWeek === 5;
 
@@ -251,58 +240,42 @@
       timeSelect.innerHTML = '<option value="">בחר שעה</option>';
 
       if (!isToday) {
-        // יום עתידי – מציג את כל השעות
-        allHours.forEach(h => {
-          const opt = document.createElement('option');
-          opt.value = h; opt.textContent = h;
-          timeSelect.appendChild(opt);
-        });
+        allHours.forEach(h => { const opt = document.createElement('option'); opt.value = h; opt.textContent = h; timeSelect.appendChild(opt); });
         return;
       }
 
-      // יום היום – מסננים שעות שכבר עברו
       const now = new Date();
       const currentHour = now.getHours();
       const currentMinute = now.getMinutes();
 
+      let hasAvailable = false;
       allHours.forEach(hour => {
         const [h] = hour.split(':').map(Number);
-        const isPast = h < currentHour || (h === currentHour && currentMinute > 0);
+        const isPast = h < currentHour || (h === currentHour && currentMinute >= 5);
         if (!isPast) {
-          const opt = document.createElement('option');
-          opt.value = hour; opt.textContent = hour;
-          timeSelect.appendChild(opt);
+          const opt = document.createElement('option'); opt.value = hour; opt.textContent = hour; timeSelect.appendChild(opt);
+          hasAvailable = true;
         }
       });
 
-      // אם אין יותר שעות פנויות היום
-      if (timeSelect.options.length === 1) {
-        timeSelect.innerHTML = '<option value="">אין שעות פנויות</option>';
+      if (!hasAvailable) {
+        timeSelect.innerHTML = '<option value="">אין שעות פנויות היום</option>';
         timeSelect.disabled = true;
       } else {
         timeSelect.disabled = false;
       }
     }
-
     dateInput.addEventListener('change', updateTimeOptions);
-    updateTimeOptions(); // הפעלה ראשונית
+    updateTimeOptions();
 
-    // מחיר
-    function updatePrice() {
-      totalPriceEl.textContent = durationSelect.value === "1" ? "40₪" : "80₪";
-    }
-    durationSelect.addEventListener('change', updatePrice);
-    updatePrice();
+    function updatePrice() { totalPriceEl.textContent = durationSelect.value === "1" ? "40₪" : "80₪"; }
+    durationSelect.addEventListener('change', updatePrice); updatePrice();
 
-    // הזמנות שמורות
     let bookings = JSON.parse(localStorage.getItem('tennis_bookings') || '[]');
 
-    // שליחת טופס
     document.getElementById('bookingForm').addEventListener('submit', function(e) {
       e.preventDefault();
-      const submitBtn = document.getElementById('submitBtn');
-      submitBtn.disabled = true;
-      submitBtn.innerHTML = 'שולח...';
+      const submitBtn = document.getElementById('submitBtn'); submitBtn.disabled = true; submitBtn.innerHTML = 'שולח...';
 
       const data = {
         name: document.getElementById('name').value.trim(),
@@ -317,60 +290,44 @@
       };
 
       if (!/^05\d{8}$/.test(data.phone)) { alert("טלפון לא תקין"); submitBtn.disabled = false; submitBtn.innerHTML = 'שלח הזמנה'; return; }
-      if (!data.time) { alert("בחר שעה תקינה"); submitBtn.disabled = false; submitBtn.innerHTML = 'שלח הזמנה'; return; }
-      if (bookings.some(b => b.date === data.date && b.time === data.time && b.court === data.court)) { 
-        alert("המגרש תפוס בשעה זו"); submitBtn.disabled = false; submitBtn.innerHTML = 'שלח הזמנה'; return; 
-      }
+      if (!data.time) { alert("בחר שעה זמינה"); submitBtn.disabled = false; submitBtn.innerHTML = 'שלח הזמנה'; return; }
+      if (bookings.some(b => b.date === data.date && b.time === data.time && b.court === data.court)) { alert("המגרש תפוס בשעה זו"); submitBtn.disabled = false; submitBtn.innerHTML = 'שלח הזמנה'; return; }
 
-      const loader = document.getElementById('loaderOverlay');
-      loader.classList.remove('d-none');
-
+      const loader = document.getElementById('loaderOverlay'); loader.classList.remove('d-none');
       setTimeout(() => {
         loader.classList.add('d-none');
-        bookings.push(data);
-        localStorage.setItem('tennis_bookings', JSON.stringify(bookings));
+        bookings.push(data); localStorage.setItem('tennis_bookings', JSON.stringify(bookings));
 
         const successPopup = document.getElementById('successPopup');
-        successPopup.innerHTML = `<div class="success-popup"><h4>הוזמן בהצלחה!</h4><p><strong>${data.name}</strong><br>מגרש ${data.court} • ${data.date} • ${data.time}<br>${data.price}</p><p class="text-success">אישור נשלח במייל</p></div>`;
+        successPopup.innerHTML = `<div class="success-popup"><h4>הוזמן!</h4><p><strong>${data.name}</strong><br>מגרש ${data.court} • ${data.date} • ${data.time}<br>${data.price}</p><p class="text-success">אישור נשלח במייל</p></div>`;
         successPopup.classList.remove('d-none');
         confetti({ particleCount: 120, spread: 70, origin: { y: 0.6 } });
 
-        // שליחת אימיילים
-        emailjs.send("service_ma6h7ym", "template_4eh09k2", { 
-          to_email: data.email, customer_name: data.name, date: data.date, time: data.time, 
-          court: data.court, duration: data.duration === "1" ? "שעה" : "שעתיים", price: data.price 
-        });
-        emailjs.send("service_ma6h7ym", "template_admin_full", { 
-          to_email: "eitan.morgunov@gmail.com", ...data 
-        });
+        emailjs.send("service_ma6h7ym", "template_4eh09k2", { to_email: data.email, customer_name: data.name, date: data.date, time: data.time, court: data.court, duration: data.duration === "1" ? "שעה" : "שעתיים", price: data.price });
+        emailjs.send("service_ma6h7ym", "template_admin_full", { to_email: "eitan.morgunov@gmail.com", ...data });
 
-        this.reset();
-        dateInput.value = minDate;
-        durationSelect.value = "1";
-        updateTimeOptions();
-        updatePrice();
+        this.reset(); dateInput.value = minDate; durationSelect.value = "1"; updateTimeOptions(); updatePrice();
 
-        setTimeout(() => { 
-          successPopup.classList.add('d-none'); 
-          submitBtn.disabled = false; 
-          submitBtn.innerHTML = 'שלח הזמנה'; 
-        }, 4000);
+        setTimeout(() => { successPopup.classList.add('d-none'); submitBtn.disabled = false; submitBtn.innerHTML = 'שלח הזמנה'; }, 4000);
       }, 1500);
     });
+
+    // תפריט המבורגר
+    const hamburger = document.getElementById('hamburgerMenu');
+    const sidebar = document.getElementById('sidebar');
+    const closeBtn = document.getElementById('closeSidebar');
+
+    hamburger.addEventListener('click', () => sidebar.classList.add('open'));
+    closeBtn.addEventListener('click', () => sidebar.classList.remove('open'));
+    sidebar.addEventListener('click', (e) => { if (e.target === sidebar) sidebar.classList.remove('open'); });
 
     // נגישות
     const menu = document.getElementById('accessibilityMenu');
     const toggle = document.getElementById('accessibilityToggle');
     toggle.addEventListener('click', () => menu.classList.toggle('open'));
 
-    function increaseFont() { 
-      let s = parseFloat(getComputedStyle(document.body).fontSize); 
-      document.body.style.fontSize = (s + 1) + 'px'; 
-    }
-    function decreaseFont() { 
-      let s = parseFloat(getComputedStyle(document.body).fontSize); 
-      if (s > 12) document.body.style.fontSize = (s - 1) + 'px'; 
-    }
+    function increaseFont() { let s = parseFloat(getComputedStyle(document.body).fontSize); document.body.style.fontSize = (s + 1) + 'px'; }
+    function decreaseFont() { let s = parseFloat(getComputedStyle(document.body).fontSize); if (s > 12) document.body.style.fontSize = (s - 1) + 'px'; }
     function toggleContrast() { document.body.classList.toggle('high-contrast'); }
     function toggleLinks() { document.body.classList.toggle('highlight-links'); }
     function toggleGrayscale() { document.body.classList.toggle('grayscale'); }
@@ -380,21 +337,13 @@
     const speakIcon = speakBtn.querySelector('i');
     function toggleSpeak() {
       if (speechSynthesis.speaking) {
-        speechSynthesis.cancel();
-        speakIcon.classList.replace('fa-volume-mute', 'fa-volume-up');
-        speakBtn.classList.remove('active');
+        speechSynthesis.cancel(); speakIcon.classList.replace('fa-volume-mute', 'fa-volume-up'); speakBtn.classList.remove('active');
       } else {
         const text = document.body.innerText;
-        utterance = new SpeechSynthesisUtterance(text);
-        utterance.lang = 'he-IL';
-        utterance.rate = 0.9;
-        utterance.onend = () => {
-          speakIcon.classList.replace('fa-volume-mute', 'fa-volume-up');
-          speakBtn.classList.remove('active');
-        };
+        utterance = new SpeechSynthesisUtterance(text); utterance.lang = 'he-IL'; utterance.rate = 0.9;
+        utterance.onend = () => { speakIcon.classList.replace('fa-volume-mute', 'fa-volume-up'); speakBtn.classList.remove('active'); };
         speechSynthesis.speak(utterance);
-        speakIcon.classList.replace('fa-volume-up', 'fa-volume-mute');
-        speakBtn.classList.add('active');
+        speakIcon.classList.replace('fa-volume-up', 'fa-volume-mute'); speakBtn.classList.add('active');
       }
     }
   </script>
