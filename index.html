@@ -43,11 +43,38 @@
     .success-popup { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 2rem 3rem; border-radius: 18px; box-shadow: 0 12px 35px rgba(0,0,0,0.3); z-index: 10000; text-align: center; border: 3px solid var(--primary); max-width: 90%; animation: popup 0.5s ease-out; }
     @keyframes popup { from { transform: translate(-50%, -70%); opacity: 0; } to { transform: translate(-50%, -50%); opacity: 1; } }
 
-    .whatsapp-float { position: fixed; left: 15px; bottom: 20px; z-index: 1000; animation: pulse 2s infinite; }
-    .whatsapp-icon { font-size: 32px; color: white; background:#25D366; width: 58px; height: 58px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
+    /* וואטסאפ – בלי קו כחול, בלי outline */
+    .whatsapp-float {
+      position: fixed;
+      left: 15px;
+      bottom: 20px;
+      z-index: 1000;
+      animation: pulse 2s infinite;
+      text-decoration: none !important;
+      outline: none !important;
+    }
+    .whatsapp-float:focus, .whatsapp-float:active {
+      outline: none !important;
+      box-shadow: none !important;
+    }
+    .whatsapp-icon {
+      font-size: 32px;
+      color: white;
+      background: #25D366;
+      width: 58px;
+      height: 58px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+      transition: all 0.3s ease;
+    }
+    .whatsapp-float:hover .whatsapp-icon {
+      transform: scale(1.15);
+    }
     @keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.1)} }
 
-    /* כפתורים עליונים – שניהם בצד ימין */
     .top-controls {
       position: fixed;
       top: 12px;
@@ -71,7 +98,6 @@
       box-shadow: 0 10px 30px rgba(0,0,0,0.35); 
     }
 
-    /* תפריט נגישות מודרני – מצד ימין, ירוק, יפהפה */
     #accessibilityMenu {
       position: fixed;
       top: 80px;
@@ -102,9 +128,7 @@
       font-weight: 600;
       font-size: 1.1rem;
     }
-    .acc-body {
-      padding: 1.2rem;
-    }
+    .acc-body { padding: 1.2rem; }
     .acc-item {
       display: flex;
       align-items: center;
@@ -122,19 +146,9 @@
       color: white;
       transform: translateX(-6px);
     }
-    .acc-item i {
-      font-size: 1.4rem;
-      color: var(--primary);
-    }
+    .acc-item i { font-size: 1.4rem; color: var(--primary); }
     .acc-item:hover i { color: white; }
 
-    .acc-item.active {
-      background: var(--primary-light);
-      color: white;
-    }
-    .acc-item.active i { color: white; }
-
-    /* סיידבר */
     .sidebar { position: fixed; top: 0; right: -100%; width: 320px; height: 100%; background: white; box-shadow: -8px 0 25px rgba(0,0,0,0.15); z-index: 9996; transition: right 0.4s ease; padding: 80px 20px 20px; overflow-y: auto; }
     .sidebar.open { right: 0; }
     .sidebar .close-btn { position: absolute; top: 15px; left: 15px; background: none; border: none; font-size: 2.2rem; color: #333; cursor: pointer; }
@@ -151,7 +165,6 @@
     body.high-contrast * { background: black !important; color: white !important; border-color: white !important; }
     body.highlight-links a { text-decoration: underline !important; color: #ff0 !important; }
     body.grayscale { filter: grayscale(100%); }
-    body.large-text { font-size: 1.4rem !important; }
   </style>
 </head>
 <body>
@@ -163,53 +176,34 @@
 
   <div id="successPopup" class="d-none"></div>
 
-  <!-- כפתורים עליונים – שניהם בצד ימין -->
   <div class="top-controls">
-    <button id="accessibilityToggle" aria-label="תפריט נגישות" title="נגישות">
+    <button id="accessibilityToggle" aria-label="תפריט נגישות">
       <i class="fas fa-universal-access"></i>
     </button>
-    <div class="hamburger-menu" id="hamburgerMenu" title="תפריט">
+    <div class="hamburger-menu" id="hamburgerMenu">
       <i class="fas fa-bars"></i>
     </div>
   </div>
 
-  <!-- תפריט נגישות מודרני – ירוק, יפה, מצד ימין -->
   <div id="accessibilityMenu">
-    <div class="acc-header">
-      <i class="fas fa-universal-access"></i> הגדרות נגישות
-    </div>
+    <div class="acc-header">הגדרות נגישות</div>
     <div class="acc-body">
-      <div class="acc-item" onclick="increaseFont()">
-        <span>הגדל טקסט</span>
-        <i class="fas fa-text-height"></i>
-      </div>
-      <div class="acc-item" onclick="decreaseFont()">
-        <span>הקטן טקסט</span>
-        <i class="fas fa-text-height"></i>
-      </div>
-      <div class="acc-item" onclick="toggleContrast()">
-        <span>ניגודיות גבוהה</span>
-        <i class="fas fa-adjust"></i>
-      </div>
-      <div class="acc-item" onclick="toggleGrayscale()">
-        <span>גווני אפור</span>
-        <i class="fas fa-eye-slash"></i>
-      </div>
-      <div class="acc-item" onclick="toggleLinks()">
-        <span>הדגש קישורים</span>
-        <i class="fas fa-link"></i>
-      </div>
-      <div class="acc-item" id="speakBtn" onclick="toggleSpeak()">
-        <span id="speakText">הקראה</span>
-        <i class="fas fa-volume-up"></i>
-      </div>
+      <div class="acc-item" onclick="increaseFont()"><span>הגדל טקסט</span><i class="fas fa-text-height"></i></div>
+      <div class="acc-item" onclick="decreaseFont()"><span>הקטן טקסט</span><i class="fas fa-text-height"></i></div>
+      <div class="acc-item" onclick="toggleContrast()"><span>ניגודיות גבוהה</span><i class="fas fa-adjust"></i></div>
+      <div class="acc-item" onclick="toggleGrayscale()"><span>גווני אפור</span><i class="fas fa-eye-slash"></i></div>
+      <div class="acc-item" onclick="toggleLinks()"><span>הדגש קישורים</span><i class="fas fa-link"></i></div>
+      <div class="acc-item" id="speakBtn" onclick="toggleSpeak()"><span id="speakText">הקראה</span><i class="fas fa-volume-up"></i></div>
     </div>
   </div>
 
-  <a href="https://wa.me/972524864380?text=הי, אני צריך עזרה בהזמנת מגרש טניס" class="whatsapp-float" target="_blank">
+  <!-- וואטסאפ – בלי קו כחול בכלל! -->
+  <a href="https://wa.me/972524864380?text=הי, אני צריך עזרה בהזמנת מגרש טניס" 
+     class="whatsapp-float" target="_blank" aria-label="וואטסאפ">
     <i class="fab fa-whatsapp whatsapp-icon"></i>
   </a>
 
+  <!-- שאר הקוד נשאר אותו דבר... -->
   <div class="sidebar" id="sidebar">
     <button class="close-btn" id="closeSidebar">×</button>
     <h3>מידע ותמיכה</h3>
@@ -241,7 +235,7 @@
       <form id="bookingForm">
         <div class="row g-2">
           <div class="col-12 col-md-6"><label class="form-label">* שם מלא</label><input type="text" class="form-control" id="name" required></div>
-          <div class="col-12 col-md-6"><label class="form-label">* טלפון</label><input type="tel" class="form-control" id="phone" required pattern="05[0-9]{8}" placeholder="05XXXXXXXX"></div>
+          <div class="col-12 col-md-6"><label class="form-label">* טלפון</label><input type="tel" class="form-control" id="phone" required pattern="05[0-9]{8}"></div>
           <div class="col-12"><label class="form-label">* אימייל</label><input type="email" class="form-control" id="email" required></div>
           <div class="col-6"><label class="form-label">* תאריך</label><input type="date" class="form-control" id="date" required></div>
           <div class="col-6"><label class="form-label">* שעת התחלה</label><select class="form-select" id="time" required></select></div>
@@ -349,7 +343,6 @@
       }, 1800);
     });
 
-    // תפריט המבורגר – פותח/סוגר + חוזר למעלה
     const hamburgerBtn = document.getElementById('hamburgerMenu');
     const sidebar = document.getElementById('sidebar');
     hamburgerBtn.addEventListener('click', () => {
@@ -363,7 +356,6 @@
     document.getElementById('closeSidebar').onclick = () => sidebar.classList.remove('open');
     sidebar.onclick = e => e.target === sidebar && sidebar.classList.remove('open');
 
-    // תפריט נגישות – מודרני
     document.getElementById('accessibilityToggle').onclick = () => {
       document.getElementById('accessibilityMenu').classList.toggle('open');
     };
