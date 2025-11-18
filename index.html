@@ -3,159 +3,160 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>הזמנת מגרש טניס באשדוד | עם שלום י״א</title>
+  <title>הזמנת מגרש טניס באשדוד | עם שלום י״א – 40₪ לשעה</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
   <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
   <style>
-    :root { --primary: #1a5d1a; --light: #f8f9ea; }
-    body { font-family: 'Rubik', sans-serif; background: var(--light); margin:0; padding:0; color:#333; overflow-x:hidden; }
-    .container { max-width:1000px; padding:2rem 1rem; margin:80px auto 2rem; transition:all 0.6s; }
-    .top-bar { position:fixed; top:0; left:0; right:0; height:60px; background:rgba(255,255,255,0.95); backdrop-filter:blur(10px); box-shadow:0 2px 15px rgba(0,0,0,0.1); z-index:9999; display:flex; justify-content:center; align-items:center; }
-    .main-subtitle { font-size:2rem; font-weight:700; color:var(--primary); text-align:center; margin-bottom:1rem; }
-    .hero-img { width:100%; height:380px; object-fit:cover; border-radius:24px; box-shadow:0 10px 30px rgba(0,0,0,0.15); }
-    .form-card { background:white; border-radius:20px; box-shadow:0 10px 40px rgba(0,0,0,0.12); padding:2rem; margin-top:2rem; }
-    .btn-submit { background:var(--primary); color:white; border:none; border-radius:12px; padding:1rem; font-size:1.2rem; font-weight:600; width:100%; }
-    .price-display { font-size:1.6rem; font-weight:700; color:var(--primary); text-align:center; margin:1.5rem 0; }
-
-    /* מסך טעינה מלא */
-    #loadingScreen {
-      position:fixed; inset:0; background:var(--light); z-index:99999;
-      display:none; align-items:center; justify-content:center; flex-direction:column; gap:2rem;
-      backdrop-filter:blur(10px);
-    }
-    .spinner { width:80px; height:80px; border:8px solid #eee; border-top:8px solid var(--primary); border-radius:50%; animation:spin 1.2s linear infinite; }
+    :root { --primary: #1a5d1a; --light: #f8f9ea; --shadow: 0 6px 18px rgba(0,0,0,0.08); }
+    body { font-family: 'Rubik', sans-serif; background: var(--light); margin:0; padding:0; color:#333; }
+    .container { max-width:1000px; padding:1rem; margin-top:70px; }
+    .top-bar { position:fixed; top:0; left:0; right:0; height:60px; background:rgba(255,255,255,0.95); backdrop-filter:blur(10px); box-shadow:0 2px 15px rgba(0,0,0,0.1); z-index:9999; display:flex; justify-content:space-between; align-items:center; padding:0 15px; }
+    .lang-switcher { position:absolute; left:50%; transform:translateX(-50%); display:flex; gap:8px; background:rgba(255,255,255,0.9); padding:6px 10px; border-radius:25px; box-shadow:0 3px 10px rgba(0,0,0,0.12); }
+    .lang-btn { border:none; background:none; font-weight:bold; padding:5px 12px; border-radius:20px; cursor:pointer; }
+    .lang-btn.active { background:var(--primary); color:white; }
+    .hamburger-menu { width:50px; height:50px; background:var(--primary); color:white; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:1.6rem; cursor:pointer; }
+    .whatsapp-float { position:fixed; left:15px; bottom:20px; z-index:1000; animation:pulse 2s infinite; }
+    .whatsapp-icon { font-size:32px; color:white; background:#25D366; width:58px; height:58px; border-radius:50%; display:flex; align-items:center; justify-content:center; box-shadow:0 4px 15px rgba(0,0,0,0.3); }
+    @keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.08)} }
+    .main-subtitle { font-size:1.9rem; font-weight:700; color:var(--primary); text-align:center; margin:0.5rem 0 1rem; }
+    .hero-img { width:100%; height:320px; object-fit:cover; border-radius:20px; box-shadow:var(--shadow); }
+    .form-card { border:none; border-radius:18px; box-shadow:var(--shadow); padding:1.4rem; background:white; margin-bottom:2rem; }
+    .btn-submit { background:var(--primary); border:none; border-radius:10px; padding:0.9rem; font-weight:600; color:white; font-size:1.1rem; position:relative; }
+    .btn-submit.loading::after { content:""; position:absolute; width:20px; height:20px; border:3px solid #fff; border-top-color:transparent; border-radius:50%; animation:spin 1s linear infinite; left:50%; top:50%; margin-left:-10px; margin-top:-10px; }
     @keyframes spin { to{transform:rotate(360deg)} }
-    #loadingScreen h2 { font-size:2rem; color:var(--primary); }
+    .price-display { font-size:1.4rem; font-weight:700; color:#1a5d1a; text-align:center; margin:1.2rem 0; }
+    .terms-row { display:flex; align-items:center; gap:12px; margin:1.5rem 0 1rem; }
+    #terms { width:32px; height:32px; accent-color:var(--primary); transform:scale(1.3); }
 
-    /* דף סיכום ההזמנה */
-    #summaryPage {
-      position:fixed; inset:0; background:linear-gradient(135deg, #e8f5e8, #f0fff0); display:none; align-items:center; justify-content:center; z-index:99998;
-      padding:2rem; text-align:center; overflow-y:auto;
-    }
-    .summary-card {
-      background:white; padding:3rem 2rem; border-radius:30px; box-shadow:0 20px 60px rgba(0,0,0,0.2);
-      max-width:500px; width:100%; animation:pop 0.8s ease-out;
-    }
-    @keyframes pop { from{transform:scale(0.4);opacity:0} to{transform:scale(1);opacity:1} }
-    .summary-card h1 { color:var(--primary); font-size:2.5rem; margin-bottom:1.5rem; }
-    .summary-card p { font-size:1.3rem; margin:1rem 0; text-align:right; direction:rtl; }
-    .summary-card .price { font-size:2rem; color:var(--primary); font-weight:bold; margin:2rem 0; }
-    .btn-back { background:var(--primary); color:white; padding:1rem 3rem; border:none; border-radius:50px; font-size:1.2rem; margin-top:2rem; cursor:pointer; }
-
-    @media (max-width:576px) {
-      .hero-img{height:280px;}
-      .summary-card h1{font-size:2rem;}
-      .summary-card{padding:2rem 1.5rem;}
-    }
+    /* חלון אישור + טעינה */
+    .success-modal { position:fixed; inset:0; background:rgba(0,0,0,0.8); display:none; align-items:center; justify-content:center; z-index:10000; }
+    .success-modal.show { display:flex; }
+    .success-box { background:white; padding:3rem 2rem; border-radius:28px; text-align:center; max-width:90%; box-shadow:0 25px 60px rgba(0,0,0,0.4); animation:pop 0.7s ease-out; }
+    @keyframes pop { from{transform:scale(0.2);opacity:0} to{transform:scale(1);opacity:1} }
+    .success-box h2 { color:var(--primary); font-size:2.2rem; margin-bottom:1.5rem; }
+    .success-box p { margin:0.8rem 0; font-size:1.15rem; }
+    .close-success { margin-top:2rem; padding:1rem 3rem; background:var(--primary); color:white; border:none; border-radius:14px; cursor:pointer; font-weight:bold; font-size:1.1rem; }
+    @media (max-width:576px) { .hero-img{height:280px;} .success-box h2{font-size:1.9rem;} }
   </style>
 </head>
 <body>
 
-  <!-- מסך טעינה -->
-  <div id="loadingScreen">
-    <div class="spinner"></div>
-    <h2>שומר את ההזמנה שלך...</h2>
-  </div>
-
-  <!-- דף סיכום -->
-  <div id="summaryPage">
-    <div class="summary-card">
-      <h1>ההזמנה בוצעה בהצלחה!</h1>
-      <p><strong>שם:</strong> <span id="sumName"></span></p>
-      <p><strong>טלפון:</strong> <span id="sumPhone"></span></p>
-      <p><strong>אימייל:</strong> <span id="sumEmail"></span></p>
-      <p><strong>תאריך:</strong> <span id="sumDate"></span></p>
-      <p><strong>שעה:</strong> <span id="sumTime"></span></p>
-      <p><strong>משך:</strong> <span id="sumDuration"></span></p>
-      <p><strong>מגרש:</strong> <span id="sumCourt"></span></p>
-      <p><strong>הערות:</strong> <span id="sumNotes"></span></p>
-      <div class="price" id="sumPrice"></div>
-      <button class="btn-back" onclick="location.reload()">הזמנה נוספת</button>
-    </div>
-  </div>
-
-  <!-- הדף הראשי -->
   <div class="top-bar">
-    <h2 style="color:var(--primary);font-weight:700;">מרכז טניס אשדוד</h2>
+    <div class="lang-switcher">
+      <button class="lang-btn active">עב</button>
+      <button class="lang-btn">EN</  EN>
+      <button class="lang-btn">РУ</button>
+    </div>
+    <div class="hamburger-menu"><i class="fas fa-bars"></i></div>
   </div>
 
-  <div class="container" id="mainPage">
+  <a href="https://wa.me/972524864380" class="whatsapp-float" target="_blank">
+    <i class="fab fa-whatsapp whatsapp-icon"></i>
+  </a>
+
+  <div class="container">
     <h1 class="main-subtitle">מרכז קהילתי עם שלום י"א</h1>
     <img src="https://i.ibb.co/Z61VPjns/image.jpg" class="hero-img" alt="מגרשי טניס">
-    
+    <h2 class="text-center mb-4" style="color:var(--primary)">הזמנת מגרש טניס</h2>
+
     <div class="form-card">
       <form id="bookingForm">
-        <div class="row g-3">
-          <div class="col-md-6"><input type="text" class="form-control" placeholder="שם מלא" id="name" required></div>
-          <div class="col-md-6"><input type="tel" class="form-control" placeholder="טלפון" id="phone" required pattern="05[0-9]{8}"></div>
-          <div class="col-12"><input type="email" class="form-control" placeholder="אימייל" id="email" required></div>
-          <div class="col-6"><input type="date" class="form-control" id="date" required></div>
-          <div class="col-6"><select class="form-select" id="time" required><option value="">שעת התחלה</option></select></div>
-          <div class="col-6"><select class="form-select" id="duration" required>
-            <option value="1">שעה אחת - 40₪</option>
-            <option value="2">שעתיים - 80₪</option>
+        <div class="row g-2">
+          <div class="col-12 col-md-6"><label class="form-label">* שם מלא</label><input type="text" class="form-control" id="name" required></div>
+          <div class="col-12 col-md-6"><label class="form-label">* טלפון</label><input type="tel" class="form-control" id="phone" required pattern="05[0-9]{8}"></div>
+          <div class="col-12"><label class="form-label">* אימייל</label><input type="email" class="form-control" id="email" required></div>
+          <div class="col-6"><label class="form-label">* תאריך</label><input type="date" class="form-control" id="date" required></div>
+          <div class="col-6"><label class="form-label">* שעת התחלה</label><select class="form-select" id="time" required></select></div>
+          <div class="col-6"><label class="form-label">* משך</label><select class="form-select" id="duration" required>
+            <option value="1">שעה (40₪)</option>
+            <option value="2">שעתיים (80₪)</option>
           </select></div>
-          <div class="col-6"><select class="form-select" id="court" required>
+          <div class="col-6"><label class="form-label">* מגרש</label><select class="form-select" id="court" required>
             <option value="">בחר מגרש</option>
-            <option>מגרש 1</option><option>מגרש 2</option><option>מגרש 3</option>
-            <option>מגרש 4</option><option>מגרש 5</option><option>מגרש 6</option>
+            <option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option>
           </select></div>
-          <div class="col-12"><textarea class="form-control" placeholder="הערות (אופציונלי)" id="notes" rows="2"></textarea></div>
-          
-          <div class="col-12 text-center">
-            <p class="price-display">סה"כ לתשלום: <strong id="totalPrice">40₪</strong></p>
-            <button type="submit" class="btn-submit">שלח הזמנה</button>
+          <div class="col-12"><label class="form-label">הערות</label><textarea class="form-control" id="notes" rows="1"></textarea></div>
+
+          <div class="col-12">
+            <div class="terms-row">
+              <input type="checkbox" id="terms" required>
+              <div style="font-weight:700;color:var(--primary)">* מסכים לתנאים ולמדיניות הביטולים</div>
+            </div>
+          </div>
+
+          <div class="col-12"><p class="price-display">סה"כ: <strong><span id="totalPrice">40₪</span></strong></p></div>
+          <div class="col-12">
+            <button type="submit" class="btn btn-submit w-100" id="submitBtn">שלח הזמנה</button>
           </div>
         </div>
       </form>
     </div>
   </div>
 
+  <!-- חלון אישור עם טעינה -->
+  <div class="success-modal" id="successModal">
+    <div class="success-box">
+      <h2>ההזמנה בוצעה בהצלחה!</h2>
+      <div style="text-align:right; direction:rtl;">
+        <p><strong>שם:</strong> <span id="modalName"></span></p>
+        <p><strong>טלפון:</strong> <span id="modalPhone"></span></p>
+        <p><strong>אימייל:</strong> <span id="modalEmail"></span></p>
+        <p><strong>תאריך:</strong> <span id="modalDate"></span></p>
+        <p><strong>שעה:</strong> <span id="modalTime"></span></p>
+        <p><strong>משך:</strong> <span id="modalDuration"></span></p>
+        <p><strong>מגרש:</strong> <span id="modalCourt"></span></p>
+        <p><strong>הערות:</strong> <span id="modalNotes"></span></p>
+        <p><strong>סה"כ לתשלום:</strong> <span id="modalPrice" style="color:var(--primary);font-weight:bold;font-size:1.4rem;"></span></p>
+      </div>
+      <button class="close-success" onclick="document.getElementById('successModal').classList.remove('show')">
+        סגור
+      </button>
+    </div>
+  </div>
+
   <script>
-    // שעות + מחיר
     const today = new Date();
     const dateInput = document.getElementById('date');
     const timeSelect = document.getElementById('time');
     const durationSelect = document.getElementById('duration');
     const totalPriceEl = document.getElementById('totalPrice');
+    const submitBtn = document.getElementById('submitBtn');
 
     dateInput.min = today.toISOString().split('T')[0];
     dateInput.value = dateInput.min;
 
     function updateTimeOptions() {
-      timeSelect.innerHTML = '<option value="">שעת התחלה</option>';
-      const hours = ["08:00","09:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00","20:00","21:00"];
+      const selectedDate = dateInput.value || dateInput.min;
+      const todayStr = today.toISOString().split('T')[0];
+      const isToday = selectedDate === todayStr;
+      const dayOfWeek = new Date(selectedDate).getDay();
+      const isFriday = dayOfWeek === 5;
+
+      const hours = isFriday
+        ? ["08:00","09:00","10:00","11:00","12:00","13:00","14:00"]
+        : ["08:00","09:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00","20:00","21:00"];
+
+      timeSelect.innerHTML = '<option value="">בחר שעה</option>';
       hours.forEach(h => timeSelect.add(new Option(h, h)));
     }
     updateTimeOptions();
+    dateInput.addEventListener('change', updateTimeOptions);
     durationSelect.addEventListener('change', () => {
       totalPriceEl.textContent = durationSelect.value === "1" ? "40₪" : "80₪";
     });
 
-    // קונפטי מתמשך על דף הסיכום
-    function startConfetti() {
-      setTimeout(() => {
-        confetti({ particleCount: 100, spread: 70, origin: { y: 0.3 } });
-        confetti({ particleCount: 80, spread: 90, origin: { y: 0.7 } });
-      }, 500);
-      setInterval(() => {
-        confetti({ particleCount: 30, spread: 100, origin: { x: 0, y: 0.7 } });
-        confetti({ particleCount: 30, spread: 100, origin: { x: 1, y: 0.7 } });
-      }, 3000);
-    }
-
-    // שליחת הטופס
+    // שליחה עם אפקט טעינה + חלון + קונפטי
     document.getElementById('bookingForm').addEventListener('submit', function(e) {
       e.preventDefault();
 
-      // מציג מסך טעינה
-      document.getElementById('loadingScreen').style.display = 'flex';
-      document.getElementById('mainPage').style.filter = 'blur(10px)';
+      // אפקט טעינה
+      submitBtn.classList.add('loading');
+      submitBtn.disabled = true;
+      submitBtn.textContent = '';
 
       setTimeout(() => {
-        // שומר את כל הפרטים
         const data = {
           name: document.getElementById('name').value,
           phone: document.getElementById('phone').value,
@@ -168,23 +169,33 @@
           price: totalPriceEl.textContent
         };
 
-        // ממלא את דף הסיכום
-        document.getElementById('sumName').textContent = data.name;
-        document.getElementById('sumPhone').textContent = data.phone;
-        document.getElementById('sumEmail').textContent = data.email;
-        document.getElementById('sumDate').textContent = data.date;
-        document.getElementById('sumTime').textContent = data.time;
-        document.getElementById('sumDuration').textContent = data.duration;
-        document.getElementById('sumCourt').textContent = data.court;
-        document.getElementById('sumNotes').textContent = data.notes;
-        document.getElementById('sumPrice').textContent = data.price;
+        // קונפטי מטורף
+        confetti({ particleCount: 250, spread: 80, origin: { y: 0.6 } });
 
-        // מעביר לדף הסיכום + קונפטי מתמשך
-        document.getElementById('mainPage').style.display = 'none';
-        document.getElementById('loadingScreen').style.display = 'none';
-        document.getElementById('summaryPage').style.display = 'flex';
-        startConfetti();
-      }, 2000);
+        // מילוי החלון
+        document.getElementById('modalName').textContent = data.name;
+        document.getElementById('modalPhone').textContent = data.phone;
+        document.getElementById('modalEmail').textContent = data.email;
+        document.getElementById('modalDate').textContent = data.date;
+        document.getElementById('modalTime').textContent = data.time;
+        document.getElementById('modalDuration').textContent = data.duration;
+        document.getElementById('modalCourt').textContent = data.court;
+        document.getElementById('modalNotes').textContent = data.notes;
+        document.getElementById('modalPrice').textContent = data.price;
+
+        // פותחים את החלון
+        document.getElementById('successModal').classList.add('show');
+
+        // מאפסים כפתור
+        submitBtn.classList.remove('loading');
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'שלח הזמנה';
+
+        // מנקים טופס
+        document.getElementById('bookingForm').reset();
+        totalPriceEl.textContent = '40₪';
+        updateTimeOptions();
+      }, 2000); // 2 שניות טעינה
     });
   </script>
 </body>
