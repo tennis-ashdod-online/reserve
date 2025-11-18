@@ -20,126 +20,52 @@
 
     /* סרגל עליון */
     .top-bar {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 60px;
-      background: rgba(255,255,255,0.95);
-      backdrop-filter: blur(10px);
-      box-shadow: 0 2px 15px rgba(0,0,0,0.1);
-      z-index: 9999;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0 15px;
+      position: fixed; top: 0; left: 0; width: 100%; height: 60px;
+      background: rgba(255,255,255,0.95); backdrop-filter: blur(10px);
+      box-shadow: 0 2px 15px rgba(0,0,0,0.1); z-index: 9999;
+      display: flex; justify-content: space-between; align-items: center; padding: 0 15px;
     }
     .lang-switcher {
-      display: flex;
-      gap: 8px;
-      background: rgba(255,255,255,0.9);
-      padding: 6px 10px;
-      border-radius: 25px;
-      box-shadow: 0 3px 10px rgba(0,0,0,0.12);
+      display: flex; gap: 8px; background: rgba(255,255,255,0.9);
+      padding: 6px 10px; border-radius: 25px; box-shadow: 0 3px 10px rgba(0,0,0,0.12);
     }
     .lang-btn {
-      border: none;
-      background: none;
-      font-weight: bold;
-      font-size: 0.9rem;
-      padding: 5px 10px;
-      border-radius: 20px;
-      cursor: pointer;
-      transition: all 0.2s;
+      border: none; background: none; font-weight: bold; font-size: 0.9rem;
+      padding: 5px 10px; border-radius: 20px; cursor: pointer; transition: all 0.2s;
     }
-    .lang-btn.active {
-      background: var(--primary);
-      color: white;
-    }
+    .lang-btn.active { background: var(--primary); color: white; }
 
-    /* המבורגר */
     .hamburger-menu {
-      width: 50px;
-      height: 50px;
-      background: var(--primary);
-      color: white;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.6rem;
-      cursor: pointer;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-      transition: transform 0.3s;
-      z-index: 10000;
+      width: 50px; height: 50px; background: var(--primary); color: white;
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-size: 1.6rem; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.2); z-index: 10000;
     }
     .hamburger-menu:hover { transform: scale(1.1); }
 
-    /* וואטסאפ */
     .whatsapp-float {
-      position: fixed;
-      left: 15px;
-      bottom: 20px;
-      z-index: 1000;
-      animation: pulse 2s infinite;
-      text-decoration: none !important;
+      position: fixed; left: 15px; bottom: 20px; z-index: 1000; animation: pulse 2s infinite;
     }
     .whatsapp-icon {
-      font-size: 32px;
-      color: white;
-      background-color: #25D366;
-      width: 58px;
-      height: 58px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-      outline: none !important;
-      border: none !important;
+      font-size: 32px; color: white; background-color: #25D366; width: 58px; height: 58px;
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3); outline: none !important; border: none !important;
     }
     @keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.08)} }
 
-    /* סיידבר + רקע שקוף */
     .sidebar {
-      position: fixed;
-      top: 0;
-      right: -100%;
-      width: 320px;
-      height: 100%;
-      background: white;
-      box-shadow: -8px 0 25px rgba(0,0,0,0.15);
-      z-index: 9998;
-      transition: right 0.4s ease;
-      padding: 80px 20px 20px;
-      overflow-y: auto;
+      position: fixed; top: 0; right: -100%; width: 320px; height: 100%; background: white;
+      box-shadow: -8px 0 25px rgba(0,0,0,0.15); z-index: 9998; transition: right 0.4s ease;
+      padding: 80px 20px 20px; overflow-y: auto;
     }
     .sidebar.open { right: 0; }
-
     .sidebar-overlay {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: rgba(0,0,0,0.5);
-      opacity: 0;
-      visibility: hidden;
-      transition: all 0.4s;
-      z-index: 9997;
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.5); opacity: 0; visibility: hidden; transition: all 0.4s; z-index: 9997;
     }
-    .sidebar-overlay.active {
-      opacity: 1;
-      visibility: visible;
-    }
-
+    .sidebar-overlay.active { opacity: 1; visibility: visible; }
     .sidebar .close-btn {
-      position: absolute;
-      top: 15px;
-      left: 15px;
-      background: none;
-      border: none;
-      font-size: 2.2rem;
-      color: #333;
-      cursor: pointer;
+      position: absolute; top: 15px; left: 15px; background: none; border: none;
+      font-size: 2.2rem; color: #333; cursor: pointer;
     }
 
     .main-subtitle { font-size: 1.9rem; font-weight: 700; color: var(--primary); text-align: center; margin: 0.5rem 0 1rem; }
@@ -148,20 +74,38 @@
     .btn-submit { background: var(--primary); border: none; border-radius: 10px; padding: 0.8rem; font-weight: 600; color: white !important; font-size: 1.1rem; }
     .price-display { font-size: 1.4rem; font-weight: 700; color: #1a5d1a; text-align: center; margin: 1.2rem 0; }
 
+    /* הצ'קבוקס של התנאים – מודגש ועבה כמו שביקשת! */
+    #terms {
+      width: 26px !important;
+      height: 26px !important;
+      border: 4px solid var(--primary) !important;
+      border-radius: 9px !important;
+      accent-color: var(--primary);
+      cursor: pointer;
+      transform: scale(1.2);
+      margin-left: 10px;
+      vertical-align: middle;
+    }
+    .form-check-label {
+      font-weight: 700 !important;
+      color: var(--primary) !important;
+      font-size: 1.1rem;
+      vertical-align: middle;
+    }
+
     @media (min-width: 576px) {
       .hero-img { height: 520px; border-radius: 24px; }
-      .top-bar { padding: 0 25px; }
     }
     @media (max-width: 576px) {
       .main-subtitle { font-size: 1.7rem; }
       .hero-img { height: 280px; }
       .sidebar { width: 100%; }
+      #terms { width: 24px !important; height: 24px !important; }
     }
   </style>
 </head>
 <body>
 
-  <!-- סרגל עליון -->
   <div class="top-bar">
     <div class="lang-switcher">
       <button class="lang-btn active" data-lang="he">עב</button>
@@ -173,16 +117,13 @@
     </div>
   </div>
 
-  <!-- רקע שקוף לסגירה -->
   <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
-  <!-- וואטסאפ -->
   <a href="https://wa.me/972524864380?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%A6%D7%A8%D7%99%D7%9A%20%D7%A2%D7%96%D7%A8%D7%94%20%D7%91%D7%94%D7%96%D7%9E%D7%A0%D7%AA%20%D7%9E%D7%92%D7%A8%D7%A9%20%D7%98%D7%A0%D7%99%D7%A1" 
      class="whatsapp-float" target="_blank" aria-label="WhatsApp">
     <i class="fab fa-whatsapp whatsapp-icon"></i>
   </a>
 
-  <!-- סיידבר -->
   <div class="sidebar" id="sidebar">
     <button class="close-btn" id="closeSidebar">×</button>
     <h3 data-t="info-title">מידע ותמיכה</h3>
@@ -206,27 +147,39 @@
 
   <div class="container">
     <h1 class="main-subtitle" data-t="center-name">מרכז קהילתי עם שלום י"א</h1>
+
     <div style="margin-bottom:1rem;border-radius:20px;overflow:hidden;box-shadow:var(--shadow);">
       <img src="https://i.ibb.co/Z61VPjns/image.jpg" alt="מגרשי טניס באשדוד" class="hero-img">
     </div>
+
     <h2 class="text-center mb-4" style="color:var(--primary);font-weight:600;" data-t="book-title">הזמנת מגרש טניס</h2>
 
     <div class="form-card">
       <form id="bookingForm">
         <div class="row g-2">
-          <div class="col-12 col-md-6"><label class="form-label"><span class="required-star">*</span> <span data-t="name">שם מלא</span></label><input type="text" class="form-control" id="name" required></div>
-          <div class="col-12 col-md-6"><label class="form-label"><span class="required-star">*</span> <span data-t="phone">טלפון</span></label><input type="tel" class="form-control" id="phone" required pattern="05[0-9]{8}" placeholder="05XXXXXXXX"></div>
-          <div class="col-12"><label class="form-label"><span class="required-star">*</span> <span data-t="email">אימייל</span></label><input type="email" class="form-control" id="email" required></div>
-          <div class="col-6"><label class="form-label"><span class="required-star">*</span> <span data-t="date">תאריך</span></label><input type="date" class="form-control" id="date" required></div>
-          <div class="col-6"><label class="form-label"><span class="required-star">*</span> <span data-t="time">שעת התחלה</span></label><select class="form-select" id="time" required></select></div>
-          <div class="col-6"><label class="form-label"><span class="required-star">*</span> <span data-t="duration">משך</span></label><select class="form-select" id="duration" required>
+          <div class="col-12 col-md-6"><label class="form-label">* <span data-t="name">שם מלא</span></label><input type="text" class="form-control" id="name" required></div>
+          <div class="col-12 col-md-6"><label class="form-label">* <span data-t="phone">טלפון</span></label><input type="tel" class="form-control" id="phone" required pattern="05[0-9]{8}" placeholder="05XXXXXXXX"></div>
+          <div class="col-12"><label class="form-label">* <span data-t="email">אימייל</span></label><input type="email" class="form-control" id="email" required></div>
+          <div class="col-6"><label class="form-label">* <span data-t="date">תאריך</span></label><input type="date" class="form-control" id="date" required></div>
+          <div class="col-6"><label class="form-label">* <span data-t="time">שעת התחלה</span></label><select class="form-select" id="time" required></select></div>
+          <div class="col-6"><label class="form-label">* <span data-t="duration">משך</span></label><select class="form-select" id="duration" required>
             <option value="1">שעה (40₪)</option><option value="2">שעתיים (80₪)</option>
           </select></div>
-          <div class="col-6"><label class="form-label"><span class="required-star">*</span> <span data-t="court">מגרש</span></label><select class="form-select" id="court" required>
+          <div class="col-6"><label class="form-label">* <span data-t="court">מגרש</span></label><select class="form-select" id="court" required>
             <option value="">בחר מגרש</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option>
           </select></div>
           <div class="col-12"><label class="form-label"><span data-t="notes">הערות</span></label><textarea class="form-control" id="notes" rows="1"></textarea></div>
-          <div class="col-12"><div class="form-check"><input type="checkbox" class="form-check-input" id="terms" required><label class="form-check-label" for="terms"><span class="required-star">*</span> <span data-t="agree">מסכים</span> <a href="#" data-t="terms">לתנאים</a></label></div></div>
+
+          <!-- הצ'קבוקס המודגש -->
+          <div class="col-12">
+            <div class="form-check">
+              <input type="checkbox" class="form-check-input" id="terms" required>
+              <label class="form-check-label" for="terms">
+                * <span data-t="agree">מסכים</span> <a href="#" data-t="terms">לתנאים</a>
+              </label>
+            </div>
+          </div>
+
           <div class="col-12"><p class="price-display"><span data-t="total">סה"כ:</span> <strong><span id="totalPrice">40₪</span></strong></p></div>
           <div class="col-12"><button type="submit" class="btn btn-submit w-100" id="submitBtn" data-t="submit">שלח הזמנה</button></div>
         </div>
@@ -241,7 +194,7 @@
       ru: {"center-name":"Общественный центр Ам Шалом Юд-Алеф","book-title":"Бронирование теннисного корта","name":"ФИО","phone":"Телефон","email":"Email","date":"Дата","time":"Время начала","duration":"Продолжительность","court":"Корт","notes":"Примечания","agree":"Согласен с","terms":"условиями","total":"Итого:","submit":"Отправить бронь","info-title":"Информация","center-details":"Контакты центра","address":"Адрес:","address-val":"Хар Голан 5, Ашдод","hours":"Часы работы:","hours-val":"Вс–Чт 08:00–21:00<br>Пт 08:00–14:00<br>Сб 08:00–21:00","faq":"ЧаВо","q-equipment":"Нужен инвентарь?","a-equipment":"Приносите свой или аренда: ракетка 15₪, мячи 5₪.","q-rain":"Дождь?","a-rain":"Автоматическая отмена + полный возврат.","q-multiple":"Несколько кортов?","a-multiple":"Забронируйте снова или пишите в WhatsApp.","q-light":"Освещение?","a-light":"Да, до 21:00 – бесплатно!"}
     };
 
-    // שפות – עובדות מושלם
+    // שפות
     document.querySelectorAll('.lang-btn').forEach(btn => {
       btn.addEventListener('click', () => {
         const lang = btn.dataset.lang;
@@ -257,7 +210,7 @@
       });
     });
 
-    // תפריט המבורגר – תיקון מושלם!
+    // המבורגר – פתיחה וסגירה מושלמת
     const hamburger = document.getElementById('hamburgerMenu');
     const sidebar = document.getElementById('sidebar');
     const overlay = document.getElementById('sidebarOverlay');
@@ -268,18 +221,16 @@
       sidebar.classList.toggle('open');
       overlay.classList.toggle('active');
     });
-
     closeBtn.addEventListener('click', () => {
       sidebar.classList.remove('open');
       overlay.classList.remove('active');
     });
-
     overlay.addEventListener('click', () => {
       sidebar.classList.remove('open');
       overlay.classList.remove('active');
     });
 
-    // שעות – עובדות מושלם
+    // שעות + הזמנה
     (function(){ emailjs.init("z1P-O8ROFHiXihsLH"); })();
     const today = new Date();
     const dateInput = document.getElementById('date');
