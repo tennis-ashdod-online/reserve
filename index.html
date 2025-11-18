@@ -74,7 +74,6 @@
     .btn-submit { background: var(--primary); border: none; border-radius: 10px; padding: 0.8rem; font-weight: 600; color: white !important; font-size: 1.1rem; }
     .price-display { font-size: 1.4rem; font-weight: 700; color: #1a5d1a; text-align: center; margin: 1.2rem 0; }
 
-    /* הצ'קבוקס + טקסט – בדיוק כמו שביקשת */
     .terms-row {
       display: flex;
       align-items: center;
@@ -145,12 +144,13 @@
         <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d600!2d34.6309!3d31.7832!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzEuNzgzMTY1LDM0LjYzMTA5Ng!5e0!3m2!1siw!2sil!4v1731780000000!5m2!1siw!2sil" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
       </div>
     </div>
+
+    <!-- שאלות נפוצות – מעודכן בדיוק כמו שביקשת -->
     <div style="background:#f9f9f9;padding:1rem;border-radius:12px;">
       <h4 data-t="faq">שאלות נפוצות</h4>
-      <p><strong data-t="q-equipment">צריך ציוד?</strong> <span data-t="a-equipment">מומלץ להביא אישי. שכירה: מחבט 15₪, כדורים 5₪.</span></p>
-      <p><strong data-t="q-rain">גשם?</strong> <span data-t="a-rain">ביטול אוטומטי + החזר מלא.</span></p>
-      <p><strong data-t="q-multiple">יותר ממגרש אחד?</strong> <span data-t="a-multiple">הזמן שוב או שלח וואטסאפ.</span></p>
-      <p><strong data-t="q-light">תאורה?</strong> <span data-t="a-light">כן, עד 21:00 – חינם!</span></p>
+      <p><strong>האם ניתן להשכיר ציוד במקום?</strong><br>לא, צריך להביא ציוד אישי.</p>
+      <p><strong>יותר ממגרש אחד?</strong><br>הזמן שוב או שלח וואטסאפ.</p>
+      <p><strong>תאורה?</strong><br>כן, עד 21:00 – חינם!</p>
     </div>
   </div>
 
@@ -177,7 +177,6 @@
           </select></div>
           <div class="col-12"><label class="form-label"><span data-t="notes">הערות</span></label><textarea class="form-control" id="notes" rows="1"></textarea></div>
 
-          <!-- בדיוק כמו שביקשת – צ'קבוקס שמאל, טקסט ימין -->
           <div class="col-12">
             <div class="terms-row">
               <input type="checkbox" id="terms" required>
@@ -196,12 +195,11 @@
 
   <script>
     const translations = {
-      he: {"center-name":"מרכז קהילתי עם שלום י\"א","book-title":"הזמנת מגרש טניס","name":"שם מלא","phone":"טלפון","email":"אימייל","date":"תאריך","time":"שעת התחלה","duration":"משך","court":"מגרש","notes":"הערות","agree":"מסכים","terms":"לתנאים","total":"סה\"כ:","submit":"שלח הזמנה","info-title":"מידע ותמיכה","center-details":"פרטי המרכז","address":"כתובת:","address-val":"הרי גולן 5, אשדוד","hours":"שעות פתיחה:","hours-val":"א'-ה' 08:00–21:00<br>שישי 08:00–14:00<br>שבת 08:00–21:00","faq":"שאלות נפוצות","q-equipment":"צריך ציוד?","a-equipment":"מומלץ להביא אישי. שכירה: מחבט 15₪, כדורים 5₪.","q-rain":"גשם?","a-rain":"ביטול אוטומטי + החזר מלא.","q-multiple":"יותר ממגרש אחד?","a-multiple":"הזמן שוב או שלח וואטסאפ.","q-light":"תאורה?","a-light":"כן, עד 21:00 – חינם!"},
-      en: {"center-name":"Am Shalom Yud-Alef Community Center","book-title":"Book a Tennis Court","name":"Full Name","phone":"Phone","email":"Email","date":"Date","time":"Start Time","duration":"Duration","court":"Court","notes":"Notes","agree":"I agree to","terms":"Terms & Conditions","total":"Total:","submit":"Send Booking","info-title":"Info & Support","center-details":"Center Details","address":"Address:","address-val":"Har Golan 5, Ashdod","hours":"Opening Hours:","hours-val":"Sun–Thu 08:00–21:00<br>Friday 08:00–14:00<br>Saturday 08:00–21:00","faq":"FAQ","q-equipment":"Need equipment?","a-equipment":"Bring your own or rent: racket 15₪, balls 5₪.","q-rain":"Rain?","a-rain":"Automatic cancellation + full refund.","q-multiple":"Multiple courts?","a-multiple":"Book again or contact via WhatsApp.","q-light":"Floodlights?","a-light":"Yes, until 21:00 – free!"},
-      ru: {"center-name":"Общественный центр Ам Шалом Юд-Алеф","book-title":"Бронирование теннисного корта","name":"ФИО","phone":"Телефон","email":"Email","date":"Дата","time":"Время начала","duration":"Продолжительность","court":"Корт","notes":"Примечания","agree":"Согласен с","terms":"условиями","total":"Итого:","submit":"Отправить бронь","info-title":"Информация","center-details":"Контакты центра","address":"Адрес:","address-val":"Хар Голан 5, Ашдод","hours":"Часы работы:","hours-val":"Вс–Чт 08:00–21:00<br>Пт 08:00–14:00<br>Сб 08:00–21:00","faq":"ЧаВо","q-equipment":"Нужен инвентарь?","a-equipment":"Приносите свой или аренда: ракетка 15₪, мячи 5₪.","q-rain":"Дождь?","a-rain":"Автоматическая отмена + полный возврат.","q-multiple":"Несколько кортов?","a-multiple":"Забронируйте снова или пишите в WhatsApp.","q-light":"Освещение?","a-light":"Да, до 21:00 – бесплатно!"}
+      he: {"center-name":"מרכז קהילתי עם שלום י\"א","book-title":"הזמנת מגרש טניס","name":"שם מלא","phone":"טלפון","email":"אימייל","date":"תאריך","time":"שעת התחלה","duration":"משך","court":"מגרש","notes":"הערות","agree":"מסכים","terms":"לתנאים","total":"סה\"כ:","submit":"שלח הזמנה","info-title":"מידע ותמיכה","center-details":"פרטי המרכז","address":"כתובת:","address-val":"הרי גולן 5, אשדוד","hours":"שעות פתיחה:","hours-val":"א'-ה' 08:00–21:00<br>שישי 08:00–14:00<br>שבת 08:00–21:00","faq":"שאלות נפוצות"},
+      en: {"center-name":"Am Shalom Yud-Alef Community Center","book-title":"Book a Tennis Court","name":"Full Name","phone":"Phone","email":"Email","date":"Date","time":"Start Time","duration":"Duration","court":"Court","notes":"Notes","agree":"I agree to","terms":"Terms & Conditions","total":"Total:","submit":"Send Booking","info-title":"Info & Support","center-details":"Center Details","address":"Address:","address-val":"Har Golan 5, Ashdod","hours":"Opening Hours:","hours-val":"Sun–Thu 08:00–21:00<br>Friday 08:00–14:00<br>Saturday 08:00–21:00","faq":"FAQ"},
+      ru: {"center-name":"Общественный центр Ам Шалом Юд-Алеф","book-title":"Бронирование теннисного корта","name":"ФИО","phone":"Телефон","email":"Email","date":"Дата","time":"Время начала","duration":"Продолжительность","court":"Корт","notes":"Примечания","agree":"Согласен с","terms":"условиями","total":"Итого:","submit":"Отправить бронь","info-title":"Информация","center-details":"Контакты центра","address":"Адрес:","address-val":"Хар Голан 5, Ашдод","hours":"Часы работы:","hours-val":"Вс–Чт 08:00–21:00<br>Пт 08:00–14:00<br>Сб 08:00–21:00","faq":"ЧаВо"}
     };
 
-    // החלפת שפות – עובד מושלם
     document.querySelectorAll('.lang-btn').forEach(btn => {
       btn.addEventListener('click', () => {
         const lang = btn.dataset.lang;
@@ -217,7 +215,6 @@
       });
     });
 
-    // תפריט המבורגר – עובד מושלם
     const hamburger = document.getElementById('hamburgerMenu');
     const sidebar = document.getElementById('sidebar');
     const overlay = document.getElementById('sidebarOverlay');
@@ -236,13 +233,12 @@
       overlay.classList.remove('active');
     });
 
-    // שעות + מחיר
     (function(){ emailjs.init("z1P-O8ROFHiXihsLH"); })();
     const today = new Date();
     const dateInput = document.getElementById('date');
     const timeSelect = document.getElementById('time');
     const durationSelect = document.getElementById('duration');
-    const totalPriceEl = document.getElementById('totalPrice');
+    const totalPriceEl = document.getElementBehindById('totalPrice');
 
     dateInput.min = today.toISOString().split('T')[0];
     dateInput.value = dateInput.min;
