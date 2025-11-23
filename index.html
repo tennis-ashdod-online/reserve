@@ -12,7 +12,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
   <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
   <style>
     :root { 
@@ -43,46 +43,22 @@
     .success-popup { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 2rem 3rem; border-radius: 18px; box-shadow: 0 12px 35px rgba(0,0,0,0.3); z-index: 10000; text-align: center; border: 3px solid var(--primary); max-width: 90%; animation: popup 0.5s ease-out; }
     @keyframes popup { from { transform: translate(-50%, -70%); opacity: 0; } to { transform: translate(-50%, -50%); opacity: 1; } }
 
-    /* וואטסאפ – בלי קו כחול, בלי outline */
+    /* וואטסאפ */
     .whatsapp-float {
-      position: fixed;
-      left: 15px;
-      bottom: 20px;
-      z-index: 1000;
-      animation: pulse 2s infinite;
-      text-decoration: none !important;
-      outline: none !important;
+      position: fixed; left: 15px; bottom: 20px; z-index: 1000;
+      animation: pulse 2s infinite; text-decoration: none !important; outline: none !important;
     }
-    .whatsapp-float:focus, .whatsapp-float:active {
-      outline: none !important;
-      box-shadow: none !important;
-    }
+    .whatsapp-float:focus, .whatsapp-float:active { outline: none !important; box-shadow: none !important; }
     .whatsapp-icon {
-      font-size: 32px;
-      color: white;
-      background: #25D366;
-      width: 58px;
-      height: 58px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-      transition: all 0.3s ease;
+      font-size: 32px; color: white; background: #25D366; width: 58px; height: 58px;
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3); transition: all 0.3s ease;
     }
-    .whatsapp-float:hover .whatsapp-icon {
-      transform: scale(1.15);
-    }
+    .whatsapp-float:hover .whatsapp-icon { transform: scale(1.15); }
     @keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.1)} }
 
     .top-controls {
-      position: fixed;
-      top: 12px;
-      right: 12px;
-      display: flex;
-      gap: 12px;
-      z-index: 9999;
-      pointer-events: none;
+      position: fixed; top: 12px; right: 12px; display: flex; gap: 12px; z-index: 9999; pointer-events: none;
     }
     .top-controls > * { pointer-events: auto; }
 
@@ -98,60 +74,42 @@
       box-shadow: 0 10px 30px rgba(0,0,0,0.35); 
     }
 
-    #accessibilityMenu {
-      position: fixed;
-      top: 80px;
-      right: 12px;
-      width: 300px;
-      background: white;
-      border-radius: 20px;
-      box-shadow: 0 15px 40px rgba(0,0,0,0.2);
-      overflow: hidden;
-      z-index: 9998;
-      opacity: 0;
-      transform: translateY(-20px);
-      visibility: hidden;
-      transition: all 0.4s ease;
-      border: 3px solid var(--primary);
-    }
-    #accessibilityMenu.open {
-      opacity: 1;
-      transform: translateY(0);
-      visibility: visible;
+    /* התיקון החשוב – מבטל את הגדלת הכפתור כשהתפריט פתוח */
+    #accessibilityMenu.open ~ .top-controls #accessibilityToggle,
+    #accessibilityMenu.open ~ .top-controls #accessibilityToggle:hover,
+    .sidebar.open ~ .top-controls .hamburger-menu,
+    .sidebar.open ~ .top-controls .hamburger-menu:hover {
+      transform: scale(1) !important;
+      background: var(--primary) !important;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.25) !important;
     }
 
-    .acc-header {
-      background: var(--primary);
-      color: white;
-      padding: 1rem;
-      text-align: center;
-      font-weight: 600;
-      font-size: 1.1rem;
+    #accessibilityMenu {
+      position: fixed; top: 80px; right: 12px; width: 300px; background: white;
+      border-radius: 20px; box-shadow: 0 15px 40px rgba(0,0,0,0.2); overflow: hidden;
+      z-index: 9998; opacity: 0; transform: translateY(-20px); visibility: hidden;
+      transition: all 0.4s ease; border: 3px solid var(--primary);
     }
+    #accessibilityMenu.open {
+      opacity: 1; transform: translateY(0); visibility: visible;
+    }
+
+    .acc-header { background: var(--primary); color: white; padding: 1rem; text-align: center; font-weight: 600; font-size: 1.1rem; }
     .acc-body { padding: 1.2rem; }
     .acc-item {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0.9rem 1rem;
-      margin: 0.4rem 0;
-      background: #f0f7f0;
-      border-radius: 12px;
-      cursor: pointer;
-      transition: all 0.3s;
-      font-size: 1rem;
+      display: flex; align-items: center; justify-content: space-between; padding: 0.9rem 1rem;
+      margin: 0.4rem 0; background: #f0f7f0; border-radius: 12px; cursor: pointer; transition: all 0.3s; font-size: 1rem;
     }
-    .acc-item:hover {
-      background: var(--primary);
-      color: white;
-      transform: translateX(-6px);
-    }
+    .acc-item:hover { background: var(--primary); color: white; transform: translateX(-6px); }
     .acc-item i { font-size: 1.4rem; color: var(--primary); }
     .acc-item:hover i { color: white; }
 
-    .sidebar { position: fixed; top: 0; right: -100%; width: 320px; height: 100%; background: white; box-shadow: -8px 0 25px rgba(0,0,0,0.15); z-index: 9996; transition: right 0.4s ease; padding: 80px 20px 20px; overflow-y: auto; }
+    .sidebar { position: fixed; top: 0; right: -100%; width: 320px; height: 100%; background: white;
+      box-shadow: -8px 0 25px rgba(0,0,0,0.15); z-index: 9996; transition: right 0.4s ease;
+      padding: 80px 20px 20px; overflow-y: auto; }
     .sidebar.open { right: 0; }
-    .sidebar .close-btn { position: absolute; top: 15px; left: 15px; background: none; border: none; font-size: 2.2rem; color: #333; cursor: pointer; }
+    .sidebar .close-btn { position: absolute; top: 15px; left: 15px; background: none; border: none;
+      font-size: 2.2rem; color: #333; cursor: pointer; }
 
     @media (min-width: 576px) { .hero-img { height: 500px; } .container { margin-top: 100px; } }
     @media (max-width: 576px) { 
@@ -188,22 +146,20 @@
   <div id="accessibilityMenu">
     <div class="acc-header">הגדרות נגישות</div>
     <div class="acc-body">
-      <div class="acc-item" onclick="increaseFont()"><span>הגדל טקסט</span><i class="fas fa-text-height"></i></div>
-      <div class="acc-item" onclick="decreaseFont()"><span>הקטן טקסט</span><i class="fas fa-text-height"></i></div>
-      <div class="acc-item" onclick="toggleContrast()"><span>ניגודיות גבוהה</span><i class="fas fa-adjust"></i></div>
-      <div class="acc-item" onclick="toggleGrayscale()"><span>גווני אפור</span><i class="fas fa-eye-slash"></i></div>
-      <div class="acc-item" onclick="toggleLinks()"><span>הדגש קישורים</span><i class="fas fa-link"></i></div>
-      <div class="acc-item" id="speakBtn" onclick="toggleSpeak()"><span id="speakText">הקראה</span><i class="fas fa-volume-up"></i></div>
+      <div class="acc-item" onclick="increaseFont()">הגדל טקסט<i class="fas fa-text-height"></i></div>
+      <div class="acc-item" onclick="decreaseFont()">הקטן טקסט<i class="fas fa-text-height"></i></div>
+      <div class="acc-item" onclick="toggleContrast()">ניגודיות גבוהה<i class="fas fa-adjust"></i></div>
+      <div class="acc-item" onclick="toggleGrayscale()">גווני אפור<i class="fas fa-eye-slash"></i></div>
+      <div class="acc-item" onclick="toggleLinks()">הדגש קישורים<i class="fas fa-link"></i></div>
+      <div class="acc-item" id="speakBtn" onclick="toggleSpeak()">הקראה<span id="speakText">הקראה</span><i class="fas fa-volume-up"></i></div>
     </div>
   </div>
 
-  <!-- וואטסאפ – בלי קו כחול בכלל! -->
   <a href="https://wa.me/972524864380?text=הי, אני צריך עזרה בהזמנת מגרש טניס" 
      class="whatsapp-float" target="_blank" aria-label="וואטסאפ">
     <i class="fab fa-whatsapp whatsapp-icon"></i>
   </a>
 
-  <!-- שאר הקוד נשאר אותו דבר... -->
   <div class="sidebar" id="sidebar">
     <button class="close-btn" id="closeSidebar">×</button>
     <h3>מידע ותמיכה</h3>
@@ -328,7 +284,7 @@
 
         document.getElementById('successPopup').innerHTML = `<div class="success-popup">
           <h4 style="color:var(--primary)">הוזמן בהצלחה!</h4>
-          <p><strong>${data.name}</strong><br>מגרש ${data.court} • ${data.date} • ${data.time}<br>${data.price}</p>
+          <p><strong>\( {data.name}</strong><br>מגרש \){data.court} • \( {data.date} • \){data.time}<br>${data.price}</p>
           <p class="text-success">אישור נשלח למייל</p>
         </div>`;
         document.getElementById('successPopup').classList.remove('d-none');
@@ -343,23 +299,19 @@
       }, 1800);
     });
 
+    // תפריט המבורגר וסגירה
     const hamburgerBtn = document.getElementById('hamburgerMenu');
     const sidebar = document.getElementById('sidebar');
-    hamburgerBtn.addEventListener('click', () => {
-      if (sidebar.classList.contains('open')) {
-        sidebar.classList.remove('open');
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      } else {
-        sidebar.classList.add('open');
-      }
-    });
+    hamburgerBtn.addEventListener('click', () => sidebar.classList.toggle('open'));
     document.getElementById('closeSidebar').onclick = () => sidebar.classList.remove('open');
     sidebar.onclick = e => e.target === sidebar && sidebar.classList.remove('open');
 
+    // תפריט נגישות
     document.getElementById('accessibilityToggle').onclick = () => {
       document.getElementById('accessibilityMenu').classList.toggle('open');
     };
 
+    // פונקציות נגישות
     function increaseFont() { document.body.style.fontSize = (parseFloat(getComputedStyle(document.body).fontSize) + 2) + 'px'; }
     function decreaseFont() { let s = parseFloat(getComputedStyle(document.body).fontSize); if(s > 14) document.body.style.fontSize = (s - 2) + 'px'; }
     function toggleContrast() { document.body.classList.toggle('high-contrast'); }
